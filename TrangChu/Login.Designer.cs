@@ -70,7 +70,7 @@
             this.btnLogin.BackColor = System.Drawing.Color.White;
             this.btnLogin.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
             this.btnLogin.ForeColor = System.Drawing.Color.Black;
-            this.btnLogin.Location = new System.Drawing.Point(199, 310);
+            this.btnLogin.Location = new System.Drawing.Point(70, 312);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(111, 40);
             this.btnLogin.TabIndex = 5;
@@ -83,7 +83,7 @@
             this.btnRegister.BackColor = System.Drawing.Color.White;
             this.btnRegister.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
             this.btnRegister.ForeColor = System.Drawing.Color.Black;
-            this.btnRegister.Location = new System.Drawing.Point(70, 310);
+            this.btnRegister.Location = new System.Drawing.Point(200, 312);
             this.btnRegister.Name = "btnRegister";
             this.btnRegister.Size = new System.Drawing.Size(110, 40);
             this.btnRegister.TabIndex = 6;
@@ -93,7 +93,7 @@
             // 
             // Login
             // 
-            this.BackColor = System.Drawing.Color.SkyBlue;
+            this.BackColor = System.Drawing.Color.Green;
             this.ClientSize = new System.Drawing.Size(380, 420);
             this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.picAvatar);

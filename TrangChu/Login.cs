@@ -7,7 +7,8 @@ namespace TrangChu
 {
     public partial class Login : Form
     {
-        UserBUS userBLL = new UserBUS();
+        // Sử dụng UserBUS (Entity Framework)
+        UserBUS userBUS = new UserBUS();
 
         public Login()
         {
@@ -21,22 +22,29 @@ namespace TrangChu
 
             if (user == "" || pass == "")
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ!", "Thông báo");
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin!", "Thông báo");
                 return;
             }
 
-            // Gọi BLL để kiểm tra User
-            User u = userBLL.Login(user, pass);
+            // Gọi BUS kiểm tra đăng nhập
+            User u = userBUS.Login(user, pass);
 
             if (u != null)
             {
                 MessageBox.Show("Đăng nhập thành công!", "Thông báo");
 
-                // Mở form TrangChu + truyền TenNguoiDung hoặc UserName
-                TrangChu frm = new TrangChu(u.TenNguoiDung ?? u.UserName);
-                frm.Show();
+                this.Hide(); // Ẩn form Login
 
-                this.Hide();
+                // --- LOGIC MỚI ---
+                // Mở TrangChu và gửi kèm đối tượng 'u' (chứa Role, UserName...)
+                TrangChu frmMain = new TrangChu(u);
+
+                frmMain.ShowDialog(); // Chờ TrangChu xử lý xong (Đăng xuất)
+
+                // Khi TrangChu đóng lại, hiện lại Login và xóa mật khẩu cũ
+                this.Show();
+                txtPass.Text = "";
+                txtUser.Focus();
             }
             else
             {
@@ -44,20 +52,16 @@ namespace TrangChu
             }
         }
 
-        
-
         private void btnRegister_Click(object sender, EventArgs e)
         {
-            // đăng kí 
-            Register frmRegister = new Register();
-            this.Hide(); // Ẩn form login tạm thời
-            frmRegister.ShowDialog(); // Hiện form đăng ký
-            this.Show(); // Khi form đăng ký đóng, hiện lại form login
+            Register frm = new Register();
+            this.Hide();
+            frm.ShowDialog();
+            this.Show();
         }
 
         private void Login_Load(object sender, EventArgs e)
         {
-
         }
     }
 }
