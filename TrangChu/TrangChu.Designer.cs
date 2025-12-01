@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrangChu));
             this.panelMenu = new System.Windows.Forms.Panel();
+            this.lblUserName = new System.Windows.Forms.Label();
             this.picUser = new System.Windows.Forms.PictureBox();
             this.btnDichVu = new System.Windows.Forms.Button();
             this.bntDangXuat = new System.Windows.Forms.Button();
@@ -38,7 +39,6 @@
             this.btnHeThong = new System.Windows.Forms.Button();
             this.lblTenSan = new System.Windows.Forms.Label();
             this.picNen = new System.Windows.Forms.PictureBox();
-            this.lblXinChao = new System.Windows.Forms.Label();
             this.panelMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picUser)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picNen)).BeginInit();
@@ -47,7 +47,7 @@
             // panelMenu
             // 
             this.panelMenu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(192)))));
-            this.panelMenu.Controls.Add(this.lblXinChao);
+            this.panelMenu.Controls.Add(this.lblUserName);
             this.panelMenu.Controls.Add(this.picUser);
             this.panelMenu.Controls.Add(this.btnDichVu);
             this.panelMenu.Controls.Add(this.bntDangXuat);
@@ -59,6 +59,16 @@
             this.panelMenu.Name = "panelMenu";
             this.panelMenu.Size = new System.Drawing.Size(231, 448);
             this.panelMenu.TabIndex = 0;
+            // 
+            // lblUserName
+            // 
+            this.lblUserName.AutoSize = true;
+            this.lblUserName.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUserName.Location = new System.Drawing.Point(61, 134);
+            this.lblUserName.Name = "lblUserName";
+            this.lblUserName.Size = new System.Drawing.Size(55, 14);
+            this.lblUserName.TabIndex = 5;
+            this.lblUserName.Text = "Xin Chào";
             // 
             // picUser
             // 
@@ -175,16 +185,6 @@
             this.picNen.TabIndex = 3;
             this.picNen.TabStop = false;
             // 
-            // lblXinChao
-            // 
-            this.lblXinChao.AutoSize = true;
-            this.lblXinChao.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblXinChao.Location = new System.Drawing.Point(61, 134);
-            this.lblXinChao.Name = "lblXinChao";
-            this.lblXinChao.Size = new System.Drawing.Size(55, 14);
-            this.lblXinChao.TabIndex = 5;
-            this.lblXinChao.Text = "Xin Chào";
-            // 
             // TrangChu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -215,7 +215,7 @@
         private System.Windows.Forms.PictureBox picUser;
         private System.Windows.Forms.Label lblTenSan;
         private System.Windows.Forms.PictureBox picNen;
-        private System.Windows.Forms.Label lblXinChao;
+        private System.Windows.Forms.Label lblUserName;
     }
 }
 

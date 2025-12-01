@@ -1,27 +1,27 @@
-﻿using DAL;
-using System;
-using System.Drawing;
+﻿using System;
 using System.Windows.Forms;
 
 namespace TrangChu
 {
-
     public partial class TrangChu : Form
     {
-        private string tenNguoiDung;
+        private string tenDangNhap;
 
+        // Constructor NHẬN tên đăng nhập
         public TrangChu(string ten)
         {
             InitializeComponent();
-            tenNguoiDung = ten;
+            tenDangNhap = ten;
+
+            // Bắt sự kiện Load (phòng khi Designer chưa gán)
+            this.Load += TrangChu_Load;
         }
 
+        // Sự kiện Load của Form
         private void TrangChu_Load(object sender, EventArgs e)
         {
-            lblXinChao.Text = "Xin chào, " + tenNguoiDung + "!";
+            // LƯU Ý: lblWelcome phải tồn tại trong Designer
+            lblUserName.Text = "Xin chào! " + tenDangNhap;
         }
     }
-
-
-
 }
