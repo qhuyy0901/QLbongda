@@ -32,8 +32,8 @@ namespace DAL
         [StringLength(20)]
         public string SDT { get; set; }
 
-        [StringLength(255)]
-        public string GhiChu { get; set; }
+        //[StringLength(255)]
+        //public string GhiChu { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<LichDat> LichDats { get; set; }

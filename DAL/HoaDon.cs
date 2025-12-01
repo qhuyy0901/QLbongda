@@ -32,5 +32,8 @@ namespace DAL
         public virtual ICollection<CT_HoaDon_DichVu> CT_HoaDon_DichVu { get; set; }
 
         public virtual LichDat LichDat { get; set; }
+
+        public string TenKH { get; set; }
+
     }
 }

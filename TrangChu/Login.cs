@@ -7,7 +7,7 @@ namespace TrangChu
 {
     public partial class Login : Form
     {
-        UserBLL userBLL = new UserBLL();
+        UserBUS userBLL = new UserBUS();
 
         public Login()
         {
@@ -44,7 +44,18 @@ namespace TrangChu
             }
         }
 
-        private void lblTitle_Click(object sender, EventArgs e)
+        
+
+        private void btnRegister_Click(object sender, EventArgs e)
+        {
+            // đăng kí 
+            Register frmRegister = new Register();
+            this.Hide(); // Ẩn form login tạm thời
+            frmRegister.ShowDialog(); // Hiện form đăng ký
+            this.Show(); // Khi form đăng ký đóng, hiện lại form login
+        }
+
+        private void Login_Load(object sender, EventArgs e)
         {
 
         }
