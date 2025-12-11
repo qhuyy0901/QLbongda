@@ -9,12 +9,11 @@ namespace DAL
     public partial class CT_HoaDon_DichVu
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int MaCT { get; set; }
 
-        public int? MaHD { get; set; }
+        public int MaHD { get; set; }
 
-        public int? MaDV { get; set; }
+        public int MaDV { get; set; }
 
         public int? SoLuong { get; set; }
 

@@ -16,10 +16,9 @@ namespace DAL
         }
 
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int MaHD { get; set; }
 
-        public int? MaLich { get; set; }
+        public int MaLich { get; set; }
 
         public decimal? TongTien { get; set; }
 
@@ -28,12 +27,15 @@ namespace DAL
         [StringLength(50)]
         public string HinhThucTT { get; set; }
 
+        [StringLength(100)]
+        public string TenKH { get; set; }
+
+        [StringLength(20)]
+        public string SDT_KH { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CT_HoaDon_DichVu> CT_HoaDon_DichVu { get; set; }
 
         public virtual LichDat LichDat { get; set; }
-
-        public string TenKH { get; set; }
-
     }
 }

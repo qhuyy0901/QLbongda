@@ -1,3 +1,4 @@
+
 namespace DAL
 {
     using System;
@@ -17,16 +18,16 @@ namespace DAL
         }
 
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int MaSan { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string TenSan { get; set; }
 
         [StringLength(50)]
         public string LoaiSan { get; set; }
 
-        [StringLength(20)]
+        [StringLength(50)]
         public string TrangThai { get; set; }
 
         [StringLength(255)]

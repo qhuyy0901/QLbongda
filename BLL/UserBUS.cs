@@ -5,26 +5,19 @@ namespace BUS
 {
     public class UserBUS
     {
-        // Khởi tạo Context kết nối DB
-        QuanLySanBongContext db = new QuanLySanBongContext();
+        // SỬA: Dùng Model1 thay vì QuanLySanBongContext
+        Model1 db = new Model1();
 
-        // 1. Hàm đăng nhập (Giữ nguyên của bạn)
-        public User Login(string username, string password)
+        public Users Login(string username, string password)
         {
+            // Tìm user trong DB
             return db.Users.FirstOrDefault(u => u.UserName == username && u.Password == password);
         }
 
-        // 2. Hàm kiểm tra xem UserName đã tồn tại chưa
-        public bool CheckUsernameExist(string username)
-        {
-            return db.Users.Any(u => u.UserName == username);
-        }
-
-        // 3. Hàm thêm người dùng mới xuống Database
-        public void AddUser(User newUser)
+        public void AddUser(Users newUser)
         {
             db.Users.Add(newUser);
-            db.SaveChanges(); // Lưu thay đổi
+            db.SaveChanges();
         }
     }
 }

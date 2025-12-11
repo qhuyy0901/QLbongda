@@ -9,7 +9,7 @@ namespace DAL
         {
         }
 
-        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Users> Users { get; set; }
 
         // Các DbSet khác nếu có
         // public virtual DbSet<LichDat> LichDats { get; set; }

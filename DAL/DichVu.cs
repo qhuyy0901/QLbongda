@@ -16,9 +16,9 @@ namespace DAL
         }
 
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int MaDV { get; set; }
 
+        [Required]
         [StringLength(100)]
         public string TenDV { get; set; }
 

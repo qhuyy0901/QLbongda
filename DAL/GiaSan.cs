@@ -10,18 +10,18 @@ namespace DAL
     public partial class GiaSan
     {
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int MaGia { get; set; }
 
-        public int? MaSan { get; set; }
+        public int MaSan { get; set; }
 
-        public TimeSpan? GioBD { get; set; }
+        public int? GioBD { get; set; }
 
-        public TimeSpan? GioKT { get; set; }
+        public int? GioKT { get; set; }
 
         public decimal? DonGia { get; set; }
 
-        public int? NgayTrongTuan { get; set; }
+        [StringLength(50)]
+        public string NgayTrongTuan { get; set; }
 
         public virtual SanBong SanBong { get; set; }
     }
