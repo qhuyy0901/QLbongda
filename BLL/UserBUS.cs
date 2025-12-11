@@ -8,13 +8,13 @@ namespace BUS
         // SỬA: Dùng Model1 thay vì QuanLySanBongContext
         Model1 db = new Model1();
 
-        public Users Login(string username, string password)
+        public User Login(string username, string password)
         {
             // Tìm user trong DB
-            return db.Users.FirstOrDefault(u => u.UserName == username && u.Password == password);
+            return db.Users.FirstOrDefault(u => u.ID == username && u.Password == password);
         }
 
-        public void AddUser(Users newUser)
+        public void AddUser(User newUser)
         {
             db.Users.Add(newUser);
             db.SaveChanges();

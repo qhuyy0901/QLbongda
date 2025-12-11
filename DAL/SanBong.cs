@@ -1,4 +1,3 @@
-
 namespace DAL
 {
     using System;
@@ -18,7 +17,8 @@ namespace DAL
         }
 
         [Key]
-        public int MaSan { get; set; }
+        [StringLength(20)]
+        public string MaSan { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -29,9 +29,6 @@ namespace DAL
 
         [StringLength(50)]
         public string TrangThai { get; set; }
-
-        [StringLength(255)]
-        public string GhiChu { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<GiaSan> GiaSans { get; set; }

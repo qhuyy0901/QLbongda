@@ -6,10 +6,10 @@ namespace TrangChu
 {
     public partial class TrangChu : Form
     {
-        private Users currentUser;
+        private User currentUser;
         private bool isThoat = true; // Cờ kiểm tra thoát
 
-        public TrangChu(Users user)
+        public TrangChu(User user)
         {
             InitializeComponent();
             this.currentUser = user;
@@ -22,7 +22,7 @@ namespace TrangChu
         {
             if (currentUser != null)
             {
-                lblUserName.Text = "Xin chào: " + (currentUser.TenNguoiDung ?? currentUser.UserName);
+                lblUserName.Text = "Xin chào: " + (currentUser.TenNguoiDung ?? currentUser.ID);
                 PhanQuyen();
             }
         }
@@ -79,8 +79,13 @@ namespace TrangChu
 
         private void btnDatSan_Click(object sender, EventArgs e)
         {
-            LichDat frm = new LichDat();
+            this.Hide();
+
+            // --- QUAN TRỌNG: PHẢI TRUYỀN currentUser ---
+            LichDat frm = new LichDat(currentUser);
+
             frm.ShowDialog();
+            this.Show();
         }
     }
 }

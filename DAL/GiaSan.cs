@@ -12,7 +12,9 @@ namespace DAL
         [Key]
         public int MaGia { get; set; }
 
-        public int MaSan { get; set; }
+        [Required]
+        [StringLength(20)]
+        public string MaSan { get; set; }
 
         public int? GioBD { get; set; }
 
@@ -20,7 +22,7 @@ namespace DAL
 
         public decimal? DonGia { get; set; }
 
-        [StringLength(50)]
+        [StringLength(20)]
         public string NgayTrongTuan { get; set; }
 
         public virtual SanBong SanBong { get; set; }

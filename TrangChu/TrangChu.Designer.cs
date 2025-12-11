@@ -58,7 +58,7 @@
             this.panelMenu.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelMenu.Location = new System.Drawing.Point(0, 0);
             this.panelMenu.Name = "panelMenu";
-            this.panelMenu.Size = new System.Drawing.Size(229, 458);
+            this.panelMenu.Size = new System.Drawing.Size(276, 513);
             this.panelMenu.TabIndex = 0;
             // 
             // btnQuanLyNV
@@ -70,10 +70,10 @@
             this.btnQuanLyNV.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnQuanLyNV.Image = ((System.Drawing.Image)(resources.GetObject("btnQuanLyNV.Image")));
             this.btnQuanLyNV.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnQuanLyNV.Location = new System.Drawing.Point(51, 357);
+            this.btnQuanLyNV.Location = new System.Drawing.Point(81, 368);
             this.btnQuanLyNV.Name = "btnQuanLyNV";
             this.btnQuanLyNV.Size = new System.Drawing.Size(115, 36);
-            this.btnQuanLyNV.TabIndex = 7;
+            this.btnQuanLyNV.TabIndex = 5;
             this.btnQuanLyNV.Text = "Quản Lý NV";
             this.btnQuanLyNV.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnQuanLyNV.UseVisualStyleBackColor = false;
@@ -87,10 +87,10 @@
             this.btnDoanhThu.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnDoanhThu.Image = ((System.Drawing.Image)(resources.GetObject("btnDoanhThu.Image")));
             this.btnDoanhThu.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDoanhThu.Location = new System.Drawing.Point(51, 301);
+            this.btnDoanhThu.Location = new System.Drawing.Point(81, 312);
             this.btnDoanhThu.Name = "btnDoanhThu";
             this.btnDoanhThu.Size = new System.Drawing.Size(115, 36);
-            this.btnDoanhThu.TabIndex = 6;
+            this.btnDoanhThu.TabIndex = 4;
             this.btnDoanhThu.Text = "Doanh Thu";
             this.btnDoanhThu.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnDoanhThu.UseVisualStyleBackColor = false;
@@ -114,7 +114,7 @@
             this.btnDichVu.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnDichVu.Image = ((System.Drawing.Image)(resources.GetObject("btnDichVu.Image")));
             this.btnDichVu.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDichVu.Location = new System.Drawing.Point(51, 241);
+            this.btnDichVu.Location = new System.Drawing.Point(81, 252);
             this.btnDichVu.Name = "btnDichVu";
             this.btnDichVu.Size = new System.Drawing.Size(115, 36);
             this.btnDichVu.TabIndex = 3;
@@ -134,7 +134,7 @@
             this.bntDangXuat.Location = new System.Drawing.Point(3, 425);
             this.bntDangXuat.Name = "bntDangXuat";
             this.bntDangXuat.Size = new System.Drawing.Size(100, 29);
-            this.bntDangXuat.TabIndex = 3;
+            this.bntDangXuat.TabIndex = 6;
             this.bntDangXuat.Text = "Đăng Xuất";
             this.bntDangXuat.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.bntDangXuat.UseVisualStyleBackColor = false;
@@ -149,7 +149,7 @@
             this.btnDatSan.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnDatSan.Image = ((System.Drawing.Image)(resources.GetObject("btnDatSan.Image")));
             this.btnDatSan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDatSan.Location = new System.Drawing.Point(51, 121);
+            this.btnDatSan.Location = new System.Drawing.Point(81, 132);
             this.btnDatSan.Name = "btnDatSan";
             this.btnDatSan.Size = new System.Drawing.Size(115, 36);
             this.btnDatSan.TabIndex = 1;
@@ -167,7 +167,7 @@
             this.btnQuanLySan.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnQuanLySan.Image = ((System.Drawing.Image)(resources.GetObject("btnQuanLySan.Image")));
             this.btnQuanLySan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnQuanLySan.Location = new System.Drawing.Point(51, 184);
+            this.btnQuanLySan.Location = new System.Drawing.Point(81, 195);
             this.btnQuanLySan.Name = "btnQuanLySan";
             this.btnQuanLySan.Size = new System.Drawing.Size(115, 36);
             this.btnQuanLySan.TabIndex = 2;
@@ -184,7 +184,7 @@
             this.btnHeThong.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnHeThong.Image = ((System.Drawing.Image)(resources.GetObject("btnHeThong.Image")));
             this.btnHeThong.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnHeThong.Location = new System.Drawing.Point(51, 63);
+            this.btnHeThong.Location = new System.Drawing.Point(81, 74);
             this.btnHeThong.Name = "btnHeThong";
             this.btnHeThong.Size = new System.Drawing.Size(115, 36);
             this.btnHeThong.TabIndex = 0;
@@ -197,7 +197,7 @@
             this.lblTenSan.AutoSize = true;
             this.lblTenSan.Font = new System.Drawing.Font("Arial", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTenSan.ForeColor = System.Drawing.Color.Green;
-            this.lblTenSan.Location = new System.Drawing.Point(372, 13);
+            this.lblTenSan.Location = new System.Drawing.Point(438, 13);
             this.lblTenSan.Name = "lblTenSan";
             this.lblTenSan.Size = new System.Drawing.Size(328, 34);
             this.lblTenSan.TabIndex = 2;
@@ -206,9 +206,9 @@
             // picNen
             // 
             this.picNen.Image = ((System.Drawing.Image)(resources.GetObject("picNen.Image")));
-            this.picNen.Location = new System.Drawing.Point(235, 57);
+            this.picNen.Location = new System.Drawing.Point(282, 64);
             this.picNen.Name = "picNen";
-            this.picNen.Size = new System.Drawing.Size(642, 399);
+            this.picNen.Size = new System.Drawing.Size(646, 409);
             this.picNen.TabIndex = 3;
             this.picNen.TabStop = false;
             // 
@@ -217,7 +217,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(881, 458);
+            this.ClientSize = new System.Drawing.Size(936, 513);
             this.Controls.Add(this.picNen);
             this.Controls.Add(this.lblTenSan);
             this.Controls.Add(this.panelMenu);
