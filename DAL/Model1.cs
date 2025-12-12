@@ -8,7 +8,7 @@ namespace DAL
     public partial class Model1 : DbContext
     {
         public Model1()
-            : base("name=Model1")
+            : base("name=Model11")
         {
         }
 
@@ -24,8 +24,24 @@ namespace DAL
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<CT_HoaDon_DichVu>()
+                .Property(e => e.MaCT)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<CT_HoaDon_DichVu>()
+                .Property(e => e.MaHD)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<CT_HoaDon_DichVu>()
+                .Property(e => e.MaDV)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<CT_HoaDon_DichVu>()
                 .Property(e => e.ThanhTien)
                 .HasPrecision(18, 0);
+
+            modelBuilder.Entity<DichVu>()
+                .Property(e => e.MaDV)
+                .IsUnicode(false);
 
             modelBuilder.Entity<DichVu>()
                 .Property(e => e.DonGia)
@@ -35,6 +51,10 @@ namespace DAL
                 .HasMany(e => e.CT_HoaDon_DichVu)
                 .WithRequired(e => e.DichVu)
                 .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<GiaSan>()
+                .Property(e => e.MaGia)
+                .IsUnicode(false);
 
             modelBuilder.Entity<GiaSan>()
                 .Property(e => e.MaSan)
@@ -49,6 +69,14 @@ namespace DAL
                 .IsUnicode(false);
 
             modelBuilder.Entity<HoaDon>()
+                .Property(e => e.MaHD)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<HoaDon>()
+                .Property(e => e.MaLich)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<HoaDon>()
                 .Property(e => e.TongTien)
                 .HasPrecision(18, 0);
 
@@ -59,6 +87,10 @@ namespace DAL
 
             modelBuilder.Entity<KhachHang>()
                 .Property(e => e.SDT_KH)
+                .IsUnicode(false);
+
+            modelBuilder.Entity<LichDat>()
+                .Property(e => e.MaLich)
                 .IsUnicode(false);
 
             modelBuilder.Entity<LichDat>()

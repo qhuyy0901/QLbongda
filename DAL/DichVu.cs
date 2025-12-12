@@ -16,7 +16,8 @@ namespace DAL
         }
 
         [Key]
-        public int MaDV { get; set; }
+        [StringLength(20)]
+        public string MaDV { get; set; }
 
         [Required]
         [StringLength(100)]

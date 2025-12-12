@@ -10,7 +10,8 @@ namespace DAL
     public partial class GiaSan
     {
         [Key]
-        public int MaGia { get; set; }
+        [StringLength(20)]
+        public string MaGia { get; set; }
 
         [Required]
         [StringLength(20)]

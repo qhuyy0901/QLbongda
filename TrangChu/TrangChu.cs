@@ -80,12 +80,10 @@ namespace TrangChu
         private void btnDatSan_Click(object sender, EventArgs e)
         {
             this.Hide();
-
-            // --- QUAN TRỌNG: PHẢI TRUYỀN currentUser ---
-            LichDat frm = new LichDat(currentUser);
-
+            LichDat frm = new LichDat();
             frm.ShowDialog();
             this.Show();
         }
+
     }
 }

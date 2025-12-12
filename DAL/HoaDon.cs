@@ -16,9 +16,12 @@ namespace DAL
         }
 
         [Key]
-        public int MaHD { get; set; }
+        [StringLength(20)]
+        public string MaHD { get; set; }
 
-        public int MaLich { get; set; }
+        [Required]
+        [StringLength(20)]
+        public string MaLich { get; set; }
 
         public decimal? TongTien { get; set; }
 

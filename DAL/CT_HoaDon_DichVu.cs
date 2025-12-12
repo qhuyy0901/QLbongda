@@ -9,11 +9,16 @@ namespace DAL
     public partial class CT_HoaDon_DichVu
     {
         [Key]
-        public int MaCT { get; set; }
+        [StringLength(20)]
+        public string MaCT { get; set; }
 
-        public int MaHD { get; set; }
+        [Required]
+        [StringLength(20)]
+        public string MaHD { get; set; }
 
-        public int MaDV { get; set; }
+        [Required]
+        [StringLength(20)]
+        public string MaDV { get; set; }
 
         public int? SoLuong { get; set; }
 

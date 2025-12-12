@@ -16,7 +16,8 @@ namespace DAL
         }
 
         [Key]
-        public int MaLich { get; set; }
+        [StringLength(20)]
+        public string MaLich { get; set; }
 
         [Required]
         [StringLength(20)]
