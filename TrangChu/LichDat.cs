@@ -21,13 +21,50 @@ namespace TrangChu
             InitializeComponent();
             this.Load += LichDat_Load;
         }
+        private void TuTinhDonGia()
+        {
+            if (string.IsNullOrEmpty(cbxMaSan.Text)) return;
+
+            DateTime ngay = dtpNgayDat.Value.Date;
+            int gioBD = dtpGioBatDau.Value.Hour;
+            int gioKT = dtpGioKetThuc.Value.Hour;
+
+            if (gioBD >= gioKT)
+            {
+                txtDonGia.Text = "";
+                return;
+            }
+
+            int soGio = gioKT - gioBD;
+            decimal donGia1Gio;
+
+            // Giá theo ngày
+            if (ngay.DayOfWeek == DayOfWeek.Saturday ||
+                ngay.DayOfWeek == DayOfWeek.Sunday)
+            {
+                donGia1Gio = 199000;
+            }
+            else
+            {
+                donGia1Gio = 149000;
+            }
+
+            // +50k nếu là sân 7 người (San5, San6)
+            if (cbxMaSan.Text == "San5" || cbxMaSan.Text == "San6")
+            {
+                donGia1Gio += 50000;
+            }
+
+            decimal tongTien = soGio * donGia1Gio;
+            txtDonGia.Text = tongTien.ToString("N0");
+        }
 
         // --- 2. LOAD FORM ---
         private void LichDat_Load(object sender, EventArgs e)
         {
             try
             {
-                // Gán Property cho cột
+                // ===== 1. GÁN PROPERTY CHO DATAGRIDVIEW =====
                 clMaLich.DataPropertyName = "MaLich";
                 clMaSan.DataPropertyName = "MaSan";
                 clSDT_KH.DataPropertyName = "SDT_KH";
@@ -38,20 +75,37 @@ namespace TrangChu
                 clTrangThai.DataPropertyName = "TrangThai";
                 clDonGiaThucTe.DataPropertyName = "DonGiaThucTe";
 
-                // Cài đặt ngày giờ mặc định
+                // ===== 2. SET DATE PICKER (NGÀY) =====
                 dtpNgayDat.Format = DateTimePickerFormat.Custom;
                 dtpNgayDat.CustomFormat = "dd/MM/yyyy";
                 dtpNgayDat.Value = DateTime.Now;
 
-                // Gom nút sân
+                // ===== 3. FIX GIỜ ĐẶT SÂN (CỰC KỲ QUAN TRỌNG) =====
+                dtpGioBatDau.Format = DateTimePickerFormat.Custom;
+                dtpGioBatDau.CustomFormat = "HH:00";
+                dtpGioBatDau.ShowUpDown = true;
+
+                dtpGioKetThuc.Format = DateTimePickerFormat.Custom;
+                dtpGioKetThuc.CustomFormat = "HH:00";
+                dtpGioKetThuc.ShowUpDown = true;
+
+                // Giờ mặc định
+                dtpGioBatDau.Value = DateTime.Today.AddHours(7);
+                dtpGioKetThuc.Value = DateTime.Today.AddHours(9);
+
+                // ===== 4. GOM NÚT SÂN =====
                 KhoiTaoNutSan();
 
-                // Load dữ liệu
+                // ===== 5. LOAD DỮ LIỆU =====
                 LoadComboBoxSan();
                 RefreshData();
             }
-            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message);
+            }
         }
+
 
         // --- 3. CÁC HÀM XỬ LÝ GIAO DIỆN ---
 
@@ -152,18 +206,16 @@ namespace TrangChu
             cbxMaSan.SelectedValue = maSan;
             cbxMaSan.Text = maSan;
 
-            // Logic loại sân (Ví dụ)
-            if (maSan == "San5" || maSan == "San6") cbxLoaiSan.Text = "Sân 7";
-            else cbxLoaiSan.Text = "Sân 5";
+
 
             // Nếu sân đang đỏ (đang đá) -> báo bận
             if (btn.BackColor == Color.Red)
             {
-                txtTrangThai.Text = "Đang đá";
+                //txtTrangThai.Text = "Đang đá";
             }
             else
             {
-                txtTrangThai.Text = "Trống";
+                //txtTrangThai.Text = "Trống";
                 // Reset form để sẵn sàng đặt mới
                 txtMaDat.Clear();
                 txtTenKhachHang.Clear();
@@ -176,41 +228,71 @@ namespace TrangChu
 
         private void btnDatSAn_Click(object sender, EventArgs e)
         {
+            if (string.IsNullOrWhiteSpace(txtSDT.Text) || string.IsNullOrWhiteSpace(cbxMaSan.Text))
+            {
+                MessageBox.Show("Nhập thiếu thông tin!");
+                return;
+            }
+
+            int gioBD = dtpGioBatDau.Value.Hour;
+            int gioKT = dtpGioKetThuc.Value.Hour;
+
+            if (gioBD >= gioKT)
+            {
+                MessageBox.Show("Giờ kết thúc phải lớn hơn giờ bắt đầu!");
+                return;
+            }
+            //string maLich = "LD" + DateTime.Now.ToString("yyyyMMddHHmmss");
+            DAL.LichDat lich = new DAL.LichDat
+            {
+                MaLich = txtMaDat.Text.Trim(),
+                MaSan = cbxMaSan.Text.Trim(),
+                SDT_KH = txtSDT.Text.Trim(),
+                TenKH = txtTenKhachHang.Text.Trim(),
+                NgayDat = dtpNgayDat.Value.Date,
+                GioBD = dtpGioBatDau.Value.Hour,
+                GioKT = dtpGioKetThuc.Value.Hour,
+                TrangThai = "Đã đặt",
+                DonGiaThucTe = decimal.TryParse(txtDonGia.Text, out decimal gia) ? gia : 0
+            };
+
+            Log("===== DATA GỬI XUỐNG DB =====");
+            Log($"MaLich: {lich.MaLich}");
+            Log($"MaSan: {lich.MaSan}");
+            Log($"SDT: {lich.SDT_KH}");
+            Log($"TenKH: {lich.TenKH}");
+            Log($"NgayDat: {lich.NgayDat:dd/MM/yyyy}");
+            Log($"GioBD: {lich.GioBD}");
+            Log($"GioKT: {lich.GioKT}");
+            Log($"DonGia: {lich.DonGiaThucTe}");
+            Log("=============================");
+
             try
             {
-                if (string.IsNullOrEmpty(txtSDT.Text) || string.IsNullOrEmpty(cbxMaSan.Text))
-                {
-                    MessageBox.Show("Vui lòng nhập đủ thông tin!");
-                    return;
-                }
-
-                // Tạo đối tượng Dữ liệu (DAL)
-                DAL.LichDat lich = new DAL.LichDat();
-
-                lich.MaSan = cbxMaSan.Text;
-                lich.SDT_KH = txtSDT.Text;
-                lich.TenKH = txtTenKhachHang.Text;
-                lich.NgayDat = dtpNgayDat.Value;
-                lich.GioBD = dtpGioBatDau.Value.Hour;
-                lich.GioKT = dtpGioKetThuc.Value.Hour;
-                lich.TrangThai = "Đã đặt"; // Hoặc lấy từ txtTrangThai.Text
-
-                decimal gia = 0;
-                decimal.TryParse(cbxDonGia.Text.Replace(",", ""), out gia);
-                lich.DonGiaThucTe = gia;
+                Log("▶ Bắt đầu Insert lịch đặt");
 
                 if (busLichDat.Insert(lich))
                 {
-                    MessageBox.Show("Đặt sân thành công!");
-                    RefreshData(); // Đồng bộ lại SQL và Giao diện
+                    Log("✔ Insert thành công");
+
+                    RefreshData();
+                    CapNhatMauSacSan();
                     ResetForm();
                 }
-                else
-                {
-                    MessageBox.Show("Thất bại! Sân đã kín giờ này.");
-                }
             }
-            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
+            catch (Exception ex)
+            {
+                Log("❌ LỖI: " + ex.Message);
+            }
+
+        }
+
+        private void Log(string message)
+        {
+            rtbLog.AppendText(
+                $"[{DateTime.Now:HH:mm:ss}] {message}\n"
+            );
+            rtbLog.ScrollToCaret();
         }
 
         private void btnSua_Click(object sender, EventArgs e)
@@ -230,10 +312,10 @@ namespace TrangChu
                 lich.NgayDat = dtpNgayDat.Value;
                 lich.GioBD = dtpGioBatDau.Value.Hour;
                 lich.GioKT = dtpGioKetThuc.Value.Hour;
-                lich.TrangThai = txtTrangThai.Text;
+                //lich.TrangThai = txtTrangThai.Text;
 
                 decimal gia = 0;
-                decimal.TryParse(cbxDonGia.Text, out gia);
+                //decimal.TryParse(cbxDonGia.Text, out gia);
                 lich.DonGiaThucTe = gia;
 
                 if (busLichDat.Update(lich))
@@ -287,8 +369,8 @@ namespace TrangChu
             txtTenKhachHang.Clear();
             txtSDT.Clear();
             cbxMaSan.SelectedIndex = -1;
-            cbxDonGia.Text = "";
-            txtTrangThai.Text = "";
+            txtDonGia.Text = "";
+            //txtTrangThai.Text = "";
         }
 
         // Sự kiện đổi ngày -> Cập nhật lại màu sân
@@ -329,11 +411,11 @@ namespace TrangChu
                 {
                     // Format tiền cho đẹp (VD: 200,000)
                     decimal gia = Convert.ToDecimal(row.Cells["clDonGiaThucTe"].Value);
-                    cbxDonGia.Text = gia.ToString("N0");
+                    //cbxDonGia.Text = gia.ToString("N0");
                 }
 
-                if (row.Cells["clTrangThai"].Value != null)
-                    txtTrangThai.Text = row.Cells["clTrangThai"].Value.ToString();
+                //if (row.Cells["clTrangThai"].Value != null)
+                //    txtTrangThai.Text = row.Cells["clTrangThai"].Value.ToString();
 
                 // Xử lý ngày giờ (Cần cẩn thận vì format ngày tháng)
                 if (row.Cells["clNgayDat"].Value != null)
@@ -352,5 +434,7 @@ namespace TrangChu
         {
 
         }
+
+
     }
 }

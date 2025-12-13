@@ -1,8 +1,10 @@
 ﻿using DAL;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity;
+using System.Diagnostics;
 using System.Linq;
-
 namespace BUS
 {
     public class LichDatBUS
@@ -24,25 +26,72 @@ namespace BUS
         }
 
         // 3. Thêm mới (Có kiểm tra trùng giờ)
+        // nhớ thêm dòng này
+
         public bool Insert(LichDat lich)
         {
             try
             {
-                // Logic kiểm tra trùng giờ:
-                // (Giờ BĐ mới < Giờ KT cũ) VÀ (Giờ KT mới > Giờ BĐ cũ) trong cùng 1 ngày và cùng 1 sân
-                var checkTrung = db.LichDats.FirstOrDefault(x =>
+                // 1. Validate cơ bản
+                if (!lich.NgayDat.HasValue)
+                    throw new Exception("Chưa chọn ngày đặt");
+
+                if (lich.GioBD >= lich.GioKT)
+                    throw new Exception("Giờ bắt đầu phải nhỏ hơn giờ kết thúc");
+
+                DateTime ngay = lich.NgayDat.Value.Date;
+
+                // 2. CHECK / TẠO KHÁCH HÀNG
+                if (!string.IsNullOrWhiteSpace(lich.SDT_KH))
+                {
+                    var kh = db.KhachHangs
+                               .FirstOrDefault(x => x.SDT_KH == lich.SDT_KH);
+
+                    if (kh == null)
+                    {
+                        Debug.WriteLine($"➕ Tạo mới khách hàng: {lich.SDT_KH}");
+
+                        kh = new KhachHang
+                        {
+                            SDT_KH = lich.SDT_KH,
+                            TenKH = lich.TenKH
+                        };
+
+                        db.KhachHangs.Add(kh);
+                        db.SaveChanges(); // ⚠️ PHẢI SAVE TRƯỚC
+                    }
+                }
+
+                // 3. Check trùng giờ (cùng sân – cùng ngày)
+                bool checkTrung = db.LichDats.Any(x =>
                     x.MaSan == lich.MaSan &&
-                    x.NgayDat == lich.NgayDat &&
-                    x.GioBD < lich.GioKT && x.GioKT > lich.GioBD);
+                    x.NgayDat.HasValue &&
+                    x.NgayDat.Value == ngay &&
+                    lich.GioBD < x.GioKT &&
+                    lich.GioKT > x.GioBD
+                );
 
-                if (checkTrung != null) return false; // Đã bị trùng
+                if (checkTrung)
+                    throw new Exception("Khung giờ đã bị trùng");
 
+                // 4. Insert lịch đặt
                 db.LichDats.Add(lich);
                 db.SaveChanges();
+
                 return true;
             }
-            catch { return false; }
+            catch (Exception ex)
+            {
+                throw new Exception("Insert LichDat lỗi: " + ex.Message);
+            }
         }
+
+
+
+
+
+
+
 
         // 4. Sửa thông tin
         public bool Update(LichDat lich)
