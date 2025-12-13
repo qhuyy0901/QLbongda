@@ -147,13 +147,10 @@ namespace TrangChu
                 if (row.Cells[3].Value != null)
                     txtTenKhachHang.Text = row.Cells[3].Value.ToString();
 
-                // ===== XỬ LÝ ĐƠN GIÁ - CÁCH 2: LẤY GIÁ TRỊ TRỰC TIẾP TỪ DATASOURCE =====
                 try
                 {
-                    // Lấy object từ DataGridView
                     if (row.DataBoundItem is DAL.LichDat lichData)
                     {
-                        // Lấy trực tiếp từ đối tượng LichDat thay vì cell value
                         if (lichData.DonGiaThucTe.HasValue)
                         {
                             txtDonGia.Text = lichData.DonGiaThucTe.Value.ToString("0.00");
@@ -167,7 +164,6 @@ namespace TrangChu
                     }
                     else
                     {
-                        // Fallback: xử lý từ cell value
                         if (row.Cells[8].Value != null && row.Cells[8].Value != DBNull.Value)
                         {
                             string giaStr = row.Cells[8].Value.ToString().Trim();
@@ -192,19 +188,31 @@ namespace TrangChu
                     txtDonGia.Text = "0.00";
                 }
 
+                // ===== SỬA: TẠM THỜI BỎ GIỚ HẠN MINDATE ĐỂ LẤY NGÀY CŨ =====
                 if (row.Cells[4].Value != null)
-                    dtpNgayDat.Value = Convert.ToDateTime(row.Cells[4].Value);
+                {
+                    DateTime ngayDat = Convert.ToDateTime(row.Cells[4].Value);
+                    
+                    // Tạm thời cho phép chọn ngày trong quá khứ
+                    dtpNgayDat.MinDate = new DateTime(1900, 1, 1);
+                    dtpNgayDat.MaxDate = DateTime.Now.AddDays(7);
+                    dtpNgayDat.Value = ngayDat;
+                    
+                    Log($"✔ Ngày đặt: {ngayDat:dd/MM/yyyy}");
+                }
 
                 if (row.Cells[5].Value != null)
                 {
                     int gioBD = Convert.ToInt32(row.Cells[5].Value);
                     dtpGioBatDau.Value = DateTime.Today.AddHours(gioBD);
+                    Log($"✔ Giờ bắt đầu: {gioBD}:00");
                 }
 
                 if (row.Cells[6].Value != null)
                 {
                     int gioKT = Convert.ToInt32(row.Cells[6].Value);
                     dtpGioKetThuc.Value = DateTime.Today.AddHours(gioKT);
+                    Log($"✔ Giờ kết thúc: {gioKT}:00");
                 }
 
                 isEditing = true;
@@ -392,6 +400,10 @@ namespace TrangChu
             if (ngayDat < homNay)
             {
                 MessageBox.Show("❌ Không được sửa lịch trong quá khứ!\nVui lòng chọn ngày từ hôm nay trở đi.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                
+                // Khôi phục giới hạn ngày
+                dtpNgayDat.MinDate = DateTime.Now.Date;
+                dtpNgayDat.MaxDate = DateTime.Now.AddDays(7);
                 dtpNgayDat.Focus();
                 return;
             }
@@ -403,6 +415,10 @@ namespace TrangChu
                 {
                     MessageBox.Show($"❌ Không được sửa giờ trong quá khứ!\nGiờ hiện tại: {gioHienTai}:00\nVui lòng chọn giờ từ {gioHienTai + 1}:00 trở đi.", 
                         "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    
+                    // Khôi phục giới hạn ngày
+                    dtpNgayDat.MinDate = DateTime.Now.Date;
+                    dtpNgayDat.MaxDate = DateTime.Now.AddDays(7);
                     dtpGioBatDau.Focus();
                     return;
                 }
@@ -433,6 +449,11 @@ namespace TrangChu
                     {
                         Log($"✎ Đã cập nhật lịch: {lichMoi.MaLich}");
                         MessageBox.Show("Cập nhật thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        
+                        // ===== KHÔI PHỤC GIỚI HẠN NGÀY SAU KHI SỬA THÀNH CÔNG =====
+                        dtpNgayDat.MinDate = DateTime.Now.Date;
+                        dtpNgayDat.MaxDate = DateTime.Now.AddDays(7);
+                        
                         RefreshDataWithSearch();
                         ResetForm();
                     }
@@ -440,13 +461,27 @@ namespace TrangChu
                     {
                         Log($"❌ Cập nhật thất bại");
                         MessageBox.Show("Cập nhật thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        
+                        // ===== KHÔI PHỤC GIỚI HẠN NGÀY KHI CÓ LỖI =====
+                        dtpNgayDat.MinDate = DateTime.Now.Date;
+                        dtpNgayDat.MaxDate = DateTime.Now.AddDays(7);
                     }
                 }
                 catch (Exception ex)
                 {
                     Log($"❌ Lỗi sửa: {ex.Message}");
                     MessageBox.Show(ex.Message, "Lỗi cập nhật", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    
+                    // ===== KHÔI PHỤC GIỚI HẠN NGÀY KHI CÓ LỖI =====
+                    dtpNgayDat.MinDate = DateTime.Now.Date;
+                    dtpNgayDat.MaxDate = DateTime.Now.AddDays(7);
                 }
+            }
+            else
+            {
+                // ===== KHÔI PHỤC GIỚI HẠN NGÀY NẾU NGƯỜI DÙNG CANCEL =====
+                dtpNgayDat.MinDate = DateTime.Now.Date;
+                dtpNgayDat.MaxDate = DateTime.Now.AddDays(7);
             }
         }
 
