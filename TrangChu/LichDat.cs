@@ -36,9 +36,13 @@ namespace TrangChu
                 dtpNgayDat.Format = DateTimePickerFormat.Custom;
                 dtpNgayDat.CustomFormat = "dd/MM/yyyy";
                 dtpNgayDat.Value = DateTime.Now;
+                
+                // ===== THIẾT LẬP GIỚI HẠN NGÀY ĐẶT =====
+                dtpNgayDat.MinDate = DateTime.Now.Date; 
+                dtpNgayDat.MaxDate = DateTime.Now.AddDays(7);
 
                 dtpGioBatDau.Format = DateTimePickerFormat.Custom;
-                dtpGioBatDau.CustomFormat = "HH:00";
+                dtpGioBatDau.CustomFormat = "HH:00"; 
                 dtpGioBatDau.ShowUpDown = true;
 
                 dtpGioKetThuc.Format = DateTimePickerFormat.Custom;
@@ -220,6 +224,17 @@ namespace TrangChu
                 return;
             }
 
+            // ===== KIỂM TRA NGÀY ĐẶT =====
+            DateTime ngayDat = dtpNgayDat.Value.Date;
+            DateTime homNay = DateTime.Now.Date;
+
+            if (ngayDat < homNay)
+            {
+                MessageBox.Show("❌ Không được phép đặt ngày trong quá khứ!\nVui lòng chọn ngày từ hôm nay trở đi.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dtpNgayDat.Focus();
+                return;
+            }
+
             int gioBD = dtpGioBatDau.Value.Hour;
             int gioKT = dtpGioKetThuc.Value.Hour;
 
@@ -229,15 +244,28 @@ namespace TrangChu
                 return;
             }
 
+            // ===== KIỂM TRA GIỜ ĐẶT NẾU LÀ HÔM NAY =====
+            if (ngayDat == homNay)
+            {
+                int gioHienTai = DateTime.Now.Hour;
+                if (gioBD <= gioHienTai)
+                {
+                    MessageBox.Show($"❌ Không được phép đặt giờ trong quá khứ!\nGiờ hiện tại: {gioHienTai}:00\nVui lòng chọn giờ từ {gioHienTai + 1}:00 trở đi.", 
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dtpGioBatDau.Focus();
+                    return;
+                }
+            }
+
             DAL.LichDat lich = new DAL.LichDat
             {
                 MaLich = txtMaDat.Text.Trim(),
                 MaSan = cbxMaSan.Text.Trim(),
                 SDT_KH = txtSDT.Text.Trim(),
                 TenKH = txtTenKhachHang.Text.Trim(),
-                NgayDat = dtpNgayDat.Value.Date,
-                GioBD = dtpGioBatDau.Value.Hour,
-                GioKT = dtpGioKetThuc.Value.Hour,
+                NgayDat = ngayDat,
+                GioBD = gioBD,
+                GioKT = gioKT,
                 TrangThai = "Đã đặt",
                 DonGiaThucTe = decimal.TryParse(txtDonGia.Text, out decimal gia) ? gia : 0
             };
@@ -357,15 +385,38 @@ namespace TrangChu
                 return;
             }
 
+            // ===== KIỂM TRA NGÀY GIỜ TRONG QUÁ KHỨ KHI SỬA =====
+            DateTime ngayDat = dtpNgayDat.Value.Date;
+            DateTime homNay = DateTime.Now.Date;
+
+            if (ngayDat < homNay)
+            {
+                MessageBox.Show("❌ Không được sửa lịch trong quá khứ!\nVui lòng chọn ngày từ hôm nay trở đi.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dtpNgayDat.Focus();
+                return;
+            }
+
+            if (ngayDat == homNay)
+            {
+                int gioHienTai = DateTime.Now.Hour;
+                if (gioBD <= gioHienTai)
+                {
+                    MessageBox.Show($"❌ Không được sửa giờ trong quá khứ!\nGiờ hiện tại: {gioHienTai}:00\nVui lòng chọn giờ từ {gioHienTai + 1}:00 trở đi.", 
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    dtpGioBatDau.Focus();
+                    return;
+                }
+            }
+
             DAL.LichDat lichMoi = new DAL.LichDat
             {
                 MaLich = txtMaDat.Text.Trim(),
                 MaSan = cbxMaSan.Text.Trim(),
                 SDT_KH = txtSDT.Text.Trim(),
                 TenKH = txtTenKhachHang.Text.Trim(),
-                NgayDat = dtpNgayDat.Value.Date,
-                GioBD = dtpGioBatDau.Value.Hour,
-                GioKT = dtpGioKetThuc.Value.Hour,
+                NgayDat = ngayDat,
+                GioBD = gioBD,
+                GioKT = gioKT,
                 DonGiaThucTe = decimal.TryParse(txtDonGia.Text, out decimal gia) ? gia : 0
             };
 

@@ -38,6 +38,7 @@
             this.label14 = new System.Windows.Forms.Label();
             this.btnQuayLai = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.btnTaiLai = new System.Windows.Forms.Button();
             this.txtTimKiem = new System.Windows.Forms.TextBox();
             this.btnTimKiem = new System.Windows.Forms.Button();
             this.label16 = new System.Windows.Forms.Label();
@@ -65,7 +66,6 @@
             this.clTrangThai = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clDonGiaThucTe = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.rtbLog = new System.Windows.Forms.RichTextBox();
-            this.btnTaiLai = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDatSan)).BeginInit();
@@ -74,7 +74,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 150);
+            this.label7.Location = new System.Drawing.Point(10, 153);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(47, 13);
@@ -347,6 +347,16 @@
             this.groupBox2.TabIndex = 27;
             this.groupBox2.TabStop = false;
             // 
+            // btnTaiLai
+            // 
+            this.btnTaiLai.Location = new System.Drawing.Point(640, 197);
+            this.btnTaiLai.Name = "btnTaiLai";
+            this.btnTaiLai.Size = new System.Drawing.Size(75, 23);
+            this.btnTaiLai.TabIndex = 38;
+            this.btnTaiLai.Text = "Tải Lại";
+            this.btnTaiLai.UseVisualStyleBackColor = true;
+            this.btnTaiLai.Click += new System.EventHandler(this.btnTaiLai_Click);
+            // 
             // txtTimKiem
             // 
             this.txtTimKiem.Location = new System.Drawing.Point(525, 200);
@@ -578,16 +588,6 @@
             this.rtbLog.Size = new System.Drawing.Size(1170, 117);
             this.rtbLog.TabIndex = 28;
             this.rtbLog.Text = "";
-            // 
-            // btnTaiLai
-            // 
-            this.btnTaiLai.Location = new System.Drawing.Point(640, 197);
-            this.btnTaiLai.Name = "btnTaiLai";
-            this.btnTaiLai.Size = new System.Drawing.Size(75, 23);
-            this.btnTaiLai.TabIndex = 38;
-            this.btnTaiLai.Text = "Tải Lại";
-            this.btnTaiLai.UseVisualStyleBackColor = true;
-            this.btnTaiLai.Click += new System.EventHandler(this.btnTaiLai_Click);
             // 
             // LichDat
             // 
