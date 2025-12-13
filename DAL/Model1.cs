@@ -57,10 +57,6 @@ namespace DAL
                 .IsUnicode(false);
 
             modelBuilder.Entity<GiaSan>()
-                .Property(e => e.MaSan)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<GiaSan>()
                 .Property(e => e.DonGia)
                 .HasPrecision(18, 0);
 
@@ -105,10 +101,6 @@ namespace DAL
                 .Property(e => e.DonGiaThucTe)
                 .HasPrecision(18, 0);
 
-            modelBuilder.Entity<LichDat>()
-                .HasMany(e => e.HoaDons)
-                .WithRequired(e => e.LichDat)
-                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<SanBong>()
                 .Property(e => e.MaSan)
@@ -119,14 +111,11 @@ namespace DAL
                 .WithRequired(e => e.SanBong)
                 .WillCascadeOnDelete(false);
 
-            modelBuilder.Entity<SanBong>()
-                .HasMany(e => e.LichDats)
-                .WithRequired(e => e.SanBong)
-                .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<User>()
                 .Property(e => e.ID)
                 .IsUnicode(false);
+
 
             modelBuilder.Entity<User>()
                 .Property(e => e.Password)

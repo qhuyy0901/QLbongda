@@ -2,37 +2,50 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 namespace BUS
 {
     public class LichDatBUS
     {
-        // Khởi tạo Model (Entity Framework)
         private Model1 db = new Model1();
 
-        // 1. Lấy tất cả lịch đặt (Sắp xếp mới nhất lên đầu)
         public List<LichDat> GetAll()
         {
             return db.LichDats.OrderByDescending(x => x.NgayDat).ThenByDescending(x => x.GioBD).ToList();
         }
 
-        // 2. Lấy lịch theo ngày (Để tô màu sân)
-        public List<LichDat> GetByDate(DateTime date)
+        public List<LichDat> Search(string keyword)
         {
-            // So sánh phần ngày (Date)
-            return db.LichDats.Where(x => x.NgayDat == date.Date).ToList();
-        }
+            try
+            {
+                if (string.IsNullOrWhiteSpace(keyword))
+                    return GetAll();
 
-        // 3. Thêm mới (Có kiểm tra trùng giờ)
-        // nhớ thêm dòng này
+                string searchTerm = keyword.Trim().ToLower();
+
+                var result = db.LichDats.Where(x =>
+                    x.MaLich.ToLower().Contains(searchTerm) ||
+                    x.MaSan.ToLower().Contains(searchTerm) ||
+                    x.SDT_KH.ToLower().Contains(searchTerm) ||
+                    x.TenKH.ToLower().Contains(searchTerm) ||
+                    x.TrangThai.ToLower().Contains(searchTerm)
+                ).OrderByDescending(x => x.NgayDat)
+                 .ThenByDescending(x => x.GioBD)
+                 .ToList();
+
+                return result;
+            }
+            catch
+            {
+                return GetAll();
+            }
+        }
 
         public bool Insert(LichDat lich)
         {
             try
             {
-                // 1. Validate cơ bản
                 if (!lich.NgayDat.HasValue)
                     throw new Exception("Chưa chọn ngày đặt");
 
@@ -58,11 +71,10 @@ namespace BUS
                         };
 
                         db.KhachHangs.Add(kh);
-                        db.SaveChanges(); // ⚠️ PHẢI SAVE TRƯỚC
+                        db.SaveChanges();
                     }
                 }
 
-                // 3. Check trùng giờ (cùng sân – cùng ngày)
                 bool checkTrung = db.LichDats.Any(x =>
                     x.MaSan == lich.MaSan &&
                     x.NgayDat.HasValue &&
@@ -72,9 +84,11 @@ namespace BUS
                 );
 
                 if (checkTrung)
-                    throw new Exception("Khung giờ đã bị trùng");
+                {
+                    // SỬA LẠI DÒNG NÀY
+                    throw new Exception($"Sân {lich.MaSan} vào khung giờ {lich.GioBD}h - {lich.GioKT}h đã được đặt rồi!");
+                }
 
-                // 4. Insert lịch đặt
                 db.LichDats.Add(lich);
                 db.SaveChanges();
 
@@ -86,14 +100,6 @@ namespace BUS
             }
         }
 
-
-
-
-
-
-
-
-        // 4. Sửa thông tin
         public bool Update(LichDat lich)
         {
             try
@@ -117,19 +123,47 @@ namespace BUS
             catch { return false; }
         }
 
-        // 5. Xóa
-        public bool Delete(int maLich)
+        public bool Delete(string maLich)
         {
             try
             {
+                // Tìm lịch đặt theo Mã Lịch
                 var item = db.LichDats.Find(maLich);
-                if (item == null) return false;
 
+                if (item == null)
+                    throw new Exception("Không tìm thấy mã lịch này");
+
+                // Xóa bản ghi
                 db.LichDats.Remove(item);
                 db.SaveChanges();
                 return true;
             }
-            catch { return false; }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi xóa lịch: " + ex.Message);
+            }
+        }
+
+        public bool HuyDat(string maLich)
+        {
+            try
+            {
+                // Tìm lịch đặt theo Mã Lịch
+                var item = db.LichDats.Find(maLich);
+            
+                if (item == null) 
+                    throw new Exception("Không tìm thấy mã lịch này");
+
+                // Cập nhật trạng thái
+                item.TrangThai = "Đã hủy";
+
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Lỗi hủy sân: " + ex.Message);
+            }
         }
     }
 }

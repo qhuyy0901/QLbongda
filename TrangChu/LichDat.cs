@@ -1,5 +1,5 @@
 ﻿using BUS;
-using DAL; // Bắt buộc
+using DAL;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -9,57 +9,16 @@ namespace TrangChu
 {
     public partial class LichDat : Form
     {
-        // --- 1. KHAI BÁO ---
         private LichDatBUS busLichDat = new LichDatBUS();
         private SanBongBUS busSanBong = new SanBongBUS();
-
-        // List để quản lý 6 nút sân cho dễ tô màu
-        private List<Button> listBtnSan = new List<Button>();
+        private bool isEditing = false;
 
         public LichDat()
         {
             InitializeComponent();
             this.Load += LichDat_Load;
         }
-        private void TuTinhDonGia()
-        {
-            if (string.IsNullOrEmpty(cbxMaSan.Text)) return;
 
-            DateTime ngay = dtpNgayDat.Value.Date;
-            int gioBD = dtpGioBatDau.Value.Hour;
-            int gioKT = dtpGioKetThuc.Value.Hour;
-
-            if (gioBD >= gioKT)
-            {
-                txtDonGia.Text = "";
-                return;
-            }
-
-            int soGio = gioKT - gioBD;
-            decimal donGia1Gio;
-
-            // Giá theo ngày
-            if (ngay.DayOfWeek == DayOfWeek.Saturday ||
-                ngay.DayOfWeek == DayOfWeek.Sunday)
-            {
-                donGia1Gio = 199000;
-            }
-            else
-            {
-                donGia1Gio = 149000;
-            }
-
-            // +50k nếu là sân 7 người (San5, San6)
-            if (cbxMaSan.Text == "San5" || cbxMaSan.Text == "San6")
-            {
-                donGia1Gio += 50000;
-            }
-
-            decimal tongTien = soGio * donGia1Gio;
-            txtDonGia.Text = tongTien.ToString("N0");
-        }
-
-        // --- 2. LOAD FORM ---
         private void LichDat_Load(object sender, EventArgs e)
         {
             try
@@ -80,7 +39,7 @@ namespace TrangChu
                 dtpNgayDat.CustomFormat = "dd/MM/yyyy";
                 dtpNgayDat.Value = DateTime.Now;
 
-                // ===== 3. FIX GIỜ ĐẶT SÂN (CỰC KỲ QUAN TRỌNG) =====
+                // ===== 3. FIX GIỜ ĐẶT SÂN =====
                 dtpGioBatDau.Format = DateTimePickerFormat.Custom;
                 dtpGioBatDau.CustomFormat = "HH:00";
                 dtpGioBatDau.ShowUpDown = true;
@@ -89,12 +48,12 @@ namespace TrangChu
                 dtpGioKetThuc.CustomFormat = "HH:00";
                 dtpGioKetThuc.ShowUpDown = true;
 
-                // Giờ mặc định
-                dtpGioBatDau.Value = DateTime.Today.AddHours(7);
-                dtpGioKetThuc.Value = DateTime.Today.AddHours(9);
+                dtpGioBatDau.Value = DateTime.Today.AddHours(15);
+                dtpGioKetThuc.Value = DateTime.Today.AddHours(23);
 
-                // ===== 4. GOM NÚT SÂN =====
-                KhoiTaoNutSan();
+                // ===== 4. EVENT HANDLERS =====
+                txtTimKiem.KeyDown += TxtTimKiem_KeyDown;
+                dgvDatSan.CellClick += dgvDatSan_CellClick;
 
                 // ===== 5. LOAD DỮ LIỆU =====
                 LoadComboBoxSan();
@@ -106,29 +65,12 @@ namespace TrangChu
             }
         }
 
-
-        // --- 3. CÁC HÀM XỬ LÝ GIAO DIỆN ---
-
-        private void KhoiTaoNutSan()
+        private void TxtTimKiem_KeyDown(object sender, KeyEventArgs e)
         {
-            listBtnSan.Clear();
-            // Tag phải trùng với Mã Sân trong SQL (San1, San2...)
-            SetupButton(btnSan1, "San1");
-            SetupButton(btnSan2, "San2");
-            SetupButton(btnSan3, "San3");
-            SetupButton(btnSan4, "San4");
-            SetupButton(btnSan5, "San5");
-            SetupButton(btnSan6, "San6");
-        }
-
-        private void SetupButton(Button btn, string maSan)
-        {
-            if (btn != null)
+            if (e.KeyCode == Keys.Enter)
             {
-                btn.Tag = maSan;
-                btn.Click -= BtnSan_Click;
-                btn.Click += BtnSan_Click;
-                listBtnSan.Add(btn);
+                btnTimKiem_Click(sender, e);
+                e.Handled = true;
             }
         }
 
@@ -139,92 +81,86 @@ namespace TrangChu
             cbxMaSan.ValueMember = "MaSan";
         }
 
-        // Hàm làm mới dữ liệu (Đồng bộ SQL lên giao diện)
         private void RefreshData()
         {
-            var data = busLichDat.GetAll();
-
-            // 👉 Popup hiện số lượng dòng lấy được từ DB
-            //MessageBox.Show("Số dòng lấy được: " + data.Count);
-
-            dgvDatSan.DataSource = null;
-            dgvDatSan.DataSource = data;
+            try
+            {
+                var data = busLichDat.GetAll();
+                dgvDatSan.DataSource = null;
+                dgvDatSan.DataSource = data;
+                ReapplyColumnBindings();
+            }
+            catch (Exception ex)
+            {
+                Log($"❌ Lỗi làm mới dữ liệu: {ex.Message}");
+            }
         }
 
-
-
-        // Logic tô màu: Quét lịch ngày đang chọn để xem giờ nào bận
-        private void CapNhatMauSacSan()
+        private void ReapplyColumnBindings()
         {
-            DateTime ngayDangChon = dtpNgayDat.Value.Date;
-            int gioHienTai = DateTime.Now.Hour; // Chỉ dùng cho ngày hôm nay
-            bool xemHomNay = (ngayDangChon == DateTime.Today);
-
-            // Lấy lịch của ngày đang chọn
-            var listLich = busLichDat.GetByDate(ngayDangChon);
-
-            foreach (var btn in listBtnSan)
-            {
-                string maSan = btn.Tag.ToString();
-                bool dangDa = false;
-
-                // Logic: Nếu đang xem ngày hôm nay, sân nào có giờ đá trùng giờ hiện tại thì ĐỎ
-                if (xemHomNay)
-                {
-                    foreach (var item in listLich)
-                    {
-                        if (item.MaSan == maSan &&
-                            gioHienTai >= item.GioBD && gioHienTai < item.GioKT)
-                        {
-                            dangDa = true;
-                            break;
-                        }
-                    }
-                }
-
-                // Đổi màu
-                if (dangDa)
-                {
-                    btn.BackColor = Color.Red;
-                    // btn.Text = maSan + "\n(Đang đá)"; // Tùy chọn hiện chữ
-                }
-                else
-                {
-                    btn.BackColor = Color.LimeGreen;
-                    // btn.Text = maSan + "\n(Trống)";
-                }
-            }
+            clMaLich.DataPropertyName = "MaLich";
+            clMaSan.DataPropertyName = "MaSan";
+            clSDT_KH.DataPropertyName = "SDT_KH";
+            clTenKH.DataPropertyName = "TenKH";
+            clNgayDat.DataPropertyName = "NgayDat";
+            clGioBatDau.DataPropertyName = "GioBD";
+            clGioKetThuc.DataPropertyName = "GioKT";
+            clTrangThai.DataPropertyName = "TrangThai";
+            clDonGiaThucTe.DataPropertyName = "DonGiaThucTe";
         }
 
-        // Sự kiện khi click vào hình cái Sân
-        private void BtnSan_Click(object sender, EventArgs e)
+        private void dgvDatSan_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            Button btn = sender as Button;
-            string maSan = btn.Tag.ToString();
+            if (e.RowIndex < 0) return;
 
-            // Đổ thông tin lên form
-            cbxMaSan.SelectedValue = maSan;
-            cbxMaSan.Text = maSan;
-
-
-
-            // Nếu sân đang đỏ (đang đá) -> báo bận
-            if (btn.BackColor == Color.Red)
+            try
             {
-                //txtTrangThai.Text = "Đang đá";
+                DataGridViewRow row = dgvDatSan.Rows[e.RowIndex];
+
+                if (row.Cells[0].Value != null)
+                    txtMaDat.Text = row.Cells[0].Value.ToString();
+
+                if (row.Cells[1].Value != null)
+                {
+                    cbxMaSan.Text = row.Cells[1].Value.ToString();
+                    cbxMaSan.SelectedValue = row.Cells[1].Value.ToString();
+                }
+
+                if (row.Cells[2].Value != null)
+                    txtSDT.Text = row.Cells[2].Value.ToString();
+
+                if (row.Cells[3].Value != null)
+                    txtTenKhachHang.Text = row.Cells[3].Value.ToString();
+
+                if (row.Cells[8].Value != null)
+                {
+                    decimal gia = Convert.ToDecimal(row.Cells[8].Value);
+                    txtDonGia.Text = gia.ToString("0.00");
+                }
+
+                if (row.Cells[4].Value != null)
+                    dtpNgayDat.Value = Convert.ToDateTime(row.Cells[4].Value);
+
+                if (row.Cells[5].Value != null)
+                {
+                    int gioBD = Convert.ToInt32(row.Cells[5].Value);
+                    dtpGioBatDau.Value = DateTime.Today.AddHours(gioBD);
+                }
+
+                if (row.Cells[6].Value != null)
+                {
+                    int gioKT = Convert.ToInt32(row.Cells[6].Value);
+                    dtpGioKetThuc.Value = DateTime.Today.AddHours(gioKT);
+                }
+
+                isEditing = true;
+                Log($"► Chỉnh sửa lịch: {txtMaDat.Text}");
             }
-            else
+            catch (Exception ex)
             {
-                //txtTrangThai.Text = "Trống";
-                // Reset form để sẵn sàng đặt mới
-                txtMaDat.Clear();
-                txtTenKhachHang.Clear();
-                txtSDT.Clear();
-                // Tự tính tiền (nếu có hàm)
+                Log($"⚠ Lỗi lấy dữ liệu: {ex.Message}");
             }
         }
-
-        // --- 4. CÁC NÚT CHỨC NĂNG (CRUD) ---
 
         private void btnDatSAn_Click(object sender, EventArgs e)
         {
@@ -242,7 +178,7 @@ namespace TrangChu
                 MessageBox.Show("Giờ kết thúc phải lớn hơn giờ bắt đầu!");
                 return;
             }
-            //string maLich = "LD" + DateTime.Now.ToString("yyyyMMddHHmmss");
+
             DAL.LichDat lich = new DAL.LichDat
             {
                 MaLich = txtMaDat.Text.Trim(),
@@ -274,88 +210,21 @@ namespace TrangChu
                 if (busLichDat.Insert(lich))
                 {
                     Log("✔ Insert thành công");
-
                     RefreshData();
-                    CapNhatMauSacSan();
                     ResetForm();
+                    isEditing = false;
                 }
             }
             catch (Exception ex)
             {
                 Log("❌ LỖI: " + ex.Message);
             }
-
         }
 
         private void Log(string message)
         {
-            rtbLog.AppendText(
-                $"[{DateTime.Now:HH:mm:ss}] {message}\n"
-            );
+            rtbLog.AppendText($"[{DateTime.Now:HH:mm:ss}] {message}\n");
             rtbLog.ScrollToCaret();
-        }
-
-        private void btnSua_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(txtMaDat.Text)) return;
-
-                // Tạo đối tượng cập nhật
-                DAL.LichDat lich = new DAL.LichDat();
-                lich.MaLich = txtMaDat.Text;
-
-                // Các thông tin cần sửa
-                lich.MaSan = cbxMaSan.Text;
-                lich.SDT_KH = txtSDT.Text;
-                lich.TenKH = txtTenKhachHang.Text;
-                lich.NgayDat = dtpNgayDat.Value;
-                lich.GioBD = dtpGioBatDau.Value.Hour;
-                lich.GioKT = dtpGioKetThuc.Value.Hour;
-                //lich.TrangThai = txtTrangThai.Text;
-
-                decimal gia = 0;
-                //decimal.TryParse(cbxDonGia.Text, out gia);
-                lich.DonGiaThucTe = gia;
-
-                if (busLichDat.Update(lich))
-                {
-                    MessageBox.Show("Cập nhật thành công!");
-                    RefreshData();
-                    ResetForm();
-                }
-                else MessageBox.Show("Cập nhật thất bại!");
-            }
-            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
-        }
-
-        private void btnXoa_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                if (string.IsNullOrEmpty(txtMaDat.Text))
-                {
-                    MessageBox.Show("Chọn lịch cần xóa!");
-                    return;
-                }
-
-                if (MessageBox.Show("Bạn muốn xóa lịch này?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    int id = int.Parse(txtMaDat.Text);
-                    if (busLichDat.Delete(id))
-                    {
-                        MessageBox.Show("Đã xóa!");
-                        RefreshData();
-                        ResetForm();
-                    }
-                }
-            }
-            catch (Exception ex) { MessageBox.Show("Lỗi: " + ex.Message); }
-        }
-
-        private void btnHuySan_Click(object sender, EventArgs e)
-        {
-            ResetForm();
         }
 
         private void btnQuayLai_Click(object sender, EventArgs e)
@@ -370,71 +239,270 @@ namespace TrangChu
             txtSDT.Clear();
             cbxMaSan.SelectedIndex = -1;
             txtDonGia.Text = "";
-            //txtTrangThai.Text = "";
+            isEditing = false;
         }
 
-        // Sự kiện đổi ngày -> Cập nhật lại màu sân
-        private void dtpNgayDat_ValueChanged(object sender, EventArgs e)
+        private void btnHuySan_Click(object sender, EventArgs e)
         {
-            CapNhatMauSacSan();
+            if (dgvDatSan.CurrentRow == null)
+            {
+                MessageBox.Show("Vui lòng chọn lịch cần hủy từ danh sách!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string maLich = dgvDatSan.CurrentRow.Cells[0].Value?.ToString();
+
+            if (string.IsNullOrWhiteSpace(maLich))
+            {
+                MessageBox.Show("Mã lịch không hợp lệ!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DialogResult result = MessageBox.Show(
+                $"Bạn có chắc chắn muốn hủy lịch đặt [{maLich}] không?",
+                "Xác nhận hủy",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    if (busLichDat.HuyDat(maLich))
+                    {
+                        Log($"✔ Đã hủy lịch: {maLich}");
+                        MessageBox.Show("Hủy sân thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        RefreshDataWithSearch();
+                        ResetForm();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log($"❌ Lỗi hủy: {ex.Message}");
+                    MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
-        // Click vào bảng -> Đổ dữ liệu lên ô nhập
-        private void dgvDatSan_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void btnSua_Click(object sender, EventArgs e)
         {
-            // Kiểm tra nếu click vào dòng tiêu đề (Index < 0) thì không làm gì
-            if (e.RowIndex < 0) return;
+            if (string.IsNullOrWhiteSpace(txtMaDat.Text))
+            {
+                MessageBox.Show("Vui lòng chọn lịch cần sửa từ danh sách!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtSDT.Text) || string.IsNullOrWhiteSpace(cbxMaSan.Text))
+            {
+                MessageBox.Show("Vui lòng nhập đầy đủ thông tin (Sân, SĐT)!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            int gioBD = dtpGioBatDau.Value.Hour;
+            int gioKT = dtpGioKetThuc.Value.Hour;
+
+            if (gioBD >= gioKT)
+            {
+                MessageBox.Show("Giờ kết thúc phải lớn hơn giờ bắt đầu!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DAL.LichDat lichMoi = new DAL.LichDat
+            {
+                MaLich = txtMaDat.Text.Trim(),
+                MaSan = cbxMaSan.Text.Trim(),
+                SDT_KH = txtSDT.Text.Trim(),
+                TenKH = txtTenKhachHang.Text.Trim(),
+                NgayDat = dtpNgayDat.Value.Date,
+                GioBD = dtpGioBatDau.Value.Hour,
+                GioKT = dtpGioKetThuc.Value.Hour,
+                DonGiaThucTe = decimal.TryParse(txtDonGia.Text, out decimal gia) ? gia : 0
+            };
+
+            DialogResult dr = MessageBox.Show($"Bạn có chắc muốn cập nhật thông tin cho mã [{lichMoi.MaLich}]?",
+                                              "Xác nhận sửa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (dr == DialogResult.Yes)
+            {
+                try
+                {
+                    Log("▶ Bắt đầu cập nhật lịch đặt");
+
+                    if (busLichDat.Update(lichMoi))
+                    {
+                        Log($"✎ Đã cập nhật lịch: {lichMoi.MaLich}");
+                        MessageBox.Show("Cập nhật thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        RefreshDataWithSearch();
+                        ResetForm();
+                    }
+                    else
+                    {
+                        Log($"❌ Cập nhật thất bại");
+                        MessageBox.Show("Cập nhật thất bại!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log($"❌ Lỗi sửa: {ex.Message}");
+                    MessageBox.Show(ex.Message, "Lỗi cập nhật", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnXoa_Click(object sender, EventArgs e)
+        {
+            if (dgvDatSan.CurrentRow == null)
+            {
+                MessageBox.Show("Vui lòng chọn lịch cần xóa từ danh sách!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string maLich = dgvDatSan.CurrentRow.Cells[0].Value?.ToString();
+
+            if (string.IsNullOrWhiteSpace(maLich))
+            {
+                MessageBox.Show("Mã lịch không hợp lệ!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            DialogResult result = MessageBox.Show(
+                $"Bạn có chắc chắn muốn xóa lịch đặt [{maLich}] không?\n\n⚠️ Hành động này không thể hoàn tác!",
+                "Xác nhận xóa",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                try
+                {
+                    Log("▶ Bắt đầu xóa lịch đặt");
+
+                    if (busLichDat.Delete(maLich))
+                    {
+                        Log($"✔ Đã xóa lịch: {maLich}");
+                        MessageBox.Show("Xóa lịch thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        RefreshDataWithSearch();
+                        ResetForm();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log($"❌ Lỗi xóa: {ex.Message}");
+                    MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            string keyword = txtTimKiem.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                MessageBox.Show("Vui lòng nhập từ khóa tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTimKiem.Focus();
+                return;
+            }
 
             try
             {
-                // Lấy dòng hiện tại đang chọn
-                DataGridViewRow row = dgvDatSan.Rows[e.RowIndex];
+                Log($"▶ Bắt đầu tìm kiếm: '{keyword}'");
+                var results = busLichDat.Search(keyword);
 
-                // Đổ dữ liệu lên các ô nhập
-                // Kiểm tra null trước khi ToString() để tránh lỗi
-                if (row.Cells["clMaLich"].Value != null)
-                    txtMaDat.Text = row.Cells["clMaLich"].Value.ToString();
-
-                if (row.Cells["clMaSan"].Value != null)
+                if (results.Count == 0)
                 {
-                    cbxMaSan.Text = row.Cells["clMaSan"].Value.ToString();
-                    cbxMaSan.SelectedValue = row.Cells["clMaSan"].Value.ToString(); // Chọn item trong combo
+                    Log($"⚠ Không tìm thấy kết quả cho: '{keyword}'");
+                    MessageBox.Show($"Không tìm thấy lịch đặt nào phù hợp với '{keyword}'", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    dgvDatSan.DataSource = null;
                 }
-
-                if (row.Cells["clSDT_KH"].Value != null)
-                    txtSDT.Text = row.Cells["clSDT_KH"].Value.ToString();
-
-                if (row.Cells["clTenKH"].Value != null)
-                    txtTenKhachHang.Text = row.Cells["clTenKH"].Value.ToString();
-
-                if (row.Cells["clDonGiaThucTe"].Value != null)
+                else
                 {
-                    // Format tiền cho đẹp (VD: 200,000)
-                    decimal gia = Convert.ToDecimal(row.Cells["clDonGiaThucTe"].Value);
-                    //cbxDonGia.Text = gia.ToString("N0");
+                    Log($"✔ Tìm thấy {results.Count} kết quả");
+                    dgvDatSan.DataSource = null;
+                    dgvDatSan.DataSource = results;
+                    ReapplyColumnBindings();
+                    MessageBox.Show($"Tìm thấy {results.Count} kết quả! Nhấn vào hàng để chọn.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-
-                //if (row.Cells["clTrangThai"].Value != null)
-                //    txtTrangThai.Text = row.Cells["clTrangThai"].Value.ToString();
-
-                // Xử lý ngày giờ (Cần cẩn thận vì format ngày tháng)
-                if (row.Cells["clNgayDat"].Value != null)
-                    dtpNgayDat.Value = Convert.ToDateTime(row.Cells["clNgayDat"].Value);
-
-                // Lưu ý: DateTimePicker không set được giờ riêng lẻ dễ dàng nếu format là ngày
-                // Bạn có thể cần xử lý thêm nếu muốn hiển thị giờ lên NumericUpDown hoặc ComboBox giờ
             }
             catch (Exception ex)
             {
-                // Bỏ qua lỗi nhỏ khi click nhầm vùng
+                Log($"❌ Lỗi tìm kiếm: {ex.Message}");
+                MessageBox.Show($"Lỗi tìm kiếm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void dgvDatSan_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void RefreshDataWithSearch()
         {
+            string keyword = txtTimKiem.Text.Trim();
 
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                RefreshData();
+            }
+            else
+            {
+                try
+                {
+                    Log($"▶ Cập nhật kết quả tìm kiếm: '{keyword}'");
+                    var results = busLichDat.Search(keyword);
+
+                    dgvDatSan.DataSource = null;
+                    dgvDatSan.DataSource = results;
+                    ReapplyColumnBindings();
+
+                    if (results.Count == 0)
+                    {
+                        Log($"⚠ Không còn kết quả nào cho: '{keyword}'");
+                    }
+                    else
+                    {
+                        Log($"✔ Cập nhật {results.Count} kết quả");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log($"❌ Lỗi cập nhật kết quả tìm kiếm: {ex.Message}");
+                }
+            }
+        }
+
+        private void ResetSearch()
+        {
+            txtTimKiem.Clear();
+            RefreshData();
+            Log("◀ Đã reset tìm kiếm - Hiển thị tất cả dữ liệu");
+        }
+
+        private void btnResetTimKiem_Click(object sender, EventArgs e)
+        {
+            ResetSearch();
         }
 
 
+
+        private void btnTaiLai_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Log("▶ Bắt đầu tải lại dữ liệu");
+                
+                // Xóa từ khóa trong ô tìm kiếm
+                txtTimKiem.Clear();
+                
+                // Xóa trắng các textbox
+                ResetForm();
+                
+                // Làm mới dữ liệu và hiển thị tất cả
+                RefreshData();
+                
+                Log("✔ Tải lại dữ liệu thành công");
+                MessageBox.Show("Đã tải lại dữ liệu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                Log($"❌ Lỗi tải lại: {ex.Message}");
+                MessageBox.Show($"Lỗi tải lại: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
