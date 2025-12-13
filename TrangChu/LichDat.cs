@@ -23,7 +23,6 @@ namespace TrangChu
         {
             try
             {
-                // ===== 1. GÁN PROPERTY CHO DATAGRIDVIEW =====
                 clMaLich.DataPropertyName = "MaLich";
                 clMaSan.DataPropertyName = "MaSan";
                 clSDT_KH.DataPropertyName = "SDT_KH";
@@ -34,12 +33,10 @@ namespace TrangChu
                 clTrangThai.DataPropertyName = "TrangThai";
                 clDonGiaThucTe.DataPropertyName = "DonGiaThucTe";
 
-                // ===== 2. SET DATE PICKER (NGÀY) =====
                 dtpNgayDat.Format = DateTimePickerFormat.Custom;
                 dtpNgayDat.CustomFormat = "dd/MM/yyyy";
                 dtpNgayDat.Value = DateTime.Now;
 
-                // ===== 3. FIX GIỜ ĐẶT SÂN =====
                 dtpGioBatDau.Format = DateTimePickerFormat.Custom;
                 dtpGioBatDau.CustomFormat = "HH:00";
                 dtpGioBatDau.ShowUpDown = true;
@@ -51,11 +48,9 @@ namespace TrangChu
                 dtpGioBatDau.Value = DateTime.Today.AddHours(15);
                 dtpGioKetThuc.Value = DateTime.Today.AddHours(23);
 
-                // ===== 4. EVENT HANDLERS =====
                 txtTimKiem.KeyDown += TxtTimKiem_KeyDown;
                 dgvDatSan.CellClick += dgvDatSan_CellClick;
 
-                // ===== 5. LOAD DỮ LIỆU =====
                 LoadComboBoxSan();
                 RefreshData();
             }
@@ -89,11 +84,27 @@ namespace TrangChu
                 dgvDatSan.DataSource = null;
                 dgvDatSan.DataSource = data;
                 ReapplyColumnBindings();
+                
+                // ===== ĐỊNH DẠNG CỘT ĐƠN GIÁ =====
+                FormatDonGiaColumn();
             }
             catch (Exception ex)
             {
                 Log($"❌ Lỗi làm mới dữ liệu: {ex.Message}");
             }
+        }
+
+        private void FormatDonGiaColumn()
+        {
+            try
+            {
+                if (dgvDatSan.Columns["clDonGiaThucTe"] != null)
+                {
+                    dgvDatSan.Columns["clDonGiaThucTe"].DefaultCellStyle.Format = "0.00";
+                    dgvDatSan.Columns["clDonGiaThucTe"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                }
+            }
+            catch { }
         }
 
         private void ReapplyColumnBindings()
@@ -132,10 +143,49 @@ namespace TrangChu
                 if (row.Cells[3].Value != null)
                     txtTenKhachHang.Text = row.Cells[3].Value.ToString();
 
-                if (row.Cells[8].Value != null)
+                // ===== XỬ LÝ ĐƠN GIÁ - CÁCH 2: LẤY GIÁ TRỊ TRỰC TIẾP TỪ DATASOURCE =====
+                try
                 {
-                    decimal gia = Convert.ToDecimal(row.Cells[8].Value);
-                    txtDonGia.Text = gia.ToString("0.00");
+                    // Lấy object từ DataGridView
+                    if (row.DataBoundItem is DAL.LichDat lichData)
+                    {
+                        // Lấy trực tiếp từ đối tượng LichDat thay vì cell value
+                        if (lichData.DonGiaThucTe.HasValue)
+                        {
+                            txtDonGia.Text = lichData.DonGiaThucTe.Value.ToString("0.00");
+                            Log($"✔ Đơn giá: {lichData.DonGiaThucTe.Value:0.00}");
+                        }
+                        else
+                        {
+                            txtDonGia.Text = "0.00";
+                            Log("⚠ Đơn giá = NULL");
+                        }
+                    }
+                    else
+                    {
+                        // Fallback: xử lý từ cell value
+                        if (row.Cells[8].Value != null && row.Cells[8].Value != DBNull.Value)
+                        {
+                            string giaStr = row.Cells[8].Value.ToString().Trim();
+                            if (!string.IsNullOrWhiteSpace(giaStr) && decimal.TryParse(giaStr, out decimal gia))
+                            {
+                                txtDonGia.Text = gia.ToString("0.00");
+                            }
+                            else
+                            {
+                                txtDonGia.Text = "0.00";
+                            }
+                        }
+                        else
+                        {
+                            txtDonGia.Text = "0.00";
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Log($"⚠ Lỗi chuyển đổi DonGia: {ex.Message}");
+                    txtDonGia.Text = "0.00";
                 }
 
                 if (row.Cells[4].Value != null)
@@ -421,6 +471,7 @@ namespace TrangChu
                     dgvDatSan.DataSource = null;
                     dgvDatSan.DataSource = results;
                     ReapplyColumnBindings();
+                    FormatDonGiaColumn();  // ===== THÊM DÒNG NÀY =====
                     MessageBox.Show($"Tìm thấy {results.Count} kết quả! Nhấn vào hàng để chọn.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -449,6 +500,7 @@ namespace TrangChu
                     dgvDatSan.DataSource = null;
                     dgvDatSan.DataSource = results;
                     ReapplyColumnBindings();
+                    FormatDonGiaColumn();  // ===== THÊM DÒNG NÀY =====
 
                     if (results.Count == 0)
                     {
@@ -478,22 +530,14 @@ namespace TrangChu
             ResetSearch();
         }
 
-
-//
-
         private void btnTaiLai_Click(object sender, EventArgs e)
         {
             try
             {
                 Log("▶ Bắt đầu tải lại dữ liệu");
                 
-                // Xóa từ khóa trong ô tìm kiếm
                 txtTimKiem.Clear();
-                
-                // Xóa trắng các textbox
                 ResetForm();
-                
-                // Làm mới dữ liệu và hiển thị tất cả
                 RefreshData();
                 
                 Log("✔ Tải lại dữ liệu thành công");
