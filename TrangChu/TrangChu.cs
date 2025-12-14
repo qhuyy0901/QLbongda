@@ -33,7 +33,7 @@ namespace TrangChu
             string role = currentUser.Role.Trim().ToLower();
 
             // Nếu là Admin / Chủ / Quản trị -> Hiện tất cả
-            if (role == "admin" || role == "chu" || role == "quantri")
+            if (role == "admin" || role == "quantri")
             {
                 if (btnDoanhThu != null) btnDoanhThu.Visible = true;
                 if (btnQuanLyNV != null) btnQuanLyNV.Visible = true;
@@ -84,6 +84,7 @@ namespace TrangChu
             frm.ShowDialog();
             this.Show();
         }
+
 
     }
 }

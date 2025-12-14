@@ -169,7 +169,7 @@
             // 
             this.btnDatSAn.BackColor = System.Drawing.Color.White;
             this.btnDatSAn.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDatSAn.Location = new System.Drawing.Point(53, 348);
+            this.btnDatSAn.Location = new System.Drawing.Point(41, 348);
             this.btnDatSAn.Margin = new System.Windows.Forms.Padding(2);
             this.btnDatSAn.Name = "btnDatSAn";
             this.btnDatSAn.Size = new System.Drawing.Size(77, 33);
@@ -208,7 +208,7 @@
             // 
             this.btnSua.BackColor = System.Drawing.Color.White;
             this.btnSua.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSua.Location = new System.Drawing.Point(51, 395);
+            this.btnSua.Location = new System.Drawing.Point(40, 395);
             this.btnSua.Margin = new System.Windows.Forms.Padding(2);
             this.btnSua.Name = "btnSua";
             this.btnSua.Size = new System.Drawing.Size(79, 30);
@@ -312,11 +312,14 @@
             // btnQuayLai
             // 
             this.btnQuayLai.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnQuayLai.Location = new System.Drawing.Point(-1, 440);
+            this.btnQuayLai.Image = global::TrangChu.Properties.Resources.Screenshot_2025_12_14_150219_removebg_preview;
+            this.btnQuayLai.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnQuayLai.Location = new System.Drawing.Point(-1, 451);
             this.btnQuayLai.Name = "btnQuayLai";
-            this.btnQuayLai.Size = new System.Drawing.Size(64, 23);
+            this.btnQuayLai.Size = new System.Drawing.Size(91, 23);
             this.btnQuayLai.TabIndex = 26;
             this.btnQuayLai.Text = "Quay Lại";
+            this.btnQuayLai.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnQuayLai.UseVisualStyleBackColor = true;
             this.btnQuayLai.Click += new System.EventHandler(this.btnQuayLai_Click);
             // 
@@ -346,32 +349,39 @@
             this.groupBox2.Size = new System.Drawing.Size(715, 223);
             this.groupBox2.TabIndex = 27;
             this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Sơ Đồ Sân";
             // 
             // btnTaiLai
             // 
-            this.btnTaiLai.Location = new System.Drawing.Point(640, 197);
+            this.btnTaiLai.Image = ((System.Drawing.Image)(resources.GetObject("btnTaiLai.Image")));
+            this.btnTaiLai.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnTaiLai.Location = new System.Drawing.Point(631, 201);
             this.btnTaiLai.Name = "btnTaiLai";
-            this.btnTaiLai.Size = new System.Drawing.Size(75, 23);
+            this.btnTaiLai.Size = new System.Drawing.Size(84, 23);
             this.btnTaiLai.TabIndex = 38;
             this.btnTaiLai.Text = "Tải Lại";
+            this.btnTaiLai.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnTaiLai.UseVisualStyleBackColor = true;
             this.btnTaiLai.Click += new System.EventHandler(this.btnTaiLai_Click);
             // 
             // txtTimKiem
             // 
-            this.txtTimKiem.Location = new System.Drawing.Point(525, 200);
+            this.txtTimKiem.Location = new System.Drawing.Point(510, 203);
             this.txtTimKiem.Margin = new System.Windows.Forms.Padding(2);
             this.txtTimKiem.Name = "txtTimKiem";
-            this.txtTimKiem.Size = new System.Drawing.Size(107, 20);
+            this.txtTimKiem.Size = new System.Drawing.Size(102, 20);
             this.txtTimKiem.TabIndex = 35;
             // 
             // btnTimKiem
             // 
-            this.btnTimKiem.Location = new System.Drawing.Point(452, 198);
+            this.btnTimKiem.Image = ((System.Drawing.Image)(resources.GetObject("btnTimKiem.Image")));
+            this.btnTimKiem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnTimKiem.Location = new System.Drawing.Point(428, 203);
             this.btnTimKiem.Name = "btnTimKiem";
-            this.btnTimKiem.Size = new System.Drawing.Size(75, 23);
+            this.btnTimKiem.Size = new System.Drawing.Size(88, 23);
             this.btnTimKiem.TabIndex = 37;
             this.btnTimKiem.Text = "Tìm Kiếm:";
+            this.btnTimKiem.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnTimKiem.UseVisualStyleBackColor = true;
             this.btnTimKiem.Click += new System.EventHandler(this.btnTimKiem_Click);
             // 
@@ -585,7 +595,7 @@
             this.rtbLog.Location = new System.Drawing.Point(0, 488);
             this.rtbLog.Name = "rtbLog";
             this.rtbLog.ReadOnly = true;
-            this.rtbLog.Size = new System.Drawing.Size(1170, 117);
+            this.rtbLog.Size = new System.Drawing.Size(981, 117);
             this.rtbLog.TabIndex = 28;
             this.rtbLog.Text = "";
             // 
@@ -594,7 +604,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1170, 605);
+            this.ClientSize = new System.Drawing.Size(981, 605);
             this.Controls.Add(this.rtbLog);
             this.Controls.Add(this.dgvDatSan);
             this.Controls.Add(this.groupBox2);
@@ -652,6 +662,9 @@
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.RichTextBox rtbLog;
+        private System.Windows.Forms.TextBox txtTimKiem;
+        private System.Windows.Forms.Button btnTimKiem;
+        private System.Windows.Forms.Button btnTaiLai;
         private System.Windows.Forms.TextBox txtDonGia;
         private System.Windows.Forms.DataGridViewTextBoxColumn clMaLich;
         private System.Windows.Forms.DataGridViewTextBoxColumn clMaSan;
@@ -662,8 +675,5 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn clGioKetThuc;
         private System.Windows.Forms.DataGridViewTextBoxColumn clTrangThai;
         private System.Windows.Forms.DataGridViewTextBoxColumn clDonGiaThucTe;
-        private System.Windows.Forms.TextBox txtTimKiem;
-        private System.Windows.Forms.Button btnTimKiem;
-        private System.Windows.Forms.Button btnTaiLai;
     }
 }

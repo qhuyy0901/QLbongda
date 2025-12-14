@@ -30,36 +30,44 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrangChu));
             this.panelMenu = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnQuanLyNV = new System.Windows.Forms.Button();
             this.btnDoanhThu = new System.Windows.Forms.Button();
             this.lblUserName = new System.Windows.Forms.Label();
-            this.btnDichVu = new System.Windows.Forms.Button();
             this.bntDangXuat = new System.Windows.Forms.Button();
             this.btnDatSan = new System.Windows.Forms.Button();
-            this.btnQuanLySan = new System.Windows.Forms.Button();
-            this.btnHeThong = new System.Windows.Forms.Button();
+            this.btnDichVu = new System.Windows.Forms.Button();
             this.lblTenSan = new System.Windows.Forms.Label();
             this.picNen = new System.Windows.Forms.PictureBox();
             this.panelMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picNen)).BeginInit();
             this.SuspendLayout();
             // 
             // panelMenu
             // 
             this.panelMenu.BackColor = System.Drawing.Color.ForestGreen;
+            this.panelMenu.Controls.Add(this.pictureBox1);
             this.panelMenu.Controls.Add(this.btnQuanLyNV);
             this.panelMenu.Controls.Add(this.btnDoanhThu);
             this.panelMenu.Controls.Add(this.lblUserName);
-            this.panelMenu.Controls.Add(this.btnDichVu);
             this.panelMenu.Controls.Add(this.bntDangXuat);
             this.panelMenu.Controls.Add(this.btnDatSan);
-            this.panelMenu.Controls.Add(this.btnQuanLySan);
-            this.panelMenu.Controls.Add(this.btnHeThong);
+            this.panelMenu.Controls.Add(this.btnDichVu);
             this.panelMenu.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelMenu.Location = new System.Drawing.Point(0, 0);
             this.panelMenu.Name = "panelMenu";
-            this.panelMenu.Size = new System.Drawing.Size(276, 513);
+            this.panelMenu.Size = new System.Drawing.Size(229, 558);
             this.panelMenu.TabIndex = 0;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::TrangChu.Properties.Resources.avt;
+            this.pictureBox1.Location = new System.Drawing.Point(48, 4);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(141, 115);
+            this.pictureBox1.TabIndex = 7;
+            this.pictureBox1.TabStop = false;
             // 
             // btnQuanLyNV
             // 
@@ -70,7 +78,7 @@
             this.btnQuanLyNV.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnQuanLyNV.Image = ((System.Drawing.Image)(resources.GetObject("btnQuanLyNV.Image")));
             this.btnQuanLyNV.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnQuanLyNV.Location = new System.Drawing.Point(81, 368);
+            this.btnQuanLyNV.Location = new System.Drawing.Point(59, 376);
             this.btnQuanLyNV.Name = "btnQuanLyNV";
             this.btnQuanLyNV.Size = new System.Drawing.Size(115, 36);
             this.btnQuanLyNV.TabIndex = 5;
@@ -87,7 +95,7 @@
             this.btnDoanhThu.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnDoanhThu.Image = ((System.Drawing.Image)(resources.GetObject("btnDoanhThu.Image")));
             this.btnDoanhThu.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDoanhThu.Location = new System.Drawing.Point(81, 312);
+            this.btnDoanhThu.Location = new System.Drawing.Point(59, 314);
             this.btnDoanhThu.Name = "btnDoanhThu";
             this.btnDoanhThu.Size = new System.Drawing.Size(115, 36);
             this.btnDoanhThu.TabIndex = 4;
@@ -99,28 +107,11 @@
             // 
             this.lblUserName.AutoSize = true;
             this.lblUserName.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUserName.Location = new System.Drawing.Point(35, 27);
+            this.lblUserName.Location = new System.Drawing.Point(12, 131);
             this.lblUserName.Name = "lblUserName";
             this.lblUserName.Size = new System.Drawing.Size(65, 16);
             this.lblUserName.TabIndex = 5;
             this.lblUserName.Text = "Xin Chào";
-            // 
-            // btnDichVu
-            // 
-            this.btnDichVu.BackColor = System.Drawing.Color.White;
-            this.btnDichVu.FlatAppearance.BorderSize = 0;
-            this.btnDichVu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnDichVu.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnDichVu.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnDichVu.Image = ((System.Drawing.Image)(resources.GetObject("btnDichVu.Image")));
-            this.btnDichVu.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDichVu.Location = new System.Drawing.Point(81, 252);
-            this.btnDichVu.Name = "btnDichVu";
-            this.btnDichVu.Size = new System.Drawing.Size(115, 36);
-            this.btnDichVu.TabIndex = 3;
-            this.btnDichVu.Text = "Dịch Vụ";
-            this.btnDichVu.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnDichVu.UseVisualStyleBackColor = false;
             // 
             // bntDangXuat
             // 
@@ -131,7 +122,7 @@
             this.bntDangXuat.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.bntDangXuat.Image = ((System.Drawing.Image)(resources.GetObject("bntDangXuat.Image")));
             this.bntDangXuat.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.bntDangXuat.Location = new System.Drawing.Point(3, 425);
+            this.bntDangXuat.Location = new System.Drawing.Point(0, 464);
             this.bntDangXuat.Name = "bntDangXuat";
             this.bntDangXuat.Size = new System.Drawing.Size(100, 29);
             this.bntDangXuat.TabIndex = 6;
@@ -149,7 +140,7 @@
             this.btnDatSan.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.btnDatSan.Image = ((System.Drawing.Image)(resources.GetObject("btnDatSan.Image")));
             this.btnDatSan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDatSan.Location = new System.Drawing.Point(81, 132);
+            this.btnDatSan.Location = new System.Drawing.Point(59, 186);
             this.btnDatSan.Name = "btnDatSan";
             this.btnDatSan.Size = new System.Drawing.Size(115, 36);
             this.btnDatSan.TabIndex = 1;
@@ -158,39 +149,22 @@
             this.btnDatSan.UseVisualStyleBackColor = false;
             this.btnDatSan.Click += new System.EventHandler(this.btnDatSan_Click);
             // 
-            // btnQuanLySan
+            // btnDichVu
             // 
-            this.btnQuanLySan.BackColor = System.Drawing.Color.White;
-            this.btnQuanLySan.FlatAppearance.BorderSize = 0;
-            this.btnQuanLySan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnQuanLySan.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnQuanLySan.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnQuanLySan.Image = ((System.Drawing.Image)(resources.GetObject("btnQuanLySan.Image")));
-            this.btnQuanLySan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnQuanLySan.Location = new System.Drawing.Point(81, 195);
-            this.btnQuanLySan.Name = "btnQuanLySan";
-            this.btnQuanLySan.Size = new System.Drawing.Size(115, 36);
-            this.btnQuanLySan.TabIndex = 2;
-            this.btnQuanLySan.Text = "Quản Lý Sân";
-            this.btnQuanLySan.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnQuanLySan.UseVisualStyleBackColor = false;
-            // 
-            // btnHeThong
-            // 
-            this.btnHeThong.BackColor = System.Drawing.Color.White;
-            this.btnHeThong.FlatAppearance.BorderSize = 0;
-            this.btnHeThong.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnHeThong.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHeThong.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnHeThong.Image = ((System.Drawing.Image)(resources.GetObject("btnHeThong.Image")));
-            this.btnHeThong.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnHeThong.Location = new System.Drawing.Point(81, 74);
-            this.btnHeThong.Name = "btnHeThong";
-            this.btnHeThong.Size = new System.Drawing.Size(115, 36);
-            this.btnHeThong.TabIndex = 0;
-            this.btnHeThong.Text = "Hệ Thống";
-            this.btnHeThong.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnHeThong.UseVisualStyleBackColor = false;
+            this.btnDichVu.BackColor = System.Drawing.Color.White;
+            this.btnDichVu.FlatAppearance.BorderSize = 0;
+            this.btnDichVu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDichVu.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDichVu.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnDichVu.Image = ((System.Drawing.Image)(resources.GetObject("btnDichVu.Image")));
+            this.btnDichVu.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnDichVu.Location = new System.Drawing.Point(59, 249);
+            this.btnDichVu.Name = "btnDichVu";
+            this.btnDichVu.Size = new System.Drawing.Size(115, 36);
+            this.btnDichVu.TabIndex = 2;
+            this.btnDichVu.Text = "Dịch Vụ";
+            this.btnDichVu.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnDichVu.UseVisualStyleBackColor = false;
             // 
             // lblTenSan
             // 
@@ -205,10 +179,10 @@
             // 
             // picNen
             // 
-            this.picNen.Image = ((System.Drawing.Image)(resources.GetObject("picNen.Image")));
-            this.picNen.Location = new System.Drawing.Point(282, 64);
+            this.picNen.Image = global::TrangChu.Properties.Resources.nen;
+            this.picNen.Location = new System.Drawing.Point(235, 71);
             this.picNen.Name = "picNen";
-            this.picNen.Size = new System.Drawing.Size(646, 409);
+            this.picNen.Size = new System.Drawing.Size(793, 487);
             this.picNen.TabIndex = 3;
             this.picNen.TabStop = false;
             // 
@@ -217,7 +191,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
-            this.ClientSize = new System.Drawing.Size(936, 513);
+            this.ClientSize = new System.Drawing.Size(1035, 558);
             this.Controls.Add(this.picNen);
             this.Controls.Add(this.lblTenSan);
             this.Controls.Add(this.panelMenu);
@@ -226,6 +200,7 @@
             this.Text = "Hệ thống quản lý sân bóng đá Nhật Vượng";
             this.panelMenu.ResumeLayout(false);
             this.panelMenu.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picNen)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -235,9 +210,7 @@
         #endregion
 
         private System.Windows.Forms.Panel panelMenu;
-        private System.Windows.Forms.Button btnHeThong;
         private System.Windows.Forms.Button btnDatSan;
-        private System.Windows.Forms.Button btnQuanLySan;
         private System.Windows.Forms.Button btnDichVu;
         private System.Windows.Forms.Button bntDangXuat;
         private System.Windows.Forms.Label lblTenSan;
@@ -245,6 +218,7 @@
         private System.Windows.Forms.Label lblUserName;
         private System.Windows.Forms.Button btnDoanhThu;
         private System.Windows.Forms.Button btnQuanLyNV;
+        private System.Windows.Forms.PictureBox pictureBox1;
     }
 }
 
