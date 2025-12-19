@@ -546,13 +546,13 @@
             // 
             this.clGioBatDau.HeaderText = "Giờ Bắt Đầu";
             this.clGioBatDau.Name = "clGioBatDau";
-            this.clGioBatDau.Width = 30;
+            this.clGioBatDau.Width = 50;
             // 
             // clGioKetThuc
             // 
             this.clGioKetThuc.HeaderText = "Giờ Kết Thúc";
             this.clGioKetThuc.Name = "clGioKetThuc";
-            this.clGioKetThuc.Width = 30;
+            this.clGioKetThuc.Width = 50;
             // 
             // clTrangThai
             // 
@@ -562,7 +562,7 @@
             // 
             // clDonGiaThucTe
             // 
-            this.clDonGiaThucTe.HeaderText = "Đơn Giá";
+            this.clDonGiaThucTe.HeaderText = "Đơn Giá Thực Tế";
             this.clDonGiaThucTe.Name = "clDonGiaThucTe";
             this.clDonGiaThucTe.Width = 80;
             // 
