@@ -31,7 +31,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrangChu));
             this.panelMenu = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btnQuanLyNV = new System.Windows.Forms.Button();
+            this.btnQuanLyTK = new System.Windows.Forms.Button();
             this.btnDoanhThu = new System.Windows.Forms.Button();
             this.lblUserName = new System.Windows.Forms.Label();
             this.bntDangXuat = new System.Windows.Forms.Button();
@@ -48,7 +48,7 @@
             // 
             this.panelMenu.BackColor = System.Drawing.Color.ForestGreen;
             this.panelMenu.Controls.Add(this.pictureBox1);
-            this.panelMenu.Controls.Add(this.btnQuanLyNV);
+            this.panelMenu.Controls.Add(this.btnQuanLyTK);
             this.panelMenu.Controls.Add(this.btnDoanhThu);
             this.panelMenu.Controls.Add(this.lblUserName);
             this.panelMenu.Controls.Add(this.bntDangXuat);
@@ -69,23 +69,23 @@
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
             // 
-            // btnQuanLyNV
+            // btnQuanLyTK
             // 
-            this.btnQuanLyNV.BackColor = System.Drawing.Color.White;
-            this.btnQuanLyNV.FlatAppearance.BorderSize = 0;
-            this.btnQuanLyNV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnQuanLyNV.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnQuanLyNV.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.btnQuanLyNV.Image = ((System.Drawing.Image)(resources.GetObject("btnQuanLyNV.Image")));
-            this.btnQuanLyNV.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnQuanLyNV.Location = new System.Drawing.Point(59, 376);
-            this.btnQuanLyNV.Name = "btnQuanLyNV";
-            this.btnQuanLyNV.Size = new System.Drawing.Size(115, 36);
-            this.btnQuanLyNV.TabIndex = 5;
-            this.btnQuanLyNV.Text = "Quản Lý NV";
-            this.btnQuanLyNV.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnQuanLyNV.UseVisualStyleBackColor = false;
-            this.btnQuanLyNV.Click += new System.EventHandler(this.btnQuanLyNV_Click);
+            this.btnQuanLyTK.BackColor = System.Drawing.Color.White;
+            this.btnQuanLyTK.FlatAppearance.BorderSize = 0;
+            this.btnQuanLyTK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnQuanLyTK.Font = new System.Drawing.Font("Arial", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnQuanLyTK.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.btnQuanLyTK.Image = ((System.Drawing.Image)(resources.GetObject("btnQuanLyTK.Image")));
+            this.btnQuanLyTK.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnQuanLyTK.Location = new System.Drawing.Point(59, 376);
+            this.btnQuanLyTK.Name = "btnQuanLyTK";
+            this.btnQuanLyTK.Size = new System.Drawing.Size(115, 36);
+            this.btnQuanLyTK.TabIndex = 5;
+            this.btnQuanLyTK.Text = "Quản Lý TK";
+            this.btnQuanLyTK.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnQuanLyTK.UseVisualStyleBackColor = false;
+            this.btnQuanLyTK.Click += new System.EventHandler(this.btnQuanLyNV_Click);
             // 
             // btnDoanhThu
             // 
@@ -108,7 +108,7 @@
             // 
             this.lblUserName.AutoSize = true;
             this.lblUserName.Font = new System.Drawing.Font("Arial", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUserName.Location = new System.Drawing.Point(12, 131);
+            this.lblUserName.Location = new System.Drawing.Point(35, 134);
             this.lblUserName.Name = "lblUserName";
             this.lblUserName.Size = new System.Drawing.Size(65, 16);
             this.lblUserName.TabIndex = 5;
@@ -218,7 +218,7 @@
         private System.Windows.Forms.PictureBox picNen;
         private System.Windows.Forms.Label lblUserName;
         private System.Windows.Forms.Button btnDoanhThu;
-        private System.Windows.Forms.Button btnQuanLyNV;
+        private System.Windows.Forms.Button btnQuanLyTK;
         private System.Windows.Forms.PictureBox pictureBox1;
     }
 }

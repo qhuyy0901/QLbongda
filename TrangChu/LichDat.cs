@@ -55,6 +55,13 @@ namespace TrangChu
                 txtTimKiem.KeyDown += TxtTimKiem_KeyDown;
                 dgvDatSan.CellClick += dgvDatSan_CellClick;
 
+                //NGĂN CHẶN CHỈNH SỬA TRỰC TIẾP TRÊN DATAGRIDVIEW
+                dgvDatSan.ReadOnly = true;                   
+                dgvDatSan.AllowUserToAddRows = false;         
+                dgvDatSan.AllowUserToDeleteRows = false;     
+                dgvDatSan.AllowUserToResizeRows = false;      
+                dgvDatSan.SelectionMode = DataGridViewSelectionMode.FullRowSelect;  // Chọn cả hàng
+
                 LoadComboBoxSan();
                 RefreshData();
             }
@@ -131,12 +138,7 @@ namespace TrangChu
             {
                 DataGridViewRow row = dgvDatSan.Rows[e.RowIndex];
 
-                // ===== LẤY MÃ LỊCH TỪ CỘT ĐẦUTIÊN =====
-                if (row.Cells[0].Value != null)
-                {
-                    // Không hiển thị txtMaDat vì đã xóa
-                    // Chỉ lưu giữ mã lịch để sử dụng sau
-                }
+
 
                 if (row.Cells[1].Value != null)
                 {
@@ -237,7 +239,6 @@ namespace TrangChu
                 return false;
             }
 
-            // Kiểm tra đúng 10 chữ số
             if (cleanPhone.Length != 10)
             {
                 MessageBox.Show($"❌ Số điện thoại phải có đúng 10 chữ số!\nSố bạn nhập: {cleanPhone.Length} chữ số", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -248,7 +249,7 @@ namespace TrangChu
             return true;
         }
 
-        // ===== VALIDATE GIÁ SÂN (CHỈ SỐ, KHÔNG CHỮCÁI HAY KÝ TỰ ĐẶC BIỆT) =====
+        // ===== VALIDATE GIÁ SÂN
         private bool IsValidPrice(string priceText)
         {
             if (string.IsNullOrWhiteSpace(priceText))
@@ -260,7 +261,7 @@ namespace TrangChu
 
             string cleanPrice = priceText.Trim();
 
-            // ===== CHỈ CHO PHÉP CHỮ SỐ, DẤU PHẨY, DẤU CHẤM =====
+            // ===== CHỈ CHO PHÉP CHỮ SỐ, DẤU PHẨY, DẤU CHẤM 
             if (!System.Text.RegularExpressions.Regex.IsMatch(cleanPrice, @"^[\d,.]+$"))
             {
                 MessageBox.Show(
@@ -296,7 +297,7 @@ namespace TrangChu
             return true;
         }
 
-        // ===== VALIDATE MÃ SÂN (CHỈ CHẤP NHẬN SAN1-SAN6) =====
+        // ===== VALIDATE MÃ SÂN
         private bool IsValidSanCode(string maSan)
         {
             if (string.IsNullOrWhiteSpace(maSan))
@@ -304,7 +305,6 @@ namespace TrangChu
 
             string cleanMaSan = maSan.Trim().ToUpper();
 
-            // ===== DANH SÁCH SÂN HỢP LỆ =====
             string[] validSans = { "San1", "San2", "San3", "San4", "San5", "San6" };
 
             
@@ -314,7 +314,6 @@ namespace TrangChu
 
         private void btnDatSAn_Click(object sender, EventArgs e)
         {
-            // ===== KIỂM TRA TÊN KHÁCH HÀNG =====
             if (string.IsNullOrWhiteSpace(txtTenKhachHang.Text))
             {
                 MessageBox.Show("❌ Vui lòng nhập tên khách hàng!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -322,13 +321,11 @@ namespace TrangChu
                 return;
             }
 
-            // ===== KIỂM TRA SỐ ĐIỆN THOẠI =====
             if (!IsValidPhoneNumber(txtSDT.Text))
             {
                 return;
             }
 
-            // ===== KIỂM TRA SÂN =====
             if (string.IsNullOrWhiteSpace(cbxMaSan.Text))
             {
                 MessageBox.Show("❌ Vui lòng chọn sân!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -336,7 +333,6 @@ namespace TrangChu
                 return;
             }
 
-            // ===== KIỂM TRA GIÁ SÂN =====
             if (!IsValidPrice(txtDonGia.Text))
             {
                 return;
@@ -373,10 +369,10 @@ namespace TrangChu
                 }
             }
 
-            // ===== MÃ LỊCH ĐỂ TRỐNG ĐỂ TỰ ĐỘNG SINH =====
+           
             DAL.LichDat lich = new DAL.LichDat
             {
-                MaLich = null,  // ✅ Để null để tự động sinh
+                MaLich = null,
                 MaSan = cbxMaSan.Text.Trim(),
                 SDT_KH = txtSDT.Text.Trim(),
                 TenKH = txtTenKhachHang.Text.Trim(),
@@ -403,6 +399,93 @@ namespace TrangChu
             }
         }
 
+        private void btnTimKiem_Click(object sender, EventArgs e)
+        {
+            string keyword = txtTimKiem.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                MessageBox.Show("Vui lòng nhập từ khóa tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTimKiem.Focus();
+                return;
+            }
+
+            try
+            {
+                var results = busLichDat.Search(keyword);
+
+                if (results.Count == 0)
+                {
+                    MessageBox.Show($"Không tìm thấy lịch đặt nào phù hợp với '{keyword}'", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    dgvDatSan.DataSource = null;
+                }
+                else
+                {
+                    dgvDatSan.DataSource = null;
+                    dgvDatSan.DataSource = results;
+                    ReapplyColumnBindings();
+                    FormatDonGiaColumn();
+                    MessageBox.Show($"Tìm thấy {results.Count} kết quả!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tìm kiếm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void RefreshDataWithSearch()
+        {
+            string keyword = txtTimKiem.Text.Trim();
+
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                RefreshData();
+            }
+            else
+            {
+                try
+                {
+                    var results = busLichDat.Search(keyword);
+
+                    dgvDatSan.DataSource = null;
+                    dgvDatSan.DataSource = results;
+                    ReapplyColumnBindings();
+                    FormatDonGiaColumn();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi cập nhật kết quả tìm kiếm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void ResetSearch()
+        {
+            txtTimKiem.Clear();
+            RefreshData();
+        }
+
+        private void btnResetTimKiem_Click(object sender, EventArgs e)
+        {
+            ResetSearch();
+        }
+
+        private void btnTaiLai_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                txtTimKiem.Clear();
+                ResetForm();
+                RefreshData();
+                MessageBox.Show("Đã tải lại dữ liệu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi tải lại: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void btnQuayLai_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -410,7 +493,6 @@ namespace TrangChu
 
         private void ResetForm()
         {
-            // ===== KHÔNG CẦN RESET txtMaDat VÌ ĐÃ XÓA =====
             txtTenKhachHang.Clear();
             txtSDT.Clear();
             cbxMaSan.SelectedIndex = -1;
@@ -466,17 +548,14 @@ namespace TrangChu
                 return;
             }
 
-            // ===== LẤY MÃ LỊCH: CÁCH AN TOÀN NHẤT =====
             string maLich = null;
 
             try
             {
-                // Cách 1: Lấy từ DataBoundItem (Cách tốt nhất)
                 if (dgvDatSan.SelectedRows[0].DataBoundItem is DAL.LichDat lichData)
                 {
                     maLich = lichData.MaLich;
                 }
-                // Cách 2: Lấy từ Cell[0] (Cột đầu tiên = MaLich)
                 else if (dgvDatSan.SelectedRows[0].Cells[0].Value != null)
                 {
                     maLich = dgvDatSan.SelectedRows[0].Cells[0].Value.ToString();
@@ -494,7 +573,6 @@ namespace TrangChu
                 return;
             }
 
-            // ===== KIỂM TRA TÊN KHÁCH HÀNG =====
             if (string.IsNullOrWhiteSpace(txtTenKhachHang.Text))
             {
                 MessageBox.Show("❌ Vui lòng nhập tên khách hàng!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -502,13 +580,11 @@ namespace TrangChu
                 return;
             }
 
-            // ===== KIỂM TRA SỐ ĐIỆN THOẠI =====
             if (!IsValidPhoneNumber(txtSDT.Text))
             {
                 return;
             }
 
-            // ===== KIỂM TRA SÂN =====
             if (string.IsNullOrWhiteSpace(cbxMaSan.Text))
             {
                 MessageBox.Show("❌ Vui lòng chọn sân!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -516,7 +592,6 @@ namespace TrangChu
                 return;
             }
 
-            // ===== KIỂM TRA GIÁ SÂN =====
             if (!IsValidPrice(txtDonGia.Text))
             {
                 return;
@@ -628,93 +703,6 @@ namespace TrangChu
                 {
                     MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            }
-        }
-
-        private void btnTimKiem_Click(object sender, EventArgs e)
-        {
-            string keyword = txtTimKiem.Text.Trim();
-
-            if (string.IsNullOrWhiteSpace(keyword))
-            {
-                MessageBox.Show("Vui lòng nhập từ khóa tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTimKiem.Focus();
-                return;
-            }
-
-            try
-            {
-                var results = busLichDat.Search(keyword);
-
-                if (results.Count == 0)
-                {
-                    MessageBox.Show($"Không tìm thấy lịch đặt nào phù hợp với '{keyword}'", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    dgvDatSan.DataSource = null;
-                }
-                else
-                {
-                    dgvDatSan.DataSource = null;
-                    dgvDatSan.DataSource = results;
-                    ReapplyColumnBindings();
-                    FormatDonGiaColumn();
-                    MessageBox.Show($"Tìm thấy {results.Count} kết quả! Nhấn vào hàng để chọn.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi tìm kiếm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void RefreshDataWithSearch()
-        {
-            string keyword = txtTimKiem.Text.Trim();
-
-            if (string.IsNullOrWhiteSpace(keyword))
-            {
-                RefreshData();
-            }
-            else
-            {
-                try
-                {
-                    var results = busLichDat.Search(keyword);
-
-                    dgvDatSan.DataSource = null;
-                    dgvDatSan.DataSource = results;
-                    ReapplyColumnBindings();
-                    FormatDonGiaColumn();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Lỗi cập nhật kết quả tìm kiếm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void ResetSearch()
-        {
-            txtTimKiem.Clear();
-            RefreshData();
-        }
-
-        private void btnResetTimKiem_Click(object sender, EventArgs e)
-        {
-            ResetSearch();
-        }
-
-        private void btnTaiLai_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                txtTimKiem.Clear();
-                ResetForm();
-                RefreshData();
-                MessageBox.Show("Đã tải lại dữ liệu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi tải lại: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

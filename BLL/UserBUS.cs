@@ -14,7 +14,24 @@ namespace BUS
         {
             try
             {
-                return db.Users.FirstOrDefault(u => u.ID == username && u.Password == password);
+                // ===== LẤY USER TỪ DATABASE =====
+                var user = db.Users.FirstOrDefault(u => u.ID == username);
+                
+                if (user == null)
+                    return null;
+
+                // ===== CỐ GẮNG GIẢI MÃ PASSWORD =====
+                string decryptedPassword = MaHoaASCII.DecryptPassword(user.Password);
+
+                // ===== SO SÁNH VỚI PASSWORD NHẬP VÀO =====
+                if (decryptedPassword == password)
+                    return user;
+
+                // ===== NẾU GIẢI MÃ THẤT BẠI (PASSWORD CŨ PLAINTEXT), SO SÁNH TRỰC TIẾP =====
+                if (user.Password == password)
+                    return user;
+
+                return null;
             }
             catch
             {

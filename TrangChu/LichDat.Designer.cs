@@ -377,7 +377,7 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(161, 94);
+            this.label12.Location = new System.Drawing.Point(161, 86);
             this.label12.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(31, 16);
@@ -387,9 +387,9 @@
             // btnSan6
             // 
             this.btnSan6.Image = ((System.Drawing.Image)(resources.GetObject("btnSan6.Image")));
-            this.btnSan6.Location = new System.Drawing.Point(543, 13);
+            this.btnSan6.Location = new System.Drawing.Point(543, 18);
             this.btnSan6.Name = "btnSan6";
-            this.btnSan6.Size = new System.Drawing.Size(107, 157);
+            this.btnSan6.Size = new System.Drawing.Size(107, 149);
             this.btnSan6.TabIndex = 19;
             this.btnSan6.UseVisualStyleBackColor = true;
             // 
@@ -398,25 +398,25 @@
             this.btnSan5.Image = ((System.Drawing.Image)(resources.GetObject("btnSan5.Image")));
             this.btnSan5.Location = new System.Drawing.Point(393, 19);
             this.btnSan5.Name = "btnSan5";
-            this.btnSan5.Size = new System.Drawing.Size(107, 151);
+            this.btnSan5.Size = new System.Drawing.Size(107, 150);
             this.btnSan5.TabIndex = 18;
             this.btnSan5.UseVisualStyleBackColor = true;
             // 
             // btnSan4
             // 
             this.btnSan4.Image = ((System.Drawing.Image)(resources.GetObject("btnSan4.Image")));
-            this.btnSan4.Location = new System.Drawing.Point(202, 116);
+            this.btnSan4.Location = new System.Drawing.Point(202, 107);
             this.btnSan4.Name = "btnSan4";
-            this.btnSan4.Size = new System.Drawing.Size(107, 62);
+            this.btnSan4.Size = new System.Drawing.Size(116, 62);
             this.btnSan4.TabIndex = 17;
             this.btnSan4.UseVisualStyleBackColor = true;
             // 
             // btnSan3
             // 
             this.btnSan3.Image = ((System.Drawing.Image)(resources.GetObject("btnSan3.Image")));
-            this.btnSan3.Location = new System.Drawing.Point(45, 118);
+            this.btnSan3.Location = new System.Drawing.Point(45, 109);
             this.btnSan3.Name = "btnSan3";
-            this.btnSan3.Size = new System.Drawing.Size(107, 62);
+            this.btnSan3.Size = new System.Drawing.Size(116, 62);
             this.btnSan3.TabIndex = 16;
             this.btnSan3.UseVisualStyleBackColor = true;
             // 
@@ -425,7 +425,7 @@
             this.btnSan2.Image = ((System.Drawing.Image)(resources.GetObject("btnSan2.Image")));
             this.btnSan2.Location = new System.Drawing.Point(202, 18);
             this.btnSan2.Name = "btnSan2";
-            this.btnSan2.Size = new System.Drawing.Size(107, 62);
+            this.btnSan2.Size = new System.Drawing.Size(116, 62);
             this.btnSan2.TabIndex = 15;
             this.btnSan2.UseVisualStyleBackColor = true;
             // 
@@ -434,14 +434,14 @@
             this.btnSan1.Image = ((System.Drawing.Image)(resources.GetObject("btnSan1.Image")));
             this.btnSan1.Location = new System.Drawing.Point(45, 19);
             this.btnSan1.Name = "btnSan1";
-            this.btnSan1.Size = new System.Drawing.Size(107, 62);
+            this.btnSan1.Size = new System.Drawing.Size(116, 62);
             this.btnSan1.TabIndex = 14;
             this.btnSan1.UseVisualStyleBackColor = true;
             // 
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(425, 182);
+            this.label6.Location = new System.Drawing.Point(425, 176);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(40, 13);
             this.label6.TabIndex = 12;
@@ -450,7 +450,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(215, 181);
+            this.label5.Location = new System.Drawing.Point(235, 173);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(40, 13);
             this.label5.TabIndex = 11;
@@ -459,7 +459,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(572, 179);
+            this.label4.Location = new System.Drawing.Point(572, 173);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(40, 13);
             this.label4.TabIndex = 11;
@@ -468,7 +468,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(88, 182);
+            this.label3.Location = new System.Drawing.Point(88, 173);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(40, 13);
             this.label3.TabIndex = 10;
@@ -546,13 +546,13 @@
             // 
             this.clGioBatDau.HeaderText = "Giờ Bắt Đầu";
             this.clGioBatDau.Name = "clGioBatDau";
-            this.clGioBatDau.Width = 50;
+            this.clGioBatDau.Width = 30;
             // 
             // clGioKetThuc
             // 
             this.clGioKetThuc.HeaderText = "Giờ Kết Thúc";
             this.clGioKetThuc.Name = "clGioKetThuc";
-            this.clGioKetThuc.Width = 50;
+            this.clGioKetThuc.Width = 30;
             // 
             // clTrangThai
             // 

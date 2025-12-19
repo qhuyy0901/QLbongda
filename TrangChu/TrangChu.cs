@@ -36,12 +36,12 @@ namespace TrangChu
             if (role == "admin" || role == "quantri")
             {
                 if (btnDoanhThu != null) btnDoanhThu.Visible = true;
-                if (btnQuanLyNV != null) btnQuanLyNV.Visible = true;
+                if (btnQuanLyTK != null) btnQuanLyTK.Visible = true;
             }
             else // Nhân viên -> Ẩn nút quản lý
             {
                 if (btnDoanhThu != null) btnDoanhThu.Visible = false;
-                if (btnQuanLyNV != null) btnQuanLyNV.Visible = false;
+                if (btnQuanLyTK != null) btnQuanLyTK.Visible = false;
             }
         }
 

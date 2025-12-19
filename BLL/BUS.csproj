@@ -54,6 +54,7 @@
     <Compile Include="GiaSanBUS.cs" />
     <Compile Include="LichDatBUS.cs" />
     <Compile Include="Login.cs" />
+    <Compile Include="MaHoaASCII.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SanBongBUS.cs" />
     <Compile Include="UserBUS.cs" />

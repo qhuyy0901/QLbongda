@@ -141,19 +141,21 @@ namespace BUS
             return true;
         }
 
-        // ===== KIỂM TRA TRÙNG LẠP SÂN VÀ KHUNG GIỜ =====
+        // ===== KIỂM TRA TRÙNG LẠP SÂN VÀ KHUNG GIỜ (CẬP NHẬT) =====
         private bool IsTimeSlotConflict(string maSan, DateTime ngayDat, int gioBD, int gioKT, string excludeMaLich = null)
         {
             try
             {
                 DateTime ngay = ngayDat.Date;
 
+                // ===== CHỈ KIỂM TRA TRÙNG: CÙNG SÂN + CÙNG NGÀY + CÙNG KHUNG GIỜ =====
+                // KHÔNG kiểm tra SĐT - cho phép cùng 1 SĐT đặt nhiều sân khác nhau
                 var query = db.LichDats.Where(x =>
-                    x.MaSan == maSan &&
+                    x.MaSan == maSan &&                                    // ✅ CÙNG SÂN
                     x.NgayDat.HasValue &&
-                    x.NgayDat.Value == ngay &&
+                    x.NgayDat.Value == ngay &&                             // ✅ CÙNG NGÀY
                     gioBD < x.GioKT &&
-                    gioKT > x.GioBD &&
+                    gioKT > x.GioBD &&                                     // ✅ TRÙNG KHUNG GIỜ
                     x.TrangThai != "Đã hủy" &&
                     x.TrangThai != "Đã xóa"
                 );
@@ -210,6 +212,9 @@ namespace BUS
             }
         }
 
+        // ===== XÓA HOẶC BỎ DÙNG METHOD CŨ =====
+        // Giữ lại nhưng đổi tên để tránh nhầm lẫn
+        [Obsolete("Không còn sử dụng - sử dụng IsTimeSlotConflict thay thế")]
         public bool IsPhoneNumberAlreadyBooked(string sdt, DateTime ngayDat)
         {
             try
@@ -257,26 +262,22 @@ namespace BUS
                 // ===== VALIDATE SỐ ĐIỆN THOẠI =====
                 IsValidPhoneNumberFormat(lich.SDT_KH);
 
-                // ===== VALIDATE MÃ SÂN (SAN1-SAN6) =====
+                // ===== VALIDATE MÃ SÂN =====
                 IsValidSanCode(lich.MaSan);
 
                 // ===== VALIDATE ĐƠN GIÁ =====
                 IsValidPrice(lich.DonGiaThucTe);
 
-                // ===== KIỂM TRA SỐ ĐIỆN THOẠI ĐÃ ĐẶT TRONG NGÀY =====
-                if (!string.IsNullOrWhiteSpace(lich.SDT_KH))
+                // ===== KIỂM TRA TRÙNG SÂN VÀ KHUNG GIỜ =====
+                if (IsTimeSlotConflict(lich.MaSan, lich.NgayDat.Value, lich.GioBD.Value, lich.GioKT.Value))
                 {
-                    if (IsPhoneNumberAlreadyBooked(lich.SDT_KH, ngay))
-                    {
-                        throw new Exception($"❌ Số điện thoại {lich.SDT_KH} đã đặt sân vào ngày {ngay:dd/MM/yyyy} rồi!\n\nMỗi số điện thoại chỉ được đặt 1 lần/ngày.");
-                    }
+                    throw new Exception($"❌ Sân {lich.MaSan} vào khung giờ {lich.GioBD}h - {lich.GioKT}h ngày {ngay:dd/MM/yyyy} đã được đặt rồi!\n\n💡 Vui lòng chọn khung giờ khác hoặc sân khác.");
                 }
 
                 // ===== CHECK / TẠO KHÁCH HÀNG =====
                 if (!string.IsNullOrWhiteSpace(lich.SDT_KH))
                 {
-                    var kh = db.KhachHangs
-                               .FirstOrDefault(x => x.SDT_KH == lich.SDT_KH);
+                    var kh = db.KhachHangs.FirstOrDefault(x => x.SDT_KH == lich.SDT_KH);
 
                     if (kh == null)
                     {
@@ -289,12 +290,6 @@ namespace BUS
                         db.KhachHangs.Add(kh);
                         db.SaveChanges();
                     }
-                }
-
-                // ===== KIỂM TRA TRÙNG SÂN VÀ KHUNG GIỜ =====
-                if (IsTimeSlotConflict(lich.MaSan, lich.NgayDat.Value, lich.GioBD.Value, lich.GioKT.Value))
-                {
-                    throw new Exception($"❌ Sân {lich.MaSan} vào khung giờ {lich.GioBD}h - {lich.GioKT}h ngày {ngay:dd/MM/yyyy} đã được đặt rồi!\n\n💡 Vui lòng chọn khung giờ khác hoặc sân khác.");
                 }
 
                 if (string.IsNullOrWhiteSpace(lich.TrangThai))
@@ -310,7 +305,7 @@ namespace BUS
             }
             catch (Exception ex)
             {
-                throw new Exception("Insert LichDat lỗi: " + ex.Message);
+                throw new Exception("❌ Insert LichDat lỗi: " + ex.Message);
             }
         }
 
@@ -404,6 +399,28 @@ namespace BUS
             catch (Exception ex)
             {
                 throw new Exception("Lỗi hủy sân: " + ex.Message);
+            }
+        }
+
+        // ===== LẤY DANH SÁCH LỊCH THEO TRẠNG THÁI =====
+        public List<LichDat> GetByStatus(string trangThai)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(trangThai))
+                    return GetAll();
+
+                var result = db.LichDats
+                    .Where(x => x.TrangThai == trangThai && x.TrangThai != "Đã xóa")
+                    .OrderByDescending(x => x.NgayDat)
+                    .ThenByDescending(x => x.GioBD)
+                    .ToList();
+
+                return result;
+            }
+            catch
+            {
+                return new List<LichDat>();
             }
         }
     }
