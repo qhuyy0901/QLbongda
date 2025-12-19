@@ -34,8 +34,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txtDonGia = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
-            this.txtMaDat = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
             this.btnQuayLai = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.btnTaiLai = new System.Windows.Forms.Button();
@@ -65,7 +63,6 @@
             this.clGioKetThuc = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clTrangThai = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clDonGiaThucTe = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.rtbLog = new System.Windows.Forms.RichTextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDatSan)).BeginInit();
@@ -74,7 +71,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(10, 153);
+            this.label7.Location = new System.Drawing.Point(6, 132);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(47, 13);
@@ -84,7 +81,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 83);
+            this.label8.Location = new System.Drawing.Point(2, 62);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(92, 13);
@@ -94,7 +91,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(6, 193);
+            this.label9.Location = new System.Drawing.Point(5, 180);
             this.label9.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(55, 13);
@@ -104,7 +101,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(6, 228);
+            this.label10.Location = new System.Drawing.Point(5, 215);
             this.label10.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(68, 13);
@@ -114,7 +111,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 257);
+            this.label11.Location = new System.Drawing.Point(5, 244);
             this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(69, 13);
@@ -131,7 +128,7 @@
             "San5",
             "San6",
             "San7"});
-            this.cbxMaSan.Location = new System.Drawing.Point(95, 150);
+            this.cbxMaSan.Location = new System.Drawing.Point(91, 129);
             this.cbxMaSan.Margin = new System.Windows.Forms.Padding(2);
             this.cbxMaSan.Name = "cbxMaSan";
             this.cbxMaSan.Size = new System.Drawing.Size(139, 21);
@@ -139,7 +136,7 @@
             // 
             // txtTenKhachHang
             // 
-            this.txtTenKhachHang.Location = new System.Drawing.Point(97, 83);
+            this.txtTenKhachHang.Location = new System.Drawing.Point(93, 62);
             this.txtTenKhachHang.Margin = new System.Windows.Forms.Padding(2);
             this.txtTenKhachHang.Name = "txtTenKhachHang";
             this.txtTenKhachHang.Size = new System.Drawing.Size(137, 20);
@@ -148,17 +145,17 @@
             // dtpGioBatDau
             // 
             this.dtpGioBatDau.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtpGioBatDau.Location = new System.Drawing.Point(93, 225);
+            this.dtpGioBatDau.Location = new System.Drawing.Point(92, 212);
             this.dtpGioBatDau.Margin = new System.Windows.Forms.Padding(2);
             this.dtpGioBatDau.Name = "dtpGioBatDau";
             this.dtpGioBatDau.ShowUpDown = true;
-            this.dtpGioBatDau.Size = new System.Drawing.Size(141, 20);
+            this.dtpGioBatDau.Size = new System.Drawing.Size(138, 20);
             this.dtpGioBatDau.TabIndex = 6;
             // 
             // dtpGioKetThuc
             // 
             this.dtpGioKetThuc.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.dtpGioKetThuc.Location = new System.Drawing.Point(93, 260);
+            this.dtpGioKetThuc.Location = new System.Drawing.Point(92, 247);
             this.dtpGioKetThuc.Margin = new System.Windows.Forms.Padding(2);
             this.dtpGioKetThuc.Name = "dtpGioKetThuc";
             this.dtpGioKetThuc.ShowUpDown = true;
@@ -220,7 +217,7 @@
             // lblSDT_KH
             // 
             this.lblSDT_KH.AutoSize = true;
-            this.lblSDT_KH.Location = new System.Drawing.Point(6, 119);
+            this.lblSDT_KH.Location = new System.Drawing.Point(2, 98);
             this.lblSDT_KH.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblSDT_KH.Name = "lblSDT_KH";
             this.lblSDT_KH.Size = new System.Drawing.Size(95, 13);
@@ -229,7 +226,7 @@
             // 
             // txtSDT
             // 
-            this.txtSDT.Location = new System.Drawing.Point(97, 116);
+            this.txtSDT.Location = new System.Drawing.Point(93, 95);
             this.txtSDT.Margin = new System.Windows.Forms.Padding(2);
             this.txtSDT.Name = "txtSDT";
             this.txtSDT.Size = new System.Drawing.Size(137, 20);
@@ -237,7 +234,7 @@
             // 
             // dtpNgayDat
             // 
-            this.dtpNgayDat.Location = new System.Drawing.Point(93, 189);
+            this.dtpNgayDat.Location = new System.Drawing.Point(92, 176);
             this.dtpNgayDat.Name = "dtpNgayDat";
             this.dtpNgayDat.Size = new System.Drawing.Size(138, 20);
             this.dtpNgayDat.TabIndex = 5;
@@ -247,8 +244,6 @@
             this.groupBox1.BackColor = System.Drawing.Color.LimeGreen;
             this.groupBox1.Controls.Add(this.txtDonGia);
             this.groupBox1.Controls.Add(this.label15);
-            this.groupBox1.Controls.Add(this.txtMaDat);
-            this.groupBox1.Controls.Add(this.label14);
             this.groupBox1.Controls.Add(this.btnQuayLai);
             this.groupBox1.Controls.Add(this.txtSDT);
             this.groupBox1.Controls.Add(this.btnXoa);
@@ -276,38 +271,20 @@
             // 
             // txtDonGia
             // 
-            this.txtDonGia.Location = new System.Drawing.Point(93, 305);
+            this.txtDonGia.Location = new System.Drawing.Point(92, 292);
             this.txtDonGia.Name = "txtDonGia";
-            this.txtDonGia.Size = new System.Drawing.Size(133, 20);
+            this.txtDonGia.Size = new System.Drawing.Size(139, 20);
             this.txtDonGia.TabIndex = 8;
             // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(7, 305);
+            this.label15.Location = new System.Drawing.Point(6, 292);
             this.label15.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(49, 13);
             this.label15.TabIndex = 34;
             this.label15.Text = "Đơn Giá:";
-            // 
-            // txtMaDat
-            // 
-            this.txtMaDat.Location = new System.Drawing.Point(95, 51);
-            this.txtMaDat.Margin = new System.Windows.Forms.Padding(2);
-            this.txtMaDat.Name = "txtMaDat";
-            this.txtMaDat.Size = new System.Drawing.Size(141, 20);
-            this.txtMaDat.TabIndex = 1;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(9, 54);
-            this.label14.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(45, 13);
-            this.label14.TabIndex = 31;
-            this.label14.Text = "Mã Đặt:";
             // 
             // btnQuayLai
             // 
@@ -589,23 +566,12 @@
             this.clDonGiaThucTe.Name = "clDonGiaThucTe";
             this.clDonGiaThucTe.Width = 80;
             // 
-            // rtbLog
-            // 
-            this.rtbLog.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.rtbLog.Location = new System.Drawing.Point(0, 488);
-            this.rtbLog.Name = "rtbLog";
-            this.rtbLog.ReadOnly = true;
-            this.rtbLog.Size = new System.Drawing.Size(981, 117);
-            this.rtbLog.TabIndex = 28;
-            this.rtbLog.Text = "";
-            // 
             // LichDat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(981, 605);
-            this.Controls.Add(this.rtbLog);
+            this.ClientSize = new System.Drawing.Size(981, 496);
             this.Controls.Add(this.dgvDatSan);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -656,12 +622,9 @@
         private System.Windows.Forms.Button btnSan3;
         private System.Windows.Forms.Button btnSan2;
         private System.Windows.Forms.Button btnSan6;
-        private System.Windows.Forms.TextBox txtMaDat;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label15;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.RichTextBox rtbLog;
         private System.Windows.Forms.TextBox txtTimKiem;
         private System.Windows.Forms.Button btnTimKiem;
         private System.Windows.Forms.Button btnTaiLai;

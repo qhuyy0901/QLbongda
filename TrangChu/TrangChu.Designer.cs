@@ -85,6 +85,7 @@
             this.btnQuanLyNV.Text = "Quản Lý NV";
             this.btnQuanLyNV.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnQuanLyNV.UseVisualStyleBackColor = false;
+            this.btnQuanLyNV.Click += new System.EventHandler(this.btnQuanLyNV_Click);
             // 
             // btnDoanhThu
             // 

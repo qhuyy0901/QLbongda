@@ -85,6 +85,12 @@ namespace TrangChu
             this.Show();
         }
 
-
+        private void btnQuanLyNV_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            QuanLyTK frm = new QuanLyTK();
+            frm.ShowDialog();
+            this.Show();
+        }
     }
 }

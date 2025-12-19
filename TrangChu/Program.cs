@@ -11,7 +11,7 @@ namespace TrangChu
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new QuanLyTK());  
+            Application.Run(new LichDat());  
         }
     }
 }
