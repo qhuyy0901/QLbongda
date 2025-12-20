@@ -88,9 +88,17 @@ namespace TrangChu
         private void btnQuanLyNV_Click(object sender, EventArgs e)
         {
             this.Hide();
+            // ===== GÁN NGƯỜI DÙNG ĐANG ĐĂNG NHẬP =====
+            QuanLyTK.CurrentLoggedInUser = currentUser;
             QuanLyTK frm = new QuanLyTK();
             frm.ShowDialog();
             this.Show();
+        }
+
+        private void btnHelp_Click(object sender, EventArgs e)
+        {
+            //hướng dẫn sử dụng
+
         }
     }
 }

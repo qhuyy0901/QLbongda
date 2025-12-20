@@ -17,6 +17,10 @@ namespace TrangChu
     {
         private UserBUS busUser = new UserBUS();
         private bool isEditing = false;
+        private string originalID = ""; // ===== LƯỚI TRỮ ID GỐC KHI CHỈNH SỬA =====
+        
+        // ===== STATIC FIELD LƯU NGƯỜI DÙNG ĐANG ĐĂNG NHẬP =====
+        public static User CurrentLoggedInUser { get; set; }
 
         // ===== DANH SÁCH QUYỀN HỢP LỆ =====
         private readonly string[] VALID_ROLES = { "NhanVien", "Admin" };
@@ -155,6 +159,21 @@ namespace TrangChu
                     return;
                 }
 
+                string idToCheck = txtID.Text.Trim();
+
+                // ===== KIỂM TRA ID KHÔNG ĐƯỢC CHỨA KÝ TỰ ĐẶC BIỆT =====
+                if (!Regex.IsMatch(idToCheck, @"^[a-zA-Z0-9_]+$"))
+                {
+                    MessageBox.Show(
+                        "❌ ID chỉ được chứa chữ cái, số và dấu gạch dưới (_)!\n\n" +
+                        "❌ Không được dùng khoảng trắng hoặc ký tự đặc biệt khác.",
+                        "Cảnh báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    txtID.Focus();
+                    return;
+                }
+
                 // Kiểm tra password
                 if (string.IsNullOrWhiteSpace(txtPassword.Text))
                 {
@@ -189,11 +208,12 @@ namespace TrangChu
                     return;
                 }
 
-                // Kiểm tra ID đã tồn tại trong database
-                var existingUser = busUser.GetByID(txtID.Text.Trim());
+                // ===== KIỂM TRA ID ĐÃ TỒN TẠI TRONG DATABASE =====
+                var existingUser = busUser.GetByID(idToCheck);
                 if (existingUser != null)
                 {
-                    MessageBox.Show("❌ ID đã tồn tại trong database!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("❌ ID đã tồn tại trong database! Vui lòng dùng ID khác.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtID.Focus();
                     return;
                 }
 
@@ -204,7 +224,7 @@ namespace TrangChu
                 // Tạo tài khoản mới
                 DAL.User user = new DAL.User
                 {
-                    ID = txtID.Text.Trim(),
+                    ID = idToCheck,
                     Password = encryptedPassword,  // ===== LƯU PASSWORD ĐÃ MÃ HÓA =====
                     Role = selectedRole,
                     TenNguoiDung = txtTenNguoiDung.Text.Trim()
@@ -249,10 +269,26 @@ namespace TrangChu
                     return;
                 }
 
-                // Kiểm tra ID
+                // ===== KHÔNG CHO PHÉP THAY ĐỔI ID =====
                 if (string.IsNullOrWhiteSpace(txtID.Text))
                 {
-                    MessageBox.Show("❌ Vui lòng nhập ID!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("❌ ID không được để trống!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtID.Focus();
+                    return;
+                }
+
+                string currentID = txtID.Text.Trim();
+                
+                // Nếu ID đã thay đổi so với ID gốc, không cho phép
+                if (currentID != originalID)
+                {
+                    MessageBox.Show(
+                        "❌ Không được phép thay đổi ID!\n\n" +
+                        "💡 ID là định danh duy nhất và không thể sửa đổi.",
+                        "Cảnh báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    txtID.Text = originalID;
                     txtID.Focus();
                     return;
                 }
@@ -310,7 +346,7 @@ namespace TrangChu
 
                     DAL.User userUpdate = new DAL.User
                     {
-                        ID = txtID.Text.Trim(),
+                        ID = currentID,
                         Password = newPassword,
                         Role = selectedRole,
                         TenNguoiDung = txtTenNguoiDung.Text.Trim()
@@ -354,6 +390,18 @@ namespace TrangChu
                     return;
                 }
 
+                // ===== NGĂN CHẶN XÓA TÀI KHOẢN ADMIN ĐANG ĐĂNG NHẬP =====
+                if (CurrentLoggedInUser != null && idDelete == CurrentLoggedInUser.ID)
+                {
+                    MessageBox.Show(
+                        "❌ Không được phép xóa tài khoản Admin đang đăng nhập!\n\n" +
+                        "💡 Vui lòng yêu cầu quản trị viên khác thực hiện hành động này.",
+                        "Cảnh báo",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Warning);
+                    return;
+                }
+
                 // Xác nhận xóa
                 DialogResult result = MessageBox.Show(
                     $"❓ Bạn có chắc chắn muốn xóa tài khoản [{idDelete}] không?\n\n⚠️ Hành động này không thể hoàn tác!",
@@ -393,8 +441,12 @@ namespace TrangChu
                 string role = dgvThongTinTK.Rows[e.RowIndex].Cells["clRole"].Value?.ToString();
                 string tenNguoiDung = dgvThongTinTK.Rows[e.RowIndex].Cells["clTenNguoiDung"].Value?.ToString();
 
+                // ===== LƯU LẠI ID GỐC TRƯỚC KHI HIỂN THỊ =====
+                originalID = id;
+
                 // Hiển thị lên TextBox
                 txtID.Text = id;
+                txtID.ReadOnly = true;  // ===== CẤM CHỈNH SỬA ID KHI Ở CHẾ ĐỘ EDIT =====
                 cbbRole.SelectedItem = role ?? DEFAULT_ROLE;
                 txtTenNguoiDung.Text = tenNguoiDung;
 
@@ -420,12 +472,14 @@ namespace TrangChu
         private void ResetForm()
         {
             txtID.Clear();
+            txtID.ReadOnly = false;  // ===== MỞ KHÓA ID KHI THÊM TÀI KHOẢN MỚI =====
             txtPassword.Clear();
             txtNhapLaiPassword.Clear();
             cbbRole.SelectedItem = DEFAULT_ROLE;  // ===== ĐẶT MẶT ĐỊNH LÀ NHÂN VIÊN =====
             txtTenNguoiDung.Clear();
             dgvThongTinTK.ClearSelection();
             isEditing = false;
+            originalID = "";
             txtID.Focus();
         }
 
@@ -487,6 +541,12 @@ namespace TrangChu
             {
                 MessageBox.Show($"❌ Lỗi tải lại: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void btnKhoaTK_Click(object sender, EventArgs e)
+        {
+            // ===== CHỨC NĂNG KHÓA TÀI KHOẢN (TƯƠNG TỰ XÓA NHƯNG KHÔNG XOÁ) =====
+
         }
     }
 }

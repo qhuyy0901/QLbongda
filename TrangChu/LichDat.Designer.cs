@@ -63,6 +63,7 @@
             this.clGioKetThuc = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clTrangThai = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clDonGiaThucTe = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnThanhToan = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDatSan)).BeginInit();
@@ -303,6 +304,7 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.groupBox2.Controls.Add(this.btnThanhToan);
             this.groupBox2.Controls.Add(this.btnTaiLai);
             this.groupBox2.Controls.Add(this.txtTimKiem);
             this.groupBox2.Controls.Add(this.btnTimKiem);
@@ -332,9 +334,9 @@
             // 
             this.btnTaiLai.Image = ((System.Drawing.Image)(resources.GetObject("btnTaiLai.Image")));
             this.btnTaiLai.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTaiLai.Location = new System.Drawing.Point(631, 201);
+            this.btnTaiLai.Location = new System.Drawing.Point(644, 195);
             this.btnTaiLai.Name = "btnTaiLai";
-            this.btnTaiLai.Size = new System.Drawing.Size(84, 23);
+            this.btnTaiLai.Size = new System.Drawing.Size(71, 29);
             this.btnTaiLai.TabIndex = 38;
             this.btnTaiLai.Text = "Tải Lại";
             this.btnTaiLai.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -343,19 +345,20 @@
             // 
             // txtTimKiem
             // 
-            this.txtTimKiem.Location = new System.Drawing.Point(510, 203);
+            this.txtTimKiem.Location = new System.Drawing.Point(510, 195);
             this.txtTimKiem.Margin = new System.Windows.Forms.Padding(2);
+            this.txtTimKiem.Multiline = true;
             this.txtTimKiem.Name = "txtTimKiem";
-            this.txtTimKiem.Size = new System.Drawing.Size(102, 20);
+            this.txtTimKiem.Size = new System.Drawing.Size(118, 29);
             this.txtTimKiem.TabIndex = 35;
             // 
             // btnTimKiem
             // 
             this.btnTimKiem.Image = ((System.Drawing.Image)(resources.GetObject("btnTimKiem.Image")));
             this.btnTimKiem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTimKiem.Location = new System.Drawing.Point(428, 203);
+            this.btnTimKiem.Location = new System.Drawing.Point(428, 195);
             this.btnTimKiem.Name = "btnTimKiem";
-            this.btnTimKiem.Size = new System.Drawing.Size(88, 23);
+            this.btnTimKiem.Size = new System.Drawing.Size(88, 31);
             this.btnTimKiem.TabIndex = 37;
             this.btnTimKiem.Text = "Tìm Kiếm:";
             this.btnTimKiem.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -387,9 +390,9 @@
             // btnSan6
             // 
             this.btnSan6.Image = ((System.Drawing.Image)(resources.GetObject("btnSan6.Image")));
-            this.btnSan6.Location = new System.Drawing.Point(543, 18);
+            this.btnSan6.Location = new System.Drawing.Point(543, 19);
             this.btnSan6.Name = "btnSan6";
-            this.btnSan6.Size = new System.Drawing.Size(107, 149);
+            this.btnSan6.Size = new System.Drawing.Size(107, 148);
             this.btnSan6.TabIndex = 19;
             this.btnSan6.UseVisualStyleBackColor = true;
             // 
@@ -398,7 +401,7 @@
             this.btnSan5.Image = ((System.Drawing.Image)(resources.GetObject("btnSan5.Image")));
             this.btnSan5.Location = new System.Drawing.Point(393, 19);
             this.btnSan5.Name = "btnSan5";
-            this.btnSan5.Size = new System.Drawing.Size(107, 150);
+            this.btnSan5.Size = new System.Drawing.Size(107, 148);
             this.btnSan5.TabIndex = 18;
             this.btnSan5.UseVisualStyleBackColor = true;
             // 
@@ -441,7 +444,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(425, 176);
+            this.label6.Location = new System.Drawing.Point(425, 170);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(40, 13);
             this.label6.TabIndex = 12;
@@ -459,7 +462,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(572, 173);
+            this.label4.Location = new System.Drawing.Point(574, 170);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(40, 13);
             this.label4.TabIndex = 11;
@@ -566,6 +569,18 @@
             this.clDonGiaThucTe.Name = "clDonGiaThucTe";
             this.clDonGiaThucTe.Width = 80;
             // 
+            // btnThanhToan
+            // 
+            this.btnThanhToan.Image = ((System.Drawing.Image)(resources.GetObject("btnThanhToan.Image")));
+            this.btnThanhToan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnThanhToan.Location = new System.Drawing.Point(0, 195);
+            this.btnThanhToan.Name = "btnThanhToan";
+            this.btnThanhToan.Size = new System.Drawing.Size(108, 28);
+            this.btnThanhToan.TabIndex = 39;
+            this.btnThanhToan.Text = "Thanh Toán";
+            this.btnThanhToan.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnThanhToan.UseVisualStyleBackColor = true;
+            // 
             // LichDat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -638,5 +653,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn clGioKetThuc;
         private System.Windows.Forms.DataGridViewTextBoxColumn clTrangThai;
         private System.Windows.Forms.DataGridViewTextBoxColumn clDonGiaThucTe;
+        private System.Windows.Forms.Button btnThanhToan;
     }
 }

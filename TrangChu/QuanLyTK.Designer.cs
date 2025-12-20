@@ -45,7 +45,6 @@
             this.lblPassword = new System.Windows.Forms.Label();
             this.lblID = new System.Windows.Forms.Label();
             this.btnTaiLaiTrang = new System.Windows.Forms.Button();
-            this.entityCommand1 = new System.Data.Entity.Core.EntityClient.EntityCommand();
             this.dgvThongTinTK = new System.Windows.Forms.DataGridView();
             this.clID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.clRole = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -82,7 +81,7 @@
             // 
             // btnXoa
             // 
-            this.btnXoa.Location = new System.Drawing.Point(230, 282);
+            this.btnXoa.Location = new System.Drawing.Point(219, 282);
             this.btnXoa.Name = "btnXoa";
             this.btnXoa.Size = new System.Drawing.Size(75, 32);
             this.btnXoa.TabIndex = 14;
@@ -100,7 +99,7 @@
             // 
             // btnThem
             // 
-            this.btnThem.Location = new System.Drawing.Point(10, 282);
+            this.btnThem.Location = new System.Drawing.Point(24, 282);
             this.btnThem.Name = "btnThem";
             this.btnThem.Size = new System.Drawing.Size(75, 32);
             this.btnThem.TabIndex = 12;
@@ -111,7 +110,7 @@
             // 
             this.btnQuayLai.Image = global::TrangChu.Properties.Resources.Screenshot_2025_12_14_150219_removebg_preview;
             this.btnQuayLai.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnQuayLai.Location = new System.Drawing.Point(-8, 357);
+            this.btnQuayLai.Location = new System.Drawing.Point(-8, 366);
             this.btnQuayLai.Name = "btnQuayLai";
             this.btnQuayLai.Size = new System.Drawing.Size(86, 23);
             this.btnQuayLai.TabIndex = 11;
@@ -222,14 +221,6 @@
             this.btnTaiLaiTrang.UseVisualStyleBackColor = false;
             this.btnTaiLaiTrang.Click += new System.EventHandler(this.btnTaiLaiTrang_Click_1);
             // 
-            // entityCommand1
-            // 
-            this.entityCommand1.CommandTimeout = 0;
-            this.entityCommand1.CommandTree = null;
-            this.entityCommand1.Connection = null;
-            this.entityCommand1.EnablePlanCaching = true;
-            this.entityCommand1.Transaction = null;
-            // 
             // dgvThongTinTK
             // 
             this.dgvThongTinTK.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
@@ -319,7 +310,6 @@
         private System.Windows.Forms.TextBox txtNhapLaiPassword;
         private System.Windows.Forms.TextBox txtPassword;
         private System.Windows.Forms.TextBox txtID;
-        private System.Data.Entity.Core.EntityClient.EntityCommand entityCommand1;
         private System.Windows.Forms.DataGridView dgvThongTinTK;
         private System.Windows.Forms.DataGridViewTextBoxColumn clID;
         private System.Windows.Forms.DataGridViewTextBoxColumn clRole;

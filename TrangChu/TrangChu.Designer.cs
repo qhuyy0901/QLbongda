@@ -39,6 +39,7 @@
             this.btnDichVu = new System.Windows.Forms.Button();
             this.lblTenSan = new System.Windows.Forms.Label();
             this.picNen = new System.Windows.Forms.PictureBox();
+            this.btnHelp = new System.Windows.Forms.Button();
             this.panelMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picNen)).BeginInit();
@@ -187,12 +188,26 @@
             this.picNen.TabIndex = 3;
             this.picNen.TabStop = false;
             // 
+            // btnHelp
+            // 
+            this.btnHelp.Image = ((System.Drawing.Image)(resources.GetObject("btnHelp.Image")));
+            this.btnHelp.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnHelp.Location = new System.Drawing.Point(972, 12);
+            this.btnHelp.Name = "btnHelp";
+            this.btnHelp.Size = new System.Drawing.Size(56, 26);
+            this.btnHelp.TabIndex = 4;
+            this.btnHelp.Text = "Help";
+            this.btnHelp.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnHelp.UseVisualStyleBackColor = true;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
+            // 
             // TrangChu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.LightGray;
             this.ClientSize = new System.Drawing.Size(1035, 558);
+            this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.picNen);
             this.Controls.Add(this.lblTenSan);
             this.Controls.Add(this.panelMenu);
@@ -220,6 +235,7 @@
         private System.Windows.Forms.Button btnDoanhThu;
         private System.Windows.Forms.Button btnQuanLyTK;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button btnHelp;
     }
 }
 
