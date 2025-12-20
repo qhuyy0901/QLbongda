@@ -280,37 +280,56 @@ namespace TrangChu
                 if (row.Cells[3].Value != null)
                     txtTenKhachHang.Text = row.Cells[3].Value.ToString();
 
+                // ===== TÍNH ĐƠN GIÁ/GIỜ GỐC =====
                 try
                 {
+                    int gioBD = 0;
+                    int gioKT = 0;
+                    decimal giaThucTe = 0;
+
+                    // Lấy giờ bắt đầu
+                    if (row.Cells[5].Value != null)
+                    {
+                        gioBD = Convert.ToInt32(row.Cells[5].Value);
+                    }
+
+                    // Lấy giờ kết thúc
+                    if (row.Cells[6].Value != null)
+                    {
+                        gioKT = Convert.ToInt32(row.Cells[6].Value);
+                    }
+
+                    // Lấy giá thực tế đã tính
                     if (row.DataBoundItem is DAL.LichDat lichData)
                     {
                         if (lichData.DonGiaThucTe.HasValue)
                         {
-                            txtDonGia.Text = lichData.DonGiaThucTe.Value.ToString("0.00");
+                            giaThucTe = lichData.DonGiaThucTe.Value;
                         }
-                        else
+                    }
+                    else if (row.Cells[8].Value != null && row.Cells[8].Value != DBNull.Value)
+                    {
+                        if (decimal.TryParse(row.Cells[8].Value.ToString(), out decimal gia))
                         {
-                            txtDonGia.Text = "0.00";
+                            giaThucTe = gia;
                         }
+                    }
+
+                    // ===== TÍNH Đơn giá/giờ = Giá thực tế / Số giờ =====
+                    int soGio = gioKT - gioBD;
+                    
+                    if (soGio > 0 && giaThucTe > 0)
+                    {
+                        decimal donGiaHangGio = giaThucTe / soGio;
+                        txtDonGia.Text = donGiaHangGio.ToString("0.00");
+                    }
+                    else if (giaThucTe > 0)
+                    {
+                        txtDonGia.Text = giaThucTe.ToString("0.00");
                     }
                     else
                     {
-                        if (row.Cells[8].Value != null && row.Cells[8].Value != DBNull.Value)
-                        {
-                            string giaStr = row.Cells[8].Value.ToString().Trim();
-                            if (!string.IsNullOrWhiteSpace(giaStr) && decimal.TryParse(giaStr, out decimal gia))
-                            {
-                                txtDonGia.Text = gia.ToString("0.00");
-                            }
-                            else
-                            {
-                                txtDonGia.Text = "0.00";
-                            }
-                        }
-                        else
-                        {
-                            txtDonGia.Text = "0.00";
-                        }
+                        txtDonGia.Text = "0.00";
                     }
                 }
                 catch (Exception ex)
@@ -518,6 +537,10 @@ namespace TrangChu
                 }
             }
 
+            // ===== TÍNH GIÁ SÂN =====
+            int soGio = gioKT - gioBD;
+            decimal donGiaHangGio = decimal.Parse(txtDonGia.Text.Trim());
+            decimal giaThucTe = soGio * donGiaHangGio;
 
             DAL.LichDat lich = new DAL.LichDat
             {
@@ -529,14 +552,20 @@ namespace TrangChu
                 GioBD = gioBD,
                 GioKT = gioKT,
                 TrangThai = "Đã đặt",
-                DonGiaThucTe = decimal.Parse(txtDonGia.Text.Trim())
+                DonGiaThucTe = giaThucTe
             };
 
             try
             {
                 if (busLichDat.Insert(lich))
                 {
-                    MessageBox.Show($"✔ Đặt sân thành công!\nMã lịch: {lich.MaLich}", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show(
+                        $"✔ Đặt sân thành công!\n" +
+                        $"Mã lịch: {lich.MaLich}\n" +
+                        $"Số giờ: {soGio}h\n" +
+                        $"Đơn giá/giờ: {donGiaHangGio:N0} đ\n" +
+                        $"Tổng giá: {giaThucTe:N0} đ",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     RefreshData();
                     ResetForm();
                     isEditing = false;
@@ -812,6 +841,11 @@ namespace TrangChu
                 }
             }
 
+            // ===== TÍNH GIÁ SÂN =====
+            int soGio = gioKT - gioBD;
+            decimal donGiaHangGio = decimal.Parse(txtDonGia.Text.Trim());
+            decimal giaThucTe = soGio * donGiaHangGio;
+
             DAL.LichDat lichMoi = new DAL.LichDat
             {
                 MaLich = maLich,
@@ -822,11 +856,15 @@ namespace TrangChu
                 GioBD = gioBD,
                 GioKT = gioKT,
                 TrangThai = "Đã đặt",
-                DonGiaThucTe = decimal.Parse(txtDonGia.Text.Trim())
+                DonGiaThucTe = giaThucTe
             };
 
-            DialogResult dr = MessageBox.Show($"Bạn có chắc muốn cập nhật thông tin cho mã [{lichMoi.MaLich}]?",
-                                      "Xác nhận sửa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult dr = MessageBox.Show(
+                $"Bạn có chắc muốn cập nhật thông tin cho mã [{lichMoi.MaLich}]?\n\n" +
+                $"Số giờ: {soGio}h\n" +
+                $"Đơn giá/giờ: {donGiaHangGio:N0} đ\n" +
+                $"Tổng giá: {giaThucTe:N0} đ",
+                "Xác nhận sửa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (dr == DialogResult.Yes)
             {

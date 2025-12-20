@@ -56,6 +56,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="HDSD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="HDSD.Designer.cs">
+      <DependentUpon>HDSD.cs</DependentUpon>
+    </Compile>
     <Compile Include="QuanLyTK.cs">
       <SubType>Form</SubType>
     </Compile>
