@@ -23,6 +23,8 @@
             this.btnLogin = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -40,7 +42,7 @@
             // txtUser
             // 
             this.txtUser.Font = new System.Drawing.Font("Arial", 12F);
-            this.txtUser.Location = new System.Drawing.Point(67, 230);
+            this.txtUser.Location = new System.Drawing.Point(67, 242);
             this.txtUser.Name = "txtUser";
             this.txtUser.Size = new System.Drawing.Size(240, 26);
             this.txtUser.TabIndex = 2;
@@ -48,7 +50,7 @@
             // txtPass
             // 
             this.txtPass.Font = new System.Drawing.Font("Arial", 12F);
-            this.txtPass.Location = new System.Drawing.Point(67, 280);
+            this.txtPass.Location = new System.Drawing.Point(67, 298);
             this.txtPass.Name = "txtPass";
             this.txtPass.PasswordChar = '*';
             this.txtPass.Size = new System.Drawing.Size(240, 26);
@@ -58,12 +60,12 @@
             // 
             this.btnLogin.BackColor = System.Drawing.Color.White;
             this.btnLogin.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
-            this.btnLogin.ForeColor = System.Drawing.Color.Black;
-            this.btnLogin.Location = new System.Drawing.Point(67, 322);
+            this.btnLogin.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.btnLogin.Location = new System.Drawing.Point(67, 347);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(111, 40);
             this.btnLogin.TabIndex = 5;
-            this.btnLogin.Text = "Login";
+            this.btnLogin.Text = "Đăng Nhập";
             this.btnLogin.UseVisualStyleBackColor = false;
             this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
@@ -71,12 +73,12 @@
             // 
             this.btnExit.BackColor = System.Drawing.Color.White;
             this.btnExit.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Bold);
-            this.btnExit.ForeColor = System.Drawing.Color.Black;
-            this.btnExit.Location = new System.Drawing.Point(196, 322);
+            this.btnExit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(64)))), ((int)(((byte)(0)))));
+            this.btnExit.Location = new System.Drawing.Point(196, 347);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(111, 40);
             this.btnExit.TabIndex = 6;
-            this.btnExit.Text = "Exit";
+            this.btnExit.Text = "Thoát";
             this.btnExit.UseVisualStyleBackColor = false;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
@@ -89,10 +91,32 @@
             this.pictureBox1.TabIndex = 7;
             this.pictureBox1.TabStop = false;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label1.Location = new System.Drawing.Point(67, 223);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(87, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Tên Đăng Nhập:";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label2.Location = new System.Drawing.Point(67, 282);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(56, 13);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Mật Khẩu:";
+            // 
             // Login
             // 
             this.BackColor = System.Drawing.Color.Green;
-            this.ClientSize = new System.Drawing.Size(380, 420);
+            this.ClientSize = new System.Drawing.Size(380, 466);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.lblTitle);
@@ -116,5 +140,7 @@
         private System.Windows.Forms.Button btnLogin;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }

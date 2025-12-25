@@ -32,7 +32,7 @@ namespace TrangChu
             // Chuẩn hóa Role về chữ thường
             string role = currentUser.Role.Trim().ToLower();
 
-            // Nếu là Admin  Quản trị -> Hiện tất cả
+            // Nếu là Admin Quản trị -> Hiện tất cả
             if (role == "admin" || role == "quantri")
             {
                 if (btnDoanhThu != null) btnDoanhThu.Visible = true;
@@ -44,7 +44,6 @@ namespace TrangChu
                 if (btnDoanhThu != null) btnDoanhThu.Visible = false;
                 if (btnQuanLyTK != null) btnQuanLyTK.Visible = false;
                 if (btnHelp != null) btnHelp.Visible = true;
-
             }
         }
 
@@ -104,7 +103,26 @@ namespace TrangChu
             HDSD frm = new HDSD();
             frm.ShowDialog();
             this.Show();
+        }
 
+        private void btnDichVu_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            DichVu frmDichVu = new DichVu();
+            frmDichVu.SetCurrentUser(currentUser); // truyền user
+            frmDichVu.ShowDialog();
+
+            this.Show();
+        }
+
+
+        private void btnDoanhThu_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            ThongKe frm = new ThongKe();
+            frm.ShowDialog();
+            this.Show();
         }
     }
 }

@@ -61,6 +61,23 @@ namespace TrangChu
             this.Dispose();
         }
 
+        private void Login_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                // Test kết nối database
+                var testUser = userBUS.GetAll();
+                if (testUser == null)
+                {
+                    throw new Exception("Không thể kết nối database!");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("⚠️ Lỗi kết nối CSDL:\n" + ex.Message, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+            }
+        }
 
     }
 }

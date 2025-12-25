@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL;
+using System;
 using System.Windows.Forms;
 
 namespace TrangChu
@@ -11,7 +12,7 @@ namespace TrangChu
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new LichDat());  
+            Application.Run(new DichVu());  
         }
     }
 }

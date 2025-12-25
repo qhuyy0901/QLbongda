@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using TrangChu;
 
 namespace TrangChu
 {
@@ -1042,6 +1043,57 @@ namespace TrangChu
                     MessageBox.Show(info, $"Thông Tin {maSan}", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
+        }
+
+        private void btnThanhToan_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgvDatSan.SelectedRows.Count == 0)
+                {
+                    MessageBox.Show("❌ Vui lòng chọn lịch đặt cần thanh toán!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string maLich = null;
+                DAL.LichDat lich = null;
+
+                if (dgvDatSan.SelectedRows[0].DataBoundItem is DAL.LichDat lichData)
+                {
+                    maLich = lichData.MaLich;
+                    lich = lichData;
+                }
+                else if (dgvDatSan.SelectedRows[0].Cells[0].Value != null)
+                {
+                    maLich = dgvDatSan.SelectedRows[0].Cells[0].Value.ToString();
+                    var allLichs = busLichDat.GetAll();
+                    lich = allLichs.FirstOrDefault(l => l.MaLich == maLich);
+                }
+
+                if (lich == null || string.IsNullOrWhiteSpace(maLich))
+                {
+                    MessageBox.Show("❌ Không thể lấy thông tin lịch đặt!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (lich.TrangThai == "Đã hủy" || lich.TrangThai == "Đã xóa")
+                {
+                    MessageBox.Show($"❌ Không thể thanh toán lịch có trạng thái '{lich.TrangThai}'!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"❌ Lỗi mở form thanh toán: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void dgvDatSan_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

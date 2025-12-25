@@ -9,9 +9,6 @@ namespace DAL
     [Table("LichDat")]
     public partial class LichDat
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-
-
         [Key]
         [StringLength(20)]
         public string MaLich { get; set; }
@@ -38,6 +35,8 @@ namespace DAL
         [StringLength(50)]
         public string TrangThai { get; set; }
 
-
+        // ===== PROPERTY ?O ?? HI?N TH? TRONG COMBOBOX =====
+        [NotMapped]
+        public string ThongTinLich { get; set; }
     }
 }

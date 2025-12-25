@@ -219,7 +219,7 @@ namespace TrangChu
 
                 // ===== MÃ HÓA PASSWORD BẰNG AES =====
                 string plainPassword = txtPassword.Text.Trim();
-                string encryptedPassword = MaHoaASCII.EncryptPassword(plainPassword);
+                string encryptedPassword = AES.EncryptPassword(plainPassword);
 
                 // Tạo tài khoản mới
                 DAL.User user = new DAL.User
@@ -335,7 +335,7 @@ namespace TrangChu
                     // ===== NẾU CÓ NHẬP PASSWORD MỚI THÌ MÃ HÓA =====
                     if (!string.IsNullOrWhiteSpace(txtPassword.Text))
                     {
-                        newPassword = MaHoaASCII.EncryptPassword(txtPassword.Text.Trim());
+                        newPassword = AES.EncryptPassword(txtPassword.Text.Trim());
                     }
                     else
                     {
@@ -455,7 +455,7 @@ namespace TrangChu
                 if (user != null)
                 {
                     // ===== GIẢI MÃ PASSWORD ĐỂ HIỂN THỊ =====
-                    string decryptedPassword = MaHoaASCII.DecryptPassword(user.Password);
+                    string decryptedPassword = AES.DecryptPassword(user.Password);
                     txtPassword.Text = decryptedPassword;
                     txtNhapLaiPassword.Text = decryptedPassword;
                 }

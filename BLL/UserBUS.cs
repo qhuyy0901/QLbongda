@@ -21,7 +21,7 @@ namespace BUS
                     return null;
 
                 // ===== CỐ GẮNG GIẢI MÃ PASSWORD =====
-                string decryptedPassword = MaHoaASCII.DecryptPassword(user.Password);
+                string decryptedPassword = AES.DecryptPassword(user.Password);
 
                 // ===== SO SÁNH VỚI PASSWORD NHẬP VÀO =====
                 if (decryptedPassword == password)

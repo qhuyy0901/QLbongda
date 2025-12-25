@@ -5,8 +5,7 @@ using System.Text;
 
 namespace BUS
 {
-    // ===== HELPER MÃ HÓA PASSWORD CHỈ CHO QUẢN LÝ TK (KHÔNG ẢNH HƯỞNG LOGIN) =====
-    public static class MaHoaASCII
+    public static class AES
     {
         // ===== KEY: 32 BYTES (256 BIT) =====
         private static readonly byte[] AES_KEY = Encoding.UTF8.GetBytes("MySecureKey12345MySecureKey12345");  // ✅ 32 bytes
