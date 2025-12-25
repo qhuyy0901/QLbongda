@@ -63,7 +63,6 @@
             // grpThongTinHoaDon
             // 
             this.grpThongTinHoaDon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.grpThongTinHoaDon.Controls.Add(this.btnThanhToan);
             this.grpThongTinHoaDon.Controls.Add(this.lblLoaiHoaDon);
             this.grpThongTinHoaDon.Controls.Add(this.rdoKhachLe);
             this.grpThongTinHoaDon.Controls.Add(this.rdoKhachDatSan);
@@ -77,7 +76,7 @@
             this.grpThongTinHoaDon.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grpThongTinHoaDon.Location = new System.Drawing.Point(0, 0);
             this.grpThongTinHoaDon.Name = "grpThongTinHoaDon";
-            this.grpThongTinHoaDon.Size = new System.Drawing.Size(923, 110);
+            this.grpThongTinHoaDon.Size = new System.Drawing.Size(950, 110);
             this.grpThongTinHoaDon.TabIndex = 0;
             this.grpThongTinHoaDon.TabStop = false;
             this.grpThongTinHoaDon.Text = "THÔNG TIN KHÁCH HÀNG & HÓA ĐƠN";
@@ -90,9 +89,9 @@
             this.btnThanhToan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnThanhToan.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnThanhToan.ForeColor = System.Drawing.Color.White;
-            this.btnThanhToan.Location = new System.Drawing.Point(770, 45);
+            this.btnThanhToan.Location = new System.Drawing.Point(753, 391);
             this.btnThanhToan.Name = "btnThanhToan";
-            this.btnThanhToan.Size = new System.Drawing.Size(120, 40);
+            this.btnThanhToan.Size = new System.Drawing.Size(120, 38);
             this.btnThanhToan.TabIndex = 8;
             this.btnThanhToan.Text = "THANH TOÁN";
             this.btnThanhToan.UseVisualStyleBackColor = false;
@@ -101,7 +100,7 @@
             // lblLoaiHoaDon
             // 
             this.lblLoaiHoaDon.AutoSize = true;
-            this.lblLoaiHoaDon.Location = new System.Drawing.Point(30, 30);
+            this.lblLoaiHoaDon.Location = new System.Drawing.Point(50, 27);
             this.lblLoaiHoaDon.Name = "lblLoaiHoaDon";
             this.lblLoaiHoaDon.Size = new System.Drawing.Size(77, 19);
             this.lblLoaiHoaDon.TabIndex = 0;
@@ -111,7 +110,7 @@
             // 
             this.rdoKhachLe.AutoSize = true;
             this.rdoKhachLe.Checked = true;
-            this.rdoKhachLe.Location = new System.Drawing.Point(120, 28);
+            this.rdoKhachLe.Location = new System.Drawing.Point(172, 24);
             this.rdoKhachLe.Name = "rdoKhachLe";
             this.rdoKhachLe.Size = new System.Drawing.Size(115, 23);
             this.rdoKhachLe.TabIndex = 1;
@@ -122,7 +121,7 @@
             // rdoKhachDatSan
             // 
             this.rdoKhachDatSan.AutoSize = true;
-            this.rdoKhachDatSan.Location = new System.Drawing.Point(240, 28);
+            this.rdoKhachDatSan.Location = new System.Drawing.Point(381, 24);
             this.rdoKhachDatSan.Name = "rdoKhachDatSan";
             this.rdoKhachDatSan.Size = new System.Drawing.Size(113, 23);
             this.rdoKhachDatSan.TabIndex = 2;
@@ -132,7 +131,7 @@
             // lblMaLich
             // 
             this.lblMaLich.AutoSize = true;
-            this.lblMaLich.Location = new System.Drawing.Point(30, 68);
+            this.lblMaLich.Location = new System.Drawing.Point(50, 68);
             this.lblMaLich.Name = "lblMaLich";
             this.lblMaLich.Size = new System.Drawing.Size(73, 19);
             this.lblMaLich.TabIndex = 3;
@@ -142,15 +141,15 @@
             // 
             this.cbxLichDat.Enabled = false;
             this.cbxLichDat.FormattingEnabled = true;
-            this.cbxLichDat.Location = new System.Drawing.Point(103, 65);
+            this.cbxLichDat.Location = new System.Drawing.Point(136, 65);
             this.cbxLichDat.Name = "cbxLichDat";
-            this.cbxLichDat.Size = new System.Drawing.Size(324, 25);
+            this.cbxLichDat.Size = new System.Drawing.Size(358, 25);
             this.cbxLichDat.TabIndex = 4;
             // 
             // lblTenKH
             // 
             this.lblTenKH.AutoSize = true;
-            this.lblTenKH.Location = new System.Drawing.Point(457, 33);
+            this.lblTenKH.Location = new System.Drawing.Point(586, 33);
             this.lblTenKH.Name = "lblTenKH";
             this.lblTenKH.Size = new System.Drawing.Size(55, 19);
             this.lblTenKH.TabIndex = 5;
@@ -160,7 +159,7 @@
             // 
             this.txtTenKH.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtTenKH.Enabled = false;
-            this.txtTenKH.Location = new System.Drawing.Point(527, 30);
+            this.txtTenKH.Location = new System.Drawing.Point(656, 30);
             this.txtTenKH.Name = "txtTenKH";
             this.txtTenKH.Size = new System.Drawing.Size(200, 25);
             this.txtTenKH.TabIndex = 6;
@@ -168,7 +167,7 @@
             // lblSDT
             // 
             this.lblSDT.AutoSize = true;
-            this.lblSDT.Location = new System.Drawing.Point(457, 71);
+            this.lblSDT.Location = new System.Drawing.Point(586, 71);
             this.lblSDT.Name = "lblSDT";
             this.lblSDT.Size = new System.Drawing.Size(36, 19);
             this.lblSDT.TabIndex = 7;
@@ -178,7 +177,7 @@
             // 
             this.txtSDT.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSDT.Enabled = false;
-            this.txtSDT.Location = new System.Drawing.Point(527, 68);
+            this.txtSDT.Location = new System.Drawing.Point(656, 68);
             this.txtSDT.Name = "txtSDT";
             this.txtSDT.Size = new System.Drawing.Size(200, 25);
             this.txtSDT.TabIndex = 8;
@@ -200,7 +199,7 @@
             // dgvDichVu
             // 
             this.dgvDichVu.AllowUserToOrderColumns = true;
-            this.dgvDichVu.BackgroundColor = System.Drawing.Color.White;
+            this.dgvDichVu.BackgroundColor = System.Drawing.Color.Gainsboro;
             this.dgvDichVu.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.ForestGreen;
@@ -229,9 +228,9 @@
             this.grpGioDichVu.BackColor = System.Drawing.Color.White;
             this.grpGioDichVu.Controls.Add(this.dgvGioHang);
             this.grpGioDichVu.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.grpGioDichVu.Location = new System.Drawing.Point(433, 120);
+            this.grpGioDichVu.Location = new System.Drawing.Point(425, 120);
             this.grpGioDichVu.Name = "grpGioDichVu";
-            this.grpGioDichVu.Size = new System.Drawing.Size(478, 260);
+            this.grpGioDichVu.Size = new System.Drawing.Size(525, 260);
             this.grpGioDichVu.TabIndex = 3;
             this.grpGioDichVu.TabStop = false;
             this.grpGioDichVu.Text = "GIỎ DỊCH VỤ ĐÃ CHỌN";
@@ -239,7 +238,7 @@
             // dgvGioHang
             // 
             this.dgvGioHang.AllowUserToAddRows = false;
-            this.dgvGioHang.BackgroundColor = System.Drawing.Color.White;
+            this.dgvGioHang.BackgroundColor = System.Drawing.Color.Gainsboro;
             this.dgvGioHang.BorderStyle = System.Windows.Forms.BorderStyle.None;
             dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = System.Drawing.Color.Orange;
@@ -257,7 +256,7 @@
             dataGridViewCellStyle4.BackColor = System.Drawing.Color.WhiteSmoke;
             this.dgvGioHang.RowsDefaultCellStyle = dataGridViewCellStyle4;
             this.dgvGioHang.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvGioHang.Size = new System.Drawing.Size(472, 236);
+            this.dgvGioHang.Size = new System.Drawing.Size(519, 236);
             this.dgvGioHang.TabIndex = 0;
             // 
             // btnXoaDV
@@ -268,11 +267,11 @@
             this.btnXoaDV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXoaDV.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnXoaDV.ForeColor = System.Drawing.Color.Crimson;
-            this.btnXoaDV.Location = new System.Drawing.Point(678, 391);
+            this.btnXoaDV.Location = new System.Drawing.Point(578, 392);
             this.btnXoaDV.Name = "btnXoaDV";
-            this.btnXoaDV.Size = new System.Drawing.Size(100, 30);
+            this.btnXoaDV.Size = new System.Drawing.Size(116, 38);
             this.btnXoaDV.TabIndex = 2;
-            this.btnXoaDV.Text = "Xóa dòng";
+            this.btnXoaDV.Text = "Xóa Lựa Chọn";
             this.btnXoaDV.UseVisualStyleBackColor = false;
             this.btnXoaDV.Click += new System.EventHandler(this.btnXoaDV_Click);
             // 
@@ -284,9 +283,9 @@
             this.btnThemDV.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnThemDV.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnThemDV.ForeColor = System.Drawing.Color.White;
-            this.btnThemDV.Location = new System.Drawing.Point(351, 244);
+            this.btnThemDV.Location = new System.Drawing.Point(354, 214);
             this.btnThemDV.Name = "btnThemDV";
-            this.btnThemDV.Size = new System.Drawing.Size(56, 73);
+            this.btnThemDV.Size = new System.Drawing.Size(56, 55);
             this.btnThemDV.TabIndex = 2;
             this.btnThemDV.Text = ">>";
             this.btnThemDV.UseVisualStyleBackColor = false;
@@ -300,11 +299,11 @@
             this.btnThemSP.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnThemSP.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnThemSP.ForeColor = System.Drawing.Color.White;
-            this.btnThemSP.Location = new System.Drawing.Point(15, 386);
+            this.btnThemSP.Location = new System.Drawing.Point(12, 386);
             this.btnThemSP.Name = "btnThemSP";
-            this.btnThemSP.Size = new System.Drawing.Size(92, 35);
+            this.btnThemSP.Size = new System.Drawing.Size(133, 35);
             this.btnThemSP.TabIndex = 4;
-            this.btnThemSP.Text = "Thêm Mới SP";
+            this.btnThemSP.Text = "Dịch Vụ Mới";
             this.btnThemSP.UseVisualStyleBackColor = false;
             // 
             // btnSuaSP
@@ -315,11 +314,11 @@
             this.btnSuaSP.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSuaSP.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnSuaSP.ForeColor = System.Drawing.Color.White;
-            this.btnSuaSP.Location = new System.Drawing.Point(136, 389);
+            this.btnSuaSP.Location = new System.Drawing.Point(208, 386);
             this.btnSuaSP.Name = "btnSuaSP";
-            this.btnSuaSP.Size = new System.Drawing.Size(87, 35);
+            this.btnSuaSP.Size = new System.Drawing.Size(131, 35);
             this.btnSuaSP.TabIndex = 5;
-            this.btnSuaSP.Text = "Cập nhật SP";
+            this.btnSuaSP.Text = "Cập Nhật Dịch Vụ ";
             this.btnSuaSP.UseVisualStyleBackColor = false;
             // 
             // btnXoaSP
@@ -330,11 +329,11 @@
             this.btnXoaSP.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXoaSP.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnXoaSP.ForeColor = System.Drawing.Color.White;
-            this.btnXoaSP.Location = new System.Drawing.Point(251, 386);
+            this.btnXoaSP.Location = new System.Drawing.Point(208, 430);
             this.btnXoaSP.Name = "btnXoaSP";
-            this.btnXoaSP.Size = new System.Drawing.Size(88, 35);
+            this.btnXoaSP.Size = new System.Drawing.Size(131, 35);
             this.btnXoaSP.TabIndex = 6;
-            this.btnXoaSP.Text = "Xóa SP";
+            this.btnXoaSP.Text = "Xóa Dịch Vụ ";
             this.btnXoaSP.UseVisualStyleBackColor = false;
             // 
             // btnQuayLai
@@ -345,9 +344,9 @@
             this.btnQuayLai.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnQuayLai.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnQuayLai.ForeColor = System.Drawing.Color.White;
-            this.btnQuayLai.Location = new System.Drawing.Point(15, 427);
+            this.btnQuayLai.Location = new System.Drawing.Point(12, 430);
             this.btnQuayLai.Name = "btnQuayLai";
-            this.btnQuayLai.Size = new System.Drawing.Size(92, 30);
+            this.btnQuayLai.Size = new System.Drawing.Size(133, 35);
             this.btnQuayLai.TabIndex = 7;
             this.btnQuayLai.Text = "Quay Lại";
             this.btnQuayLai.UseVisualStyleBackColor = false;
@@ -358,7 +357,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(923, 464);
+            this.ClientSize = new System.Drawing.Size(950, 470);
+            this.Controls.Add(this.btnThanhToan);
             this.Controls.Add(this.btnQuayLai);
             this.Controls.Add(this.btnXoaDV);
             this.Controls.Add(this.btnXoaSP);

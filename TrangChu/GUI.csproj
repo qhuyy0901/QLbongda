@@ -44,8 +44,8 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="QRCoder, Version=1.4.3.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
-      <HintPath>..\packages\QRCoder.1.4.3\lib\net40\QRCoder.dll</HintPath>
+    <Reference Include="QRCoder, Version=1.7.0.0, Culture=neutral, PublicKeyToken=c4ed5b9ae8358a28, processorArchitecture=MSIL">
+      <HintPath>..\packages\QRCoder.1.7.0\lib\net40\QRCoder.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -81,7 +81,6 @@
     <Compile Include="HDSD.Designer.cs">
       <DependentUpon>HDSD.cs</DependentUpon>
     </Compile>
-    <Compile Include="QRCodeHelper.cs" />
     <Compile Include="QuanLyTK.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -161,6 +160,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="TrangChu.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

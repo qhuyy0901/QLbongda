@@ -37,6 +37,7 @@ namespace TrangChu
             btnHuy.Click += BtnHuy_Click;
             radKhachVangLai.CheckedChanged += RadKhach_CheckedChanged;
             radKhachDatSan.CheckedChanged += RadKhach_CheckedChanged;
+            cbxHinhThucTT.SelectedIndexChanged += CbxHinhThucTT_SelectedIndexChanged;
         }
 
         // ===== NHẬN THÔNG TIN KHÁCH HÀNG =====
@@ -73,7 +74,6 @@ namespace TrangChu
                 cbxHinhThucTT.Items.Clear();
                 cbxHinhThucTT.Items.Add("Tiền mặt");
                 cbxHinhThucTT.Items.Add("Chuyển khoản");
-                cbxHinhThucTT.Items.Add("Thẻ tín dụng");
                 cbxHinhThucTT.SelectedIndex = 0;
 
                 // ===== NGĂN CHẶN CHỈNH SỬA DATAGRIDVIEW =====
@@ -110,7 +110,7 @@ namespace TrangChu
             }
             catch (Exception ex)
             {
-                MessageBox.Show("❌ Lỗi khởi tạo form:\n" + ex.Message, 
+                MessageBox.Show("❌ Lỗi khởi tạo form:\n" + ex.Message,
                     "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -288,6 +288,61 @@ namespace TrangChu
             catch { }
         }
 
+        // ===== SỰ KIỆN THAY ĐỔI HÌNH THỨC THANH TOÁN - HIỂN THỊ QR CODE =====
+        private void CbxHinhThucTT_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string hinhThuc = cbxHinhThucTT.SelectedItem?.ToString() ?? "";
+
+                if (hinhThuc == "Chuyển khoản")
+                {
+                    // ===== HIỂN THỊ QR CODE =====
+                    HienThiQRCode();
+                }
+                else
+                {
+                    // ===== ẨN QR CODE NẾU CHỌN HÌNH THỨC KHÁC =====
+                    picQRCode.Visible = false;
+                    lblQRCode.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("❌ Lỗi khi chọn hình thức thanh toán:\n" + ex.Message);
+            }
+        }
+
+        // ===== HIỂN THỊ QR CODE TRỰ TIẾP TRÊN FORM =====
+        private void HienThiQRCode()
+        {
+            try
+            {
+                // ===== TÍNH TỔNG TIỀN =====
+                decimal tongTien = tienSan + tongTienDichVu;
+
+                try
+                {
+                    // ===== TẠO MÃ QR =====
+                    Bitmap qrBitmap = BUS.QRCodeHelper.GenerateQRCode(tongTien, "Thanh toan dich vu");
+                    picQRCode.Image = qrBitmap;
+                    picQRCode.Visible = true;
+                    lblQRCode.Visible = true;
+                }
+                catch (Exception qrEx)
+                {
+                    MessageBox.Show("⚠️ Không thể tạo mã QR. Lỗi: " + qrEx.Message, 
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    picQRCode.Visible = false;
+                    lblQRCode.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("❌ Lỗi hiển thị QR Code:\n" + ex.Message);
+            }
+        }
+
         // ===== NÚT THANH TOÁN =====
         private void BtnThanhToan_Click(object sender, EventArgs e)
         {
@@ -301,19 +356,17 @@ namespace TrangChu
 
                 // ===== HIỂN THỊ XÁC NHẬN =====
                 string message = $"✔ XÁC NHẬN THANH TOÁN\n\n" +
-                    $"Khách hàng: {tenKH}\n" +
-                    $"SĐT: {sdtKH}\n" +
+
                     $"Hình thức TT: {hinhThucTT}\n" +
-                    $"━━━━━━━━━━━━━━━━\n" +
                     $"Tổng tiền: {tongTien:N0} VNĐ\n\n" +
                     $"Bạn có muốn xác nhận?";
 
-                DialogResult result = MessageBox.Show(message, "Xác Nhận Thanh Toán", 
+                DialogResult result = MessageBox.Show(message, "Xác Nhận Thanh Toán",
                     MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {
-                    MessageBox.Show("✔ THANH TOÁN THÀNH CÔNG!\n\nCảm ơn bạn đã mua hàng.", 
+                    MessageBox.Show("✔ THANH TOÁN THÀNH CÔNG!",
                         "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     IsThanhToanThanhCong = true;
@@ -329,7 +382,7 @@ namespace TrangChu
         // ===== NÚT HỦY / THOÁT =====
         private void BtnHuy_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Bạn có muốn hủy thanh toán?", 
+            DialogResult result = MessageBox.Show("Bạn có muốn hủy thanh toán?",
                 "Xác Nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)

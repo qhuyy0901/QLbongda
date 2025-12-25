@@ -47,6 +47,8 @@
             this.grpDichVu = new System.Windows.Forms.GroupBox();
             this.dgvCTDichVu = new System.Windows.Forms.DataGridView();
             this.grpTongTien = new System.Windows.Forms.GroupBox();
+            this.picQRCode = new System.Windows.Forms.PictureBox();
+            this.lblQRCode = new System.Windows.Forms.Label();
             this.btnHuy = new System.Windows.Forms.Button();
             this.btnThanhToan = new System.Windows.Forms.Button();
             this.cbxHinhThucTT = new System.Windows.Forms.ComboBox();
@@ -62,6 +64,7 @@
             this.grpDichVu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCTDichVu)).BeginInit();
             this.grpTongTien.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picQRCode)).BeginInit();
             this.SuspendLayout();
             // 
             // grpThongTin
@@ -76,7 +79,7 @@
             this.grpThongTin.Controls.Add(this.radKhachVangLai);
             this.grpThongTin.Location = new System.Drawing.Point(12, 12);
             this.grpThongTin.Name = "grpThongTin";
-            this.grpThongTin.Size = new System.Drawing.Size(350, 180);
+            this.grpThongTin.Size = new System.Drawing.Size(266, 180);
             this.grpThongTin.TabIndex = 0;
             this.grpThongTin.TabStop = false;
             this.grpThongTin.Text = "Thông Tin Khách Hàng / Lịch Đặt";
@@ -85,7 +88,7 @@
             // 
             this.txtSDT.Location = new System.Drawing.Point(100, 137);
             this.txtSDT.Name = "txtSDT";
-            this.txtSDT.Size = new System.Drawing.Size(220, 20);
+            this.txtSDT.Size = new System.Drawing.Size(145, 20);
             this.txtSDT.TabIndex = 7;
             // 
             // lblSDT
@@ -101,7 +104,7 @@
             // 
             this.txtTenKH.Location = new System.Drawing.Point(100, 102);
             this.txtTenKH.Name = "txtTenKH";
-            this.txtTenKH.Size = new System.Drawing.Size(220, 20);
+            this.txtTenKH.Size = new System.Drawing.Size(145, 20);
             this.txtTenKH.TabIndex = 5;
             // 
             // lblTenKH
@@ -118,7 +121,7 @@
             this.cbxMaLich.FormattingEnabled = true;
             this.cbxMaLich.Location = new System.Drawing.Point(100, 67);
             this.cbxMaLich.Name = "cbxMaLich";
-            this.cbxMaLich.Size = new System.Drawing.Size(220, 21);
+            this.cbxMaLich.Size = new System.Drawing.Size(145, 21);
             this.cbxMaLich.TabIndex = 3;
             // 
             // lblMaLich
@@ -162,7 +165,7 @@
             this.grpTienSan.Controls.Add(this.lblSan);
             this.grpTienSan.Location = new System.Drawing.Point(12, 200);
             this.grpTienSan.Name = "grpTienSan";
-            this.grpTienSan.Size = new System.Drawing.Size(350, 140);
+            this.grpTienSan.Size = new System.Drawing.Size(266, 140);
             this.grpTienSan.TabIndex = 1;
             this.grpTienSan.TabStop = false;
             this.grpTienSan.Text = "Chi Tiết Tiền Sân";
@@ -173,7 +176,7 @@
             this.txtTienSan.Location = new System.Drawing.Point(100, 97);
             this.txtTienSan.Name = "txtTienSan";
             this.txtTienSan.ReadOnly = true;
-            this.txtTienSan.Size = new System.Drawing.Size(220, 20);
+            this.txtTienSan.Size = new System.Drawing.Size(145, 20);
             this.txtTienSan.TabIndex = 5;
             this.txtTienSan.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -191,7 +194,7 @@
             this.txtKhungGio.Location = new System.Drawing.Point(100, 62);
             this.txtKhungGio.Name = "txtKhungGio";
             this.txtKhungGio.ReadOnly = true;
-            this.txtKhungGio.Size = new System.Drawing.Size(220, 20);
+            this.txtKhungGio.Size = new System.Drawing.Size(145, 20);
             this.txtKhungGio.TabIndex = 3;
             // 
             // lblGio
@@ -208,7 +211,7 @@
             this.txtTenSan.Location = new System.Drawing.Point(100, 27);
             this.txtTenSan.Name = "txtTenSan";
             this.txtTenSan.ReadOnly = true;
-            this.txtTenSan.Size = new System.Drawing.Size(220, 20);
+            this.txtTenSan.Size = new System.Drawing.Size(145, 20);
             this.txtTenSan.TabIndex = 1;
             // 
             // lblSan
@@ -223,9 +226,9 @@
             // grpDichVu
             // 
             this.grpDichVu.Controls.Add(this.dgvCTDichVu);
-            this.grpDichVu.Location = new System.Drawing.Point(380, 12);
+            this.grpDichVu.Location = new System.Drawing.Point(284, 12);
             this.grpDichVu.Name = "grpDichVu";
-            this.grpDichVu.Size = new System.Drawing.Size(400, 328);
+            this.grpDichVu.Size = new System.Drawing.Size(496, 328);
             this.grpDichVu.TabIndex = 2;
             this.grpDichVu.TabStop = false;
             this.grpDichVu.Text = "Chi Tiết Dịch Vụ";
@@ -237,12 +240,14 @@
             this.dgvCTDichVu.Location = new System.Drawing.Point(3, 16);
             this.dgvCTDichVu.Name = "dgvCTDichVu";
             this.dgvCTDichVu.ReadOnly = true;
-            this.dgvCTDichVu.Size = new System.Drawing.Size(394, 309);
+            this.dgvCTDichVu.Size = new System.Drawing.Size(490, 309);
             this.dgvCTDichVu.TabIndex = 0;
             // 
             // grpTongTien
             // 
             this.grpTongTien.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.grpTongTien.Controls.Add(this.picQRCode);
+            this.grpTongTien.Controls.Add(this.lblQRCode);
             this.grpTongTien.Controls.Add(this.btnHuy);
             this.grpTongTien.Controls.Add(this.btnThanhToan);
             this.grpTongTien.Controls.Add(this.cbxHinhThucTT);
@@ -255,17 +260,40 @@
             this.grpTongTien.Controls.Add(this.lblTongTienSan_Text);
             this.grpTongTien.Location = new System.Drawing.Point(12, 350);
             this.grpTongTien.Name = "grpTongTien";
-            this.grpTongTien.Size = new System.Drawing.Size(768, 120);
+            this.grpTongTien.Size = new System.Drawing.Size(768, 141);
             this.grpTongTien.TabIndex = 3;
             this.grpTongTien.TabStop = false;
             this.grpTongTien.Text = "Tổng Kết & Thanh Toán";
+            // 
+            // picQRCode
+            // 
+            this.picQRCode.BackColor = System.Drawing.Color.White;
+            this.picQRCode.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.picQRCode.Location = new System.Drawing.Point(670, 20);
+            this.picQRCode.Name = "picQRCode";
+            this.picQRCode.Size = new System.Drawing.Size(90, 86);
+            this.picQRCode.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picQRCode.TabIndex = 10;
+            this.picQRCode.TabStop = false;
+            this.picQRCode.Visible = false;
+            // 
+            // lblQRCode
+            // 
+            this.lblQRCode.AutoSize = true;
+            this.lblQRCode.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblQRCode.Location = new System.Drawing.Point(670, 5);
+            this.lblQRCode.Name = "lblQRCode";
+            this.lblQRCode.Size = new System.Drawing.Size(47, 13);
+            this.lblQRCode.TabIndex = 11;
+            this.lblQRCode.Text = "VietQR";
+            this.lblQRCode.Visible = false;
             // 
             // btnHuy
             // 
             this.btnHuy.BackColor = System.Drawing.Color.IndianRed;
             this.btnHuy.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnHuy.ForeColor = System.Drawing.Color.White;
-            this.btnHuy.Location = new System.Drawing.Point(569, 65);
+            this.btnHuy.Location = new System.Drawing.Point(539, 65);
             this.btnHuy.Name = "btnHuy";
             this.btnHuy.Size = new System.Drawing.Size(100, 40);
             this.btnHuy.TabIndex = 9;
@@ -277,9 +305,9 @@
             this.btnThanhToan.BackColor = System.Drawing.Color.LimeGreen;
             this.btnThanhToan.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnThanhToan.ForeColor = System.Drawing.Color.White;
-            this.btnThanhToan.Location = new System.Drawing.Point(403, 65);
+            this.btnThanhToan.Location = new System.Drawing.Point(402, 65);
             this.btnThanhToan.Name = "btnThanhToan";
-            this.btnThanhToan.Size = new System.Drawing.Size(151, 40);
+            this.btnThanhToan.Size = new System.Drawing.Size(117, 40);
             this.btnThanhToan.TabIndex = 8;
             this.btnThanhToan.Text = "THANH TOÁN";
             this.btnThanhToan.UseVisualStyleBackColor = false;
@@ -287,15 +315,15 @@
             // cbxHinhThucTT
             // 
             this.cbxHinhThucTT.FormattingEnabled = true;
-            this.cbxHinhThucTT.Location = new System.Drawing.Point(516, 27);
+            this.cbxHinhThucTT.Location = new System.Drawing.Point(515, 27);
             this.cbxHinhThucTT.Name = "cbxHinhThucTT";
-            this.cbxHinhThucTT.Size = new System.Drawing.Size(150, 21);
+            this.cbxHinhThucTT.Size = new System.Drawing.Size(124, 21);
             this.cbxHinhThucTT.TabIndex = 7;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(400, 30);
+            this.label5.Location = new System.Drawing.Point(399, 30);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(110, 13);
             this.label5.TabIndex = 6;
@@ -306,7 +334,7 @@
             this.lblTongThanhToan.AutoSize = true;
             this.lblTongThanhToan.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTongThanhToan.ForeColor = System.Drawing.Color.Red;
-            this.lblTongThanhToan.Location = new System.Drawing.Point(220, 82);
+            this.lblTongThanhToan.Location = new System.Drawing.Point(206, 82);
             this.lblTongThanhToan.Name = "lblTongThanhToan";
             this.lblTongThanhToan.Size = new System.Drawing.Size(70, 24);
             this.lblTongThanhToan.TabIndex = 5;
@@ -316,7 +344,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(30, 85);
+            this.label4.Location = new System.Drawing.Point(16, 85);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(180, 20);
             this.label4.TabIndex = 4;
@@ -360,16 +388,16 @@
             this.lblTongTienSan_Text.TabIndex = 0;
             this.lblTongTienSan_Text.Text = "Tiền Sân:";
             // 
-            // ChiTietThanhToan
+            // CT_HoaDon_DichVu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(792, 482);
+            this.ClientSize = new System.Drawing.Size(792, 495);
             this.Controls.Add(this.grpTongTien);
             this.Controls.Add(this.grpDichVu);
             this.Controls.Add(this.grpTienSan);
             this.Controls.Add(this.grpThongTin);
-            this.Name = "ChiTietThanhToan";
+            this.Name = "CT_HoaDon_DichVu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CHI TIẾT THANH TOÁN";
             this.grpThongTin.ResumeLayout(false);
@@ -380,6 +408,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvCTDichVu)).EndInit();
             this.grpTongTien.ResumeLayout(false);
             this.grpTongTien.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picQRCode)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -415,5 +444,8 @@
         private System.Windows.Forms.ComboBox cbxHinhThucTT;
         private System.Windows.Forms.Button btnThanhToan;
         private System.Windows.Forms.Button btnHuy;
+        // ===== THÊM CONTROL CHO QR CODE =====
+        private System.Windows.Forms.PictureBox picQRCode;
+        private System.Windows.Forms.Label lblQRCode;
     }
 }

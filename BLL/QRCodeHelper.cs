@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Text;
 using QRCoder;
 
-namespace TrangChu
+namespace BUS
 {
     public static class QRCodeHelper
     {
@@ -18,7 +18,7 @@ namespace TrangChu
             try
             {
                 string qrContent = GenerateVietQRString(amount, description);
-                
+
                 using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
                 {
                     QRCodeData qrCodeData = qrGenerator.CreateQrCode(qrContent, QRCodeGenerator.ECCLevel.M);
