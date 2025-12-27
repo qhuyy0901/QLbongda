@@ -20,6 +20,12 @@ namespace TrangChu
 
         private List<LichDat> listLichDat = new List<LichDat>();
 
+        // ===== BIẾN LƯU TRỮ DỮ LIỆU MẶCĐỊNH (GỌI TỪ LICHDAT) =====
+        private string defaultTenKH = "";
+        private string defaultSDT = "";
+        private string defaultMaLich = "";
+        private bool isLoadingDefaultData = false;
+
         public DichVu()
         {
             InitializeComponent();
@@ -40,10 +46,90 @@ namespace TrangChu
                 LoadDichVu();
                 LoadLichDat();
                 SetupEventHandlers();
+
+                // ===== THIẾT LẬP DỮ LIỆU MẶCĐỊNH NẾU CÓ =====
+                if (!string.IsNullOrWhiteSpace(defaultMaLich))
+                {
+                    ApplyDefaultCustomer();
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show("❌ Lỗi khởi tạo form Dịch vụ:\n" + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // ===== NHẬN THÔNG TIN KHÁCH HÀNG TỪ LỊCH ĐẶT (TỪ BTNTHEMDICHVU) =====
+        public void SetDefaultCustomer(string tenKH, string sdtKH, string maLich)
+        {
+            try
+            {
+                // ===== LƯU TRỮ DỮ LIỆU VÀO BIẾN =====
+                defaultTenKH = tenKH ?? "";
+                defaultSDT = sdtKH ?? "";
+                defaultMaLich = maLich ?? "";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"❌ Lỗi thiết lập khách hàng mặc định: {ex.Message}", 
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // ===== ÁP DỤNG DỮ LIỆU MẶCĐỊNH KHÁCH HÀNG =====
+        private void ApplyDefaultCustomer()
+        {
+            try
+            {
+                isLoadingDefaultData = true;
+
+                // ===== CHỌN RADIO BUTTON "KHÁCH ĐẶT SÂN" =====
+                rdoKhachDatSan.Checked = true;
+
+                // ===== ĐIỀN THÔNG TIN KHÁCH HÀNG =====
+                txtTenKH.Text = defaultTenKH;
+                txtSDT.Text = defaultSDT;
+                
+                // ===== KHÓA CÁC FIELD KHÔNG CHO SỬA =====
+                txtTenKH.ReadOnly = true;
+                txtSDT.ReadOnly = true;
+                txtTenKH.BackColor = System.Drawing.Color.LightGray;
+                txtSDT.BackColor = System.Drawing.Color.LightGray;
+
+                // ===== KHÓA CẢ HAI RADIO BUTTON ĐỂ KHÔNG CHO CHUYỂN ĐỔI =====
+                rdoKhachDatSan.Enabled = false;
+                rdoKhachLe.Enabled = false;
+
+                // ===== TÌM VÀ CHỌN LỊCH ĐẶT TRONG COMBOBOX =====
+                if (!string.IsNullOrWhiteSpace(defaultMaLich) && cbxLichDat.DataSource is List<DAL.LichDat> lichDatList)
+                {
+                    // ===== TÌM LỊCH ĐẶT THEO MÃ =====
+                    var selectedLich = lichDatList.FirstOrDefault(l => l.MaLich == defaultMaLich);
+                    
+                    if (selectedLich != null)
+                    {
+                        cbxLichDat.SelectedItem = selectedLich;
+                        cbxLichDat.Enabled = false; // ===== KHÓA COMBOBOX KHÔNG CHO CHỌN LỊCH KHÁC =====
+                    }
+                    else
+                    {
+                        MessageBox.Show($"⚠️ Không tìm thấy lịch đặt [{defaultMaLich}] trong danh sách!", 
+                            "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        cbxLichDat.Enabled = false;
+                    }
+                }
+                else
+                {
+                    cbxLichDat.Enabled = false;
+                }
+
+                isLoadingDefaultData = false;
+            }
+            catch (Exception ex)
+            {
+                isLoadingDefaultData = false;
+                MessageBox.Show($"❌ Lỗi áp dụng dữ liệu mặc định: {ex.Message}", 
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -67,6 +153,10 @@ namespace TrangChu
         {
             try
             {
+                // ===== BỎ QUA NẾU ĐANG LOAD DỮ LIỆU MẶCĐỊNH =====
+                if (isLoadingDefaultData)
+                    return;
+
                 if (rdoKhachDatSan.Checked)
                 {
                     // ===== KHÁCH ĐẶT SÂN: KHÓA NHẬP, MỞ COMBOBOX =====
@@ -134,7 +224,8 @@ namespace TrangChu
                 }
                 else
                 {
-                    cbxLichDat.Enabled = true;
+                    // ===== CHỈ MỞ COMBOBOX NẾU KHÔNG CÓ DỮ LIỆU MẶCĐỊNH (KHÁCH VÃNG LAI) =====
+                    cbxLichDat.Enabled = string.IsNullOrWhiteSpace(defaultMaLich);
                     cbxLichDat.SelectedIndex = -1;
                 }
             }
@@ -169,6 +260,10 @@ namespace TrangChu
         {
             try
             {
+                // ===== BỎ QUA NẾU ĐANG LOAD DỮ LIỆU MẶCĐỊNH =====
+                if (isLoadingDefaultData)
+                    return;
+
                 if (cbxLichDat.SelectedIndex < 0)
                 {
                     txtTenKH.Clear();

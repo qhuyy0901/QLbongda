@@ -57,11 +57,24 @@ namespace BUS
                         hd.ThoiGianThanhToan = DateTime.Now;
                     }
 
-                    // ===== NẾU KHÁCH VÃNG LAI, ĐẶT MALICH = "KVL" (MÃ KHÁCH VÃNG LAI) =====
-                    // Không được để null vì MaLich là [Required]
-                    if (string.IsNullOrEmpty(hd.MaLich))
+                    // ===== KIỂM TRA MALÍCH CÓ HỢP LỆ KHÔNG =====
+                    // Nếu MaLich rỗng hoặc "KVL" (khách vãng lai), để NULL thay vì "KVL"
+                    // vì "KVL" không tồn tại trong bảng LichDat
+                    if (string.IsNullOrEmpty(hd.MaLich) || hd.MaLich == "KVL")
                     {
-                        hd.MaLich = "KVL";
+                        // ✅ ĐỔI: Thay vì để "KVL", hãy để NULL
+                        // Nếu MaLich nullable trong Database, điều này sẽ giải quyết vấn đề FK
+                        hd.MaLich = null;
+                    }
+                    else
+                    {
+                        // ✅ KIỂM TRA: Nếu MaLich không NULL, phải tồn tại trong bảng LichDat
+                        var lichDat = db.LichDats.FirstOrDefault(x => x.MaLich == hd.MaLich);
+                        if (lichDat == null)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"❌ Lịch đặt {hd.MaLich} không tồn tại trong database");
+                            return false;
+                        }
                     }
 
                     // 1️⃣ LƯU HÓA ĐƠN TRƯỚC
@@ -87,7 +100,6 @@ namespace BUS
                             // ===== ĐẢM BẢO CÓ THÀNH TIỀN =====
                             if (!item.ThanhTien.HasValue || item.ThanhTien == 0)
                             {
-                                // Lấy đơn giá từ bảng DichVu nếu có
                                 if (!string.IsNullOrEmpty(item.MaDV))
                                 {
                                     var dichVu = db.DichVus.FirstOrDefault(x => x.MaDV == item.MaDV);
@@ -119,8 +131,8 @@ namespace BUS
                         System.Diagnostics.Debug.WriteLine($"✅ Lưu {listChiTiet.Count} chi tiết dịch vụ thành công");
                     }
 
-                    // 3️⃣ CẬP NHẬT TRẠNG THÁI LỊCH ĐẶT (NẾU CÓ - CHỈ KHÔNG PHẢI KHÁCH VÃNG LAI)
-                    if (!string.IsNullOrEmpty(hd.MaLich) && hd.MaLich != "KVL")
+                    // 3️⃣ CẬP NHẬT TRẠNG THÁI LỊCH ĐẶT (CHỈ NẾU CÓ MALÍCH HỢP LỆ)
+                    if (!string.IsNullOrEmpty(hd.MaLich))
                     {
                         var lich = db.LichDats.FirstOrDefault(x => x.MaLich == hd.MaLich);
                         if (lich != null)
@@ -141,12 +153,12 @@ namespace BUS
                     System.Diagnostics.Debug.WriteLine("❌ ENTITY VALIDATION ERROR:");
                     foreach (var validationErrors in dbEx.EntityValidationErrors)
                     {
+                        System.Diagnostics.Debug.WriteLine($"Entity: {validationErrors.Entry.Entity.GetType().Name}");
                         foreach (var validationError in validationErrors.ValidationErrors)
                         {
                             System.Diagnostics.Debug.WriteLine(
-                                $"Entity: {validationErrors.Entry.Entity.GetType().Name}\n" +
-                                $"Property: {validationError.PropertyName}\n" +
-                                $"Error: {validationError.ErrorMessage}\n");
+                                $"  Property: {validationError.PropertyName}\n" +
+                                $"  Error: {validationError.ErrorMessage}");
                         }
                     }
                     return false;
@@ -157,14 +169,19 @@ namespace BUS
                     System.Diagnostics.Debug.WriteLine($"❌ DB UPDATE ERROR: {updateEx.Message}");
                     if (updateEx.InnerException != null)
                     {
-                        System.Diagnostics.Debug.WriteLine($"Inner: {updateEx.InnerException.Message}");
+                        System.Diagnostics.Debug.WriteLine($"❌ Inner Exception: {updateEx.InnerException.Message}");
+                        if (updateEx.InnerException.InnerException != null)
+                        {
+                            System.Diagnostics.Debug.WriteLine($"❌ Root Cause: {updateEx.InnerException.InnerException.Message}");
+                        }
                     }
                     return false;
                 }
                 catch (Exception ex)
                 {
                     transaction.Rollback();
-                    System.Diagnostics.Debug.WriteLine($"❌ GENERAL ERROR: {ex.Message}\n{ex.StackTrace}");
+                    System.Diagnostics.Debug.WriteLine($"❌ GENERAL ERROR: {ex.Message}");
+                    System.Diagnostics.Debug.WriteLine($"Stack Trace: {ex.StackTrace}");
                     return false;
                 }
             }
@@ -191,9 +208,10 @@ namespace BUS
                     hd.ThoiGianThanhToan = DateTime.Now;
                 }
 
+                // ✅ ĐỔI: Để NULL thay vì "KVL"
                 if (string.IsNullOrEmpty(hd.MaLich))
                 {
-                    hd.MaLich = "KVL";
+                    hd.MaLich = null;
                 }
 
                 db.HoaDons.Add(hd);

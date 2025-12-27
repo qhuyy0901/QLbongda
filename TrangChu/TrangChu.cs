@@ -110,7 +110,6 @@ namespace TrangChu
             this.Hide();
 
             DichVu frmDichVu = new DichVu();
-            frmDichVu.SetCurrentUser(currentUser); // truyền user
             frmDichVu.ShowDialog();
 
             this.Show();

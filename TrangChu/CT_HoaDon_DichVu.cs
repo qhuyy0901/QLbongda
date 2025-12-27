@@ -16,6 +16,7 @@ namespace TrangChu
     {
         private LichDatBUS busLichDat = new LichDatBUS();
         private DichVuBUS busDichVu = new DichVuBUS();
+        private HoaDonBUS busHoaDon = new HoaDonBUS(); // ===== THÊM BUS HÓA ĐƠN =====
 
         // ===== BIẾN LƯU TRỮ THÔNG TIN KHÁCH HÀNG =====
         private string tenKH = "";
@@ -343,7 +344,7 @@ namespace TrangChu
             }
         }
 
-        // ===== NÚT THANH TOÁN =====
+        // ===== NÚT THANH TOÁN (LƯU HÓA ĐƠN VÀO DATABASE) =====
         private void BtnThanhToan_Click(object sender, EventArgs e)
         {
             try
@@ -356,7 +357,6 @@ namespace TrangChu
 
                 // ===== HIỂN THỊ XÁC NHẬN =====
                 string message = $"✔ XÁC NHẬN THANH TOÁN\n\n" +
-
                     $"Hình thức TT: {hinhThucTT}\n" +
                     $"Tổng tiền: {tongTien:N0} VNĐ\n\n" +
                     $"Bạn có muốn xác nhận?";
@@ -366,11 +366,31 @@ namespace TrangChu
 
                 if (result == DialogResult.Yes)
                 {
-                    MessageBox.Show("✔ THANH TOÁN THÀNH CÔNG!",
-                        "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // ===== TẠO HÓA ĐƠN =====
+                    HoaDon hoaDon = new HoaDon
+                    {
+                        MaLich = string.IsNullOrWhiteSpace(maLich) ? "KVL" : maLich,  // KVL = Khách Vãng Lai
+                        TongTien = tongTien,
+                        ThoiGianThanhToan = DateTime.Now,
+                        HinhThucTT = hinhThucTT
+                    };
 
-                    IsThanhToanThanhCong = true;
-                    this.Close();
+                    // ===== LƯU HÓA ĐƠN VÀ CHI TIẾT VÀO DATABASE =====
+                    bool success = busHoaDon.ThanhToan(hoaDon, listChiTiet);
+
+                    if (success)
+                    {
+                        MessageBox.Show("✔ THANH TOÁN THÀNH CÔNG!\n\n💰 Hóa đơn đã được lưu vào hệ thống.",
+                            "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        IsThanhToanThanhCong = true;
+                        this.Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("❌ Lỗi lưu hóa đơn vào database!\n\nVui lòng thử lại.",
+                            "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
             }
             catch (Exception ex)

@@ -12,7 +12,7 @@ namespace TrangChu
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new DichVu());  
+            Application.Run(new LichDat());  
         }
     }
 }

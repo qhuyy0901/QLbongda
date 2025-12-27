@@ -1091,9 +1091,114 @@ namespace TrangChu
             }
         }
 
-        private void dgvDatSan_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        // ===== NÚT THÊM DỊCH VỤ - MỞ FORM DỊCH VỤ VỚI THÔNG TIN KHÁCH =====
+        private void btnThemDivhVu_Click(object sender, EventArgs e)
         {
+            try
+            {
+                // ===== KIỂM TRA XEM CÓ CHỌN LỊCH ĐẶT KHÔNG =====
+                if (dgvDatSan.SelectedRows.Count == 0)
+                {
+                    MessageBox.Show("❌ Vui lòng chọn lịch đặt cần thêm dịch vụ!", 
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
+                // ===== LẤY LỊCH ĐẶT ĐƯỢC CHỌN =====
+                string maLich = null;
+                string tenKH = null;
+                string sdtKH = null;
+                DAL.LichDat lich = null;
+
+                try
+                {
+                    if (dgvDatSan.SelectedRows[0].DataBoundItem is DAL.LichDat lichData)
+                    {
+                        maLich = lichData.MaLich;
+                        tenKH = lichData.TenKH;
+                        sdtKH = lichData.SDT_KH;
+                        lich = lichData;
+                    }
+                    else
+                    {
+                        // ===== LẤY DỮ LIỆU TỪ CELLS NẾU KHÔNG CÓ DATABOUNDITEM =====
+                        maLich = dgvDatSan.SelectedRows[0].Cells[0].Value?.ToString();
+                        tenKH = dgvDatSan.SelectedRows[0].Cells[3].Value?.ToString();
+                        sdtKH = dgvDatSan.SelectedRows[0].Cells[2].Value?.ToString();
+                        
+                        if (!string.IsNullOrWhiteSpace(maLich))
+                        {
+                            var allLichs = busLichDat.GetAll();
+                            lich = allLichs.FirstOrDefault(l => l.MaLich == maLich);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"❌ Lỗi lấy dữ liệu từ hàng: {ex.Message}", 
+                        "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // ===== KIỂM TRA LỊCH ĐẶT CÓ HỢP LỆ KHÔNG =====
+                if (string.IsNullOrWhiteSpace(maLich))
+                {
+                    MessageBox.Show("❌ Mã lịch không hợp lệ!", 
+                        "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // ===== KIỂM TRA TRẠNG THÁI - CHỈ CHO PHÉP "ĐÃ ĐẶT" =====
+                if (lich == null || string.IsNullOrWhiteSpace(lich.TrangThai))
+                {
+                    MessageBox.Show(
+                        "❌ Không thể thêm dịch vụ cho lịch này!\n\n" +
+                        "💡 Vui lòng kiểm tra lại trạng thái lịch đặt.",
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (lich.TrangThai != "Đã đặt")
+                {
+                    MessageBox.Show(
+                        $"❌ Không thể thêm dịch vụ cho lịch có trạng thái '{lich.TrangThai}'!\n\n" +
+                        $"💡 Chỉ có thể thêm dịch vụ cho lịch có trạng thái 'Đã đặt'.",
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // ===== KIỂM TRA THÔNG TIN KHÁCH HÀNG =====
+                if (string.IsNullOrWhiteSpace(sdtKH) || string.IsNullOrWhiteSpace(tenKH))
+                {
+                    MessageBox.Show(
+                        "❌ Thông tin khách hàng không đầy đủ!\n\n" +
+                        "Vui lòng kiểm tra lại thông tin SDT và tên khách hàng.",
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // ===== MỞ FORM DỊCH VỤ VÀ TRUYỀN THÔNG TIN KHÁCH =====
+                DichVu frmDichVu = new DichVu();
+                
+                // ===== GỬI THÔNG TIN KHÁCH ĐẶT SÂN (HỌC TỪ LỊCH ĐẶT) =====
+                frmDichVu.SetDefaultCustomer(tenKH, sdtKH, maLich);
+
+                // ===== HIỂN THỊ FORM DỊCH VỤ =====
+                this.Hide();
+                frmDichVu.ShowDialog();
+                this.Show();
+
+                // ===== TẢI LẠI DỮ LIỆU SAU KHI THANH TOÁN =====
+                RefreshDataWithSearch();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"❌ Lỗi mở form dịch vụ: {ex.Message}", 
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
+     
     }
+    
 }

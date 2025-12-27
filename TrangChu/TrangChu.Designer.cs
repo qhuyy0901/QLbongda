@@ -76,7 +76,6 @@
             this.btnQuanLyTK.BackColor = System.Drawing.Color.White;
             this.btnQuanLyTK.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnQuanLyTK.FlatAppearance.BorderSize = 0;
-            this.btnQuanLyTK.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnQuanLyTK.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnQuanLyTK.ForeColor = System.Drawing.Color.ForestGreen;
             this.btnQuanLyTK.Image = ((System.Drawing.Image)(resources.GetObject("btnQuanLyTK.Image")));
@@ -97,7 +96,6 @@
             this.btnDoanhThu.BackColor = System.Drawing.Color.White;
             this.btnDoanhThu.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDoanhThu.FlatAppearance.BorderSize = 0;
-            this.btnDoanhThu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDoanhThu.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDoanhThu.ForeColor = System.Drawing.Color.ForestGreen;
             this.btnDoanhThu.Image = ((System.Drawing.Image)(resources.GetObject("btnDoanhThu.Image")));
@@ -150,7 +148,6 @@
             this.btnDatSan.BackColor = System.Drawing.Color.White;
             this.btnDatSan.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDatSan.FlatAppearance.BorderSize = 0;
-            this.btnDatSan.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDatSan.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDatSan.ForeColor = System.Drawing.Color.ForestGreen;
             this.btnDatSan.Image = ((System.Drawing.Image)(resources.GetObject("btnDatSan.Image")));
@@ -171,7 +168,6 @@
             this.btnDichVu.BackColor = System.Drawing.Color.White;
             this.btnDichVu.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDichVu.FlatAppearance.BorderSize = 0;
-            this.btnDichVu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnDichVu.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnDichVu.ForeColor = System.Drawing.Color.ForestGreen;
             this.btnDichVu.Image = ((System.Drawing.Image)(resources.GetObject("btnDichVu.Image")));
@@ -215,7 +211,7 @@
             // btnHelp
             // 
             this.btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnHelp.BackColor = System.Drawing.Color.White;
+            this.btnHelp.BackColor = System.Drawing.Color.Gainsboro;
             this.btnHelp.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnHelp.FlatAppearance.BorderColor = System.Drawing.Color.Gray;
             this.btnHelp.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
