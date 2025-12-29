@@ -60,8 +60,6 @@ namespace TrangChu
                 txtTimKiem.KeyDown += TxtTimKiem_KeyDown;
                 dgvDatSan.CellClick += dgvDatSan_CellClick;
 
-                // ===== THÊM SỰ KIỆN SẮP XẾP THEO HEADER =====
-                dgvDatSan.ColumnHeaderMouseClick += DgvDatSan_ColumnHeaderMouseClick;
 
                 // ===== NGĂN CHẶN CHỈNH SỬA TRỰC TIẾP TRÊN DATAGRIDVIEW =====
                 dgvDatSan.ReadOnly = true;
@@ -83,34 +81,7 @@ namespace TrangChu
         }
 
         // ===== SỰ KIỆN SẮP XẾP KHI CLICK VÀO HEADER CỘT =====
-        private void DgvDatSan_ColumnHeaderMouseClick(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            try
-            {
-                string columnName = dgvDatSan.Columns[e.ColumnIndex].Name;
 
-                // ===== NẾU CLICK CÙNG CỘT LẦN THỨ 2, ĐẢO CHIỀU SẮP XẾP =====
-                if (sortedColumn == columnName)
-                {
-                    sortOrder = sortOrder == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
-                }
-                else
-                {
-                    sortedColumn = columnName;
-                    sortOrder = SortOrder.Ascending;
-                }
-
-                // ===== SẮP XẾP DỮ LIỆU =====
-                SortDataGridView(columnName, sortOrder);
-
-                // ===== HIỂN THỊ DẤU TAM GIÁC =====
-                ShowSortIndicator(e.ColumnIndex, sortOrder);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi sắp xếp: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
 
         // ===== METHOD SẮP XẾP DATAGRIDVIEW =====
         private void SortDataGridView(string columnName, SortOrder sortOrder)
@@ -1076,14 +1047,32 @@ namespace TrangChu
                     return;
                 }
 
-                if (lich.TrangThai == "Đã hủy" || lich.TrangThai == "Đã xóa")
+                // ===== KIỂM TRA TRẠNG THÁI - CHỈ CHO PHÉP "ĐÃ ĐẶT" =====
+                if (lich.TrangThai != "Đã đặt")
                 {
-                    MessageBox.Show($"❌ Không thể thanh toán lịch có trạng thái '{lich.TrangThai}'!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show(
+                        $"❌ Không thể thanh toán lịch có trạng thái '{lich.TrangThai}'!\n\n" +
+                        $"💡 Chỉ có thể thanh toán lịch có trạng thái 'Đã đặt'.",
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
+                // ===== MỞ FORM THANH TOÁN VÀ TRUYỀN THÔNG TIN =====
+                CT_HoaDon_DichVu frmThanhToan = new CT_HoaDon_DichVu();
 
+                // ===== TRUYỀN THÔNG TIN KHÁCH HÀNG =====
+                frmThanhToan.SetKhachHang(lich.TenKH, lich.SDT_KH);
 
+                // ===== TRUYỀN MÃ LỊCH ĐẶT =====
+                frmThanhToan.SetMaLich(lich.MaLich);
+
+                // ===== HIỂN THỊ FORM THANH TOÁN =====
+                this.Hide();
+                frmThanhToan.ShowDialog();
+                this.Show();
+
+                // ===== TẢI LẠI DỮ LIỆU SAU KHI THANH TOÁN =====
+                RefreshDataWithSearch();
             }
             catch (Exception ex)
             {
@@ -1198,7 +1187,34 @@ namespace TrangChu
             }
         }
 
-     
+        private void dgvDatSan_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                string columnName = dgvDatSan.Columns[e.ColumnIndex].Name;
+
+                // ===== NẾU CLICK CÙNG CỘT LẦN THỨ 2, ĐẢO CHIỀU SẮP XẾP =====
+                if (sortedColumn == columnName)
+                {
+                    sortOrder = sortOrder == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
+                }
+                else
+                {
+                    sortedColumn = columnName;
+                    sortOrder = SortOrder.Ascending;
+                }
+
+                // ===== SẮP XẾP DỮ LIỆU =====
+                SortDataGridView(columnName, sortOrder);
+
+                // ===== HIỂN THỊ DẤU TAM GIÁC =====
+                ShowSortIndicator(e.ColumnIndex, sortOrder);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi sắp xếp: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
     
 }

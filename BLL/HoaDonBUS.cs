@@ -231,5 +231,100 @@ namespace BUS
         {
             db?.Dispose();
         }
+
+        // ===== LẤY DANH SÁCH HÓA ĐƠN VỚI THÔNG TIN KHÁCH HÀNG VÀ LỊCH ĐẶT =====
+        public List<dynamic> GetHoaDonWithCustomerInfo()
+        {
+            try
+            {
+                var result = (from hd in db.HoaDons
+                              join ld in db.LichDats on hd.MaLich equals ld.MaLich into lichGroup
+                              from ld in lichGroup.DefaultIfEmpty()
+                              select new
+                              {
+                                  MaHD = hd.MaHD,
+                                  MaLich = hd.MaLich,
+                                  TenKH = ld != null ? ld.TenKH : "Khách vãng lai",
+                                  SDT_KH = ld != null ? ld.SDT_KH : "N/A",
+                                  NgayDat = ld != null ? ld.NgayDat : null,
+                                  MaSan = ld != null ? ld.MaSan : "N/A",
+                                  GioBD = ld != null ? ld.GioBD : (int?)null,
+                                  GioKT = ld != null ? ld.GioKT : (int?)null,
+                                  TongTien = hd.TongTien,
+                                  ThoiGianThanhToan = hd.ThoiGianThanhToan,
+                                  HinhThucTT = hd.HinhThucTT
+                              })
+                       .AsEnumerable()
+                       .Select(x => (dynamic)x)
+                .ToList();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Lỗi lấy danh sách hóa đơn: {ex.Message}");
+                return new List<dynamic>();
+            }
+        }
+
+        // ===== LẤY DANH SÁCH HÓA ĐƠN THEO SỐ ĐIỆN THOẠI =====
+        public List<dynamic> GetHoaDonBySdt(string sdt)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(sdt))
+                    return new List<dynamic>();
+
+                var result = (from hd in db.HoaDons
+                              join ld in db.LichDats on hd.MaLich equals ld.MaLich into lichGroup
+                              from ld in lichGroup.DefaultIfEmpty()
+                              where ld != null && ld.SDT_KH == sdt
+                              select new
+                              {
+                                  MaHD = hd.MaHD,
+                                  MaLich = hd.MaLich,
+                                  TenKH = ld.TenKH,
+                                  SDT_KH = ld.SDT_KH,
+                                  NgayDat = ld.NgayDat,
+                                  MaSan = ld.MaSan,
+                                  GioBD = ld.GioBD,
+                                  GioKT = ld.GioKT,
+                                  TongTien = hd.TongTien,
+                                  ThoiGianThanhToan = hd.ThoiGianThanhToan,
+                                  HinhThucTT = hd.HinhThucTT
+                              })
+                  .AsEnumerable()
+             .Select(x => (dynamic)x)
+             .ToList();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Lỗi lấy hóa đơn theo SĐT: {ex.Message}");
+                return new List<dynamic>();
+            }
+        }
+
+        // ===== LẤY CHI TIẾT HÓA ĐƠN THEO MÃ HÓA ĐƠN =====
+        public List<CT_HoaDon_DichVu> GetChiTietHoaDon(string maHD)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(maHD))
+                    return new List<CT_HoaDon_DichVu>();
+
+                var result = db.CT_HoaDon_DichVu
+                .Where(x => x.MaHD == maHD)
+                   .ToList();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Lỗi lấy chi tiết hóa đơn: {ex.Message}");
+                return new List<CT_HoaDon_DichVu>();
+            }
+        }
     }
 }

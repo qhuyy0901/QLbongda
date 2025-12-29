@@ -35,8 +35,24 @@ namespace DAL
         [StringLength(50)]
         public string TrangThai { get; set; }
 
-        // ===== PROPERTY ?O ?? HI?N TH? TRONG COMBOBOX =====
+        // ===== PROPERTY ?? HI?N TH? THÔNG TIN L?CH TRONG COMBOBOX =====
         [NotMapped]
-        public string ThongTinLich { get; set; }
+        public string ThongTinLich
+        {
+            get
+            {
+                try
+                {
+                    string ngayDat = NgayDat.HasValue ? NgayDat.Value.ToString("dd/MM/yyyy") : "N/A";
+                    string gioChoi = $"{GioBD}:00 - {GioKT}:00";
+
+                    return $"[{MaLich}] {TenKH} | {SDT_KH} | {ngayDat} | {gioChoi} | {MaSan}";
+                }
+                catch
+                {
+                    return MaLich ?? "";
+                }
+            }
+        }
     }
 }

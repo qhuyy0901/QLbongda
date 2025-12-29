@@ -90,7 +90,6 @@ namespace TrangChu
         private void btnQuanLyNV_Click(object sender, EventArgs e)
         {
             this.Hide();
-            // ===== GÁN NGƯỜI DÙNG ĐANG ĐĂNG NHẬP =====
             QuanLyTK.CurrentLoggedInUser = currentUser;
             QuanLyTK frm = new QuanLyTK();
             frm.ShowDialog();
@@ -119,7 +118,7 @@ namespace TrangChu
         private void btnDoanhThu_Click(object sender, EventArgs e)
         {
             this.Hide();
-            ThongKe frm = new ThongKe();
+            DT_HoaDon frm = new DT_HoaDon();
             frm.ShowDialog();
             this.Show();
         }

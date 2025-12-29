@@ -33,16 +33,13 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.grpThongTinHoaDon = new System.Windows.Forms.GroupBox();
-            this.btnThanhToan = new System.Windows.Forms.Button();
-            this.lblLoaiHoaDon = new System.Windows.Forms.Label();
-            this.rdoKhachLe = new System.Windows.Forms.RadioButton();
-            this.rdoKhachDatSan = new System.Windows.Forms.RadioButton();
             this.lblMaLich = new System.Windows.Forms.Label();
             this.cbxLichDat = new System.Windows.Forms.ComboBox();
             this.lblTenKH = new System.Windows.Forms.Label();
             this.txtTenKH = new System.Windows.Forms.TextBox();
             this.lblSDT = new System.Windows.Forms.Label();
             this.txtSDT = new System.Windows.Forms.TextBox();
+            this.btnThanhToan = new System.Windows.Forms.Button();
             this.grpDichVu = new System.Windows.Forms.GroupBox();
             this.dgvDichVu = new System.Windows.Forms.DataGridView();
             this.grpGioDichVu = new System.Windows.Forms.GroupBox();
@@ -53,6 +50,7 @@
             this.btnSuaSP = new System.Windows.Forms.Button();
             this.btnXoaSP = new System.Windows.Forms.Button();
             this.btnQuayLai = new System.Windows.Forms.Button();
+            this.guna2ContextMenuStrip1 = new Guna.UI2.WinForms.Guna2ContextMenuStrip();
             this.grpThongTinHoaDon.SuspendLayout();
             this.grpDichVu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDichVu)).BeginInit();
@@ -63,9 +61,6 @@
             // grpThongTinHoaDon
             // 
             this.grpThongTinHoaDon.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.grpThongTinHoaDon.Controls.Add(this.lblLoaiHoaDon);
-            this.grpThongTinHoaDon.Controls.Add(this.rdoKhachLe);
-            this.grpThongTinHoaDon.Controls.Add(this.rdoKhachDatSan);
             this.grpThongTinHoaDon.Controls.Add(this.lblMaLich);
             this.grpThongTinHoaDon.Controls.Add(this.cbxLichDat);
             this.grpThongTinHoaDon.Controls.Add(this.lblTenKH);
@@ -76,10 +71,64 @@
             this.grpThongTinHoaDon.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.grpThongTinHoaDon.Location = new System.Drawing.Point(0, 0);
             this.grpThongTinHoaDon.Name = "grpThongTinHoaDon";
-            this.grpThongTinHoaDon.Size = new System.Drawing.Size(950, 110);
+            this.grpThongTinHoaDon.Size = new System.Drawing.Size(950, 114);
             this.grpThongTinHoaDon.TabIndex = 0;
             this.grpThongTinHoaDon.TabStop = false;
             this.grpThongTinHoaDon.Text = "THÔNG TIN KHÁCH HÀNG & HÓA ĐƠN";
+            // 
+            // lblMaLich
+            // 
+            this.lblMaLich.AutoSize = true;
+            this.lblMaLich.Location = new System.Drawing.Point(72, 41);
+            this.lblMaLich.Name = "lblMaLich";
+            this.lblMaLich.Size = new System.Drawing.Size(73, 19);
+            this.lblMaLich.TabIndex = 3;
+            this.lblMaLich.Text = "Chọn Lịch:";
+            // 
+            // cbxLichDat
+            // 
+            this.cbxLichDat.Enabled = false;
+            this.cbxLichDat.FormattingEnabled = true;
+            this.cbxLichDat.Location = new System.Drawing.Point(158, 38);
+            this.cbxLichDat.Name = "cbxLichDat";
+            this.cbxLichDat.Size = new System.Drawing.Size(358, 25);
+            this.cbxLichDat.TabIndex = 4;
+            // 
+            // lblTenKH
+            // 
+            this.lblTenKH.AutoSize = true;
+            this.lblTenKH.Location = new System.Drawing.Point(586, 27);
+            this.lblTenKH.Name = "lblTenKH";
+            this.lblTenKH.Size = new System.Drawing.Size(55, 19);
+            this.lblTenKH.TabIndex = 5;
+            this.lblTenKH.Text = "Tên KH:";
+            // 
+            // txtTenKH
+            // 
+            this.txtTenKH.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtTenKH.Enabled = false;
+            this.txtTenKH.Location = new System.Drawing.Point(656, 24);
+            this.txtTenKH.Name = "txtTenKH";
+            this.txtTenKH.Size = new System.Drawing.Size(200, 25);
+            this.txtTenKH.TabIndex = 6;
+            // 
+            // lblSDT
+            // 
+            this.lblSDT.AutoSize = true;
+            this.lblSDT.Location = new System.Drawing.Point(586, 65);
+            this.lblSDT.Name = "lblSDT";
+            this.lblSDT.Size = new System.Drawing.Size(36, 19);
+            this.lblSDT.TabIndex = 7;
+            this.lblSDT.Text = "SĐT:";
+            // 
+            // txtSDT
+            // 
+            this.txtSDT.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtSDT.Enabled = false;
+            this.txtSDT.Location = new System.Drawing.Point(656, 62);
+            this.txtSDT.Name = "txtSDT";
+            this.txtSDT.Size = new System.Drawing.Size(200, 25);
+            this.txtSDT.TabIndex = 8;
             // 
             // btnThanhToan
             // 
@@ -96,91 +145,6 @@
             this.btnThanhToan.Text = "THANH TOÁN";
             this.btnThanhToan.UseVisualStyleBackColor = false;
             this.btnThanhToan.Click += new System.EventHandler(this.btnThanhToan_Click);
-            // 
-            // lblLoaiHoaDon
-            // 
-            this.lblLoaiHoaDon.AutoSize = true;
-            this.lblLoaiHoaDon.Location = new System.Drawing.Point(50, 27);
-            this.lblLoaiHoaDon.Name = "lblLoaiHoaDon";
-            this.lblLoaiHoaDon.Size = new System.Drawing.Size(77, 19);
-            this.lblLoaiHoaDon.TabIndex = 0;
-            this.lblLoaiHoaDon.Text = "Loại khách:";
-            // 
-            // rdoKhachLe
-            // 
-            this.rdoKhachLe.AutoSize = true;
-            this.rdoKhachLe.Checked = true;
-            this.rdoKhachLe.Location = new System.Drawing.Point(172, 24);
-            this.rdoKhachLe.Name = "rdoKhachLe";
-            this.rdoKhachLe.Size = new System.Drawing.Size(115, 23);
-            this.rdoKhachLe.TabIndex = 1;
-            this.rdoKhachLe.TabStop = true;
-            this.rdoKhachLe.Text = "Khách vãng lai";
-            this.rdoKhachLe.UseVisualStyleBackColor = true;
-            // 
-            // rdoKhachDatSan
-            // 
-            this.rdoKhachDatSan.AutoSize = true;
-            this.rdoKhachDatSan.Location = new System.Drawing.Point(381, 24);
-            this.rdoKhachDatSan.Name = "rdoKhachDatSan";
-            this.rdoKhachDatSan.Size = new System.Drawing.Size(113, 23);
-            this.rdoKhachDatSan.TabIndex = 2;
-            this.rdoKhachDatSan.Text = "Khách đặt sân";
-            this.rdoKhachDatSan.UseVisualStyleBackColor = true;
-            // 
-            // lblMaLich
-            // 
-            this.lblMaLich.AutoSize = true;
-            this.lblMaLich.Location = new System.Drawing.Point(50, 68);
-            this.lblMaLich.Name = "lblMaLich";
-            this.lblMaLich.Size = new System.Drawing.Size(73, 19);
-            this.lblMaLich.TabIndex = 3;
-            this.lblMaLich.Text = "Chọn Lịch:";
-            // 
-            // cbxLichDat
-            // 
-            this.cbxLichDat.Enabled = false;
-            this.cbxLichDat.FormattingEnabled = true;
-            this.cbxLichDat.Location = new System.Drawing.Point(136, 65);
-            this.cbxLichDat.Name = "cbxLichDat";
-            this.cbxLichDat.Size = new System.Drawing.Size(358, 25);
-            this.cbxLichDat.TabIndex = 4;
-            // 
-            // lblTenKH
-            // 
-            this.lblTenKH.AutoSize = true;
-            this.lblTenKH.Location = new System.Drawing.Point(586, 33);
-            this.lblTenKH.Name = "lblTenKH";
-            this.lblTenKH.Size = new System.Drawing.Size(55, 19);
-            this.lblTenKH.TabIndex = 5;
-            this.lblTenKH.Text = "Tên KH:";
-            // 
-            // txtTenKH
-            // 
-            this.txtTenKH.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtTenKH.Enabled = false;
-            this.txtTenKH.Location = new System.Drawing.Point(656, 30);
-            this.txtTenKH.Name = "txtTenKH";
-            this.txtTenKH.Size = new System.Drawing.Size(200, 25);
-            this.txtTenKH.TabIndex = 6;
-            // 
-            // lblSDT
-            // 
-            this.lblSDT.AutoSize = true;
-            this.lblSDT.Location = new System.Drawing.Point(586, 71);
-            this.lblSDT.Name = "lblSDT";
-            this.lblSDT.Size = new System.Drawing.Size(36, 19);
-            this.lblSDT.TabIndex = 7;
-            this.lblSDT.Text = "SĐT:";
-            // 
-            // txtSDT
-            // 
-            this.txtSDT.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.txtSDT.Enabled = false;
-            this.txtSDT.Location = new System.Drawing.Point(656, 68);
-            this.txtSDT.Name = "txtSDT";
-            this.txtSDT.Size = new System.Drawing.Size(200, 25);
-            this.txtSDT.TabIndex = 8;
             // 
             // grpDichVu
             // 
@@ -352,6 +316,20 @@
             this.btnQuayLai.UseVisualStyleBackColor = false;
             this.btnQuayLai.Click += new System.EventHandler(this.btnQuayLai_Click);
             // 
+            // guna2ContextMenuStrip1
+            // 
+            this.guna2ContextMenuStrip1.Name = "guna2ContextMenuStrip1";
+            this.guna2ContextMenuStrip1.RenderStyle.ArrowColor = System.Drawing.Color.FromArgb(((int)(((byte)(151)))), ((int)(((byte)(143)))), ((int)(((byte)(255)))));
+            this.guna2ContextMenuStrip1.RenderStyle.BorderColor = System.Drawing.Color.Gainsboro;
+            this.guna2ContextMenuStrip1.RenderStyle.ColorTable = null;
+            this.guna2ContextMenuStrip1.RenderStyle.RoundedEdges = true;
+            this.guna2ContextMenuStrip1.RenderStyle.SelectionArrowColor = System.Drawing.Color.White;
+            this.guna2ContextMenuStrip1.RenderStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.guna2ContextMenuStrip1.RenderStyle.SelectionForeColor = System.Drawing.Color.White;
+            this.guna2ContextMenuStrip1.RenderStyle.SeparatorColor = System.Drawing.Color.Gainsboro;
+            this.guna2ContextMenuStrip1.RenderStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
+            this.guna2ContextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
             // DichVu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -385,15 +363,8 @@
         #endregion
 
         private System.Windows.Forms.GroupBox grpThongTinHoaDon;
-        private System.Windows.Forms.Label lblLoaiHoaDon;
-        private System.Windows.Forms.RadioButton rdoKhachLe;
-        private System.Windows.Forms.RadioButton rdoKhachDatSan;
         private System.Windows.Forms.Label lblMaLich;
         private System.Windows.Forms.ComboBox cbxLichDat;
-        private System.Windows.Forms.Label lblTenKH;
-        private System.Windows.Forms.TextBox txtTenKH;
-        private System.Windows.Forms.Label lblSDT;
-        private System.Windows.Forms.TextBox txtSDT;
         private System.Windows.Forms.GroupBox grpDichVu;
         private System.Windows.Forms.DataGridView dgvDichVu;
         private System.Windows.Forms.GroupBox grpGioDichVu;
@@ -405,5 +376,10 @@
         private System.Windows.Forms.Button btnXoaSP;
         private System.Windows.Forms.Button btnQuayLai;
         private System.Windows.Forms.Button btnThanhToan;
+        private System.Windows.Forms.Label lblTenKH;
+        private System.Windows.Forms.TextBox txtTenKH;
+        private System.Windows.Forms.Label lblSDT;
+        private System.Windows.Forms.TextBox txtSDT;
+        private Guna.UI2.WinForms.Guna2ContextMenuStrip guna2ContextMenuStrip1;
     }
 }

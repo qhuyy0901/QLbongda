@@ -186,7 +186,7 @@
             this.btnHuySan.Name = "btnHuySan";
             this.btnHuySan.Size = new System.Drawing.Size(110, 35);
             this.btnHuySan.TabIndex = 10;
-            this.btnHuySan.Text = "HỦY";
+            this.btnHuySan.Text = "HỦY SÂN";
             this.btnHuySan.UseVisualStyleBackColor = false;
             this.btnHuySan.Click += new System.EventHandler(this.btnHuySan_Click);
             // 
@@ -390,6 +390,7 @@
             this.dgvDatSan.Size = new System.Drawing.Size(723, 371);
             this.dgvDatSan.TabIndex = 13;
             this.dgvDatSan.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDatSan_CellClick);
+            this.dgvDatSan.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDatSan_CellContentClick);
             // 
             // clMaLich
             // 

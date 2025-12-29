@@ -35,8 +35,6 @@
             this.lblTenKH = new System.Windows.Forms.Label();
             this.cbxMaLich = new System.Windows.Forms.ComboBox();
             this.lblMaLich = new System.Windows.Forms.Label();
-            this.radKhachDatSan = new System.Windows.Forms.RadioButton();
-            this.radKhachVangLai = new System.Windows.Forms.RadioButton();
             this.grpTienSan = new System.Windows.Forms.GroupBox();
             this.txtTienSan = new System.Windows.Forms.TextBox();
             this.lblGiaSan = new System.Windows.Forms.Label();
@@ -75,18 +73,16 @@
             this.grpThongTin.Controls.Add(this.lblTenKH);
             this.grpThongTin.Controls.Add(this.cbxMaLich);
             this.grpThongTin.Controls.Add(this.lblMaLich);
-            this.grpThongTin.Controls.Add(this.radKhachDatSan);
-            this.grpThongTin.Controls.Add(this.radKhachVangLai);
             this.grpThongTin.Location = new System.Drawing.Point(12, 12);
             this.grpThongTin.Name = "grpThongTin";
-            this.grpThongTin.Size = new System.Drawing.Size(266, 180);
+            this.grpThongTin.Size = new System.Drawing.Size(266, 165);
             this.grpThongTin.TabIndex = 0;
             this.grpThongTin.TabStop = false;
             this.grpThongTin.Text = "Thông Tin Khách Hàng / Lịch Đặt";
             // 
             // txtSDT
             // 
-            this.txtSDT.Location = new System.Drawing.Point(100, 137);
+            this.txtSDT.Location = new System.Drawing.Point(100, 115);
             this.txtSDT.Name = "txtSDT";
             this.txtSDT.Size = new System.Drawing.Size(145, 20);
             this.txtSDT.TabIndex = 7;
@@ -94,7 +90,7 @@
             // lblSDT
             // 
             this.lblSDT.AutoSize = true;
-            this.lblSDT.Location = new System.Drawing.Point(20, 140);
+            this.lblSDT.Location = new System.Drawing.Point(20, 118);
             this.lblSDT.Name = "lblSDT";
             this.lblSDT.Size = new System.Drawing.Size(32, 13);
             this.lblSDT.TabIndex = 6;
@@ -102,7 +98,7 @@
             // 
             // txtTenKH
             // 
-            this.txtTenKH.Location = new System.Drawing.Point(100, 102);
+            this.txtTenKH.Location = new System.Drawing.Point(100, 80);
             this.txtTenKH.Name = "txtTenKH";
             this.txtTenKH.Size = new System.Drawing.Size(145, 20);
             this.txtTenKH.TabIndex = 5;
@@ -110,7 +106,7 @@
             // lblTenKH
             // 
             this.lblTenKH.AutoSize = true;
-            this.lblTenKH.Location = new System.Drawing.Point(20, 105);
+            this.lblTenKH.Location = new System.Drawing.Point(20, 83);
             this.lblTenKH.Name = "lblTenKH";
             this.lblTenKH.Size = new System.Drawing.Size(47, 13);
             this.lblTenKH.TabIndex = 4;
@@ -118,8 +114,9 @@
             // 
             // cbxMaLich
             // 
+            this.cbxMaLich.Enabled = false;
             this.cbxMaLich.FormattingEnabled = true;
-            this.cbxMaLich.Location = new System.Drawing.Point(100, 67);
+            this.cbxMaLich.Location = new System.Drawing.Point(100, 45);
             this.cbxMaLich.Name = "cbxMaLich";
             this.cbxMaLich.Size = new System.Drawing.Size(145, 21);
             this.cbxMaLich.TabIndex = 3;
@@ -127,33 +124,11 @@
             // lblMaLich
             // 
             this.lblMaLich.AutoSize = true;
-            this.lblMaLich.Location = new System.Drawing.Point(20, 70);
+            this.lblMaLich.Location = new System.Drawing.Point(20, 48);
             this.lblMaLich.Name = "lblMaLich";
             this.lblMaLich.Size = new System.Drawing.Size(48, 13);
             this.lblMaLich.TabIndex = 2;
             this.lblMaLich.Text = "Mã Lịch:";
-            // 
-            // radKhachDatSan
-            // 
-            this.radKhachDatSan.AutoSize = true;
-            this.radKhachDatSan.Location = new System.Drawing.Point(150, 30);
-            this.radKhachDatSan.Name = "radKhachDatSan";
-            this.radKhachDatSan.Size = new System.Drawing.Size(95, 17);
-            this.radKhachDatSan.TabIndex = 1;
-            this.radKhachDatSan.TabStop = true;
-            this.radKhachDatSan.Text = "Khách đặt sân";
-            this.radKhachDatSan.UseVisualStyleBackColor = true;
-            // 
-            // radKhachVangLai
-            // 
-            this.radKhachVangLai.AutoSize = true;
-            this.radKhachVangLai.Location = new System.Drawing.Point(20, 30);
-            this.radKhachVangLai.Name = "radKhachVangLai";
-            this.radKhachVangLai.Size = new System.Drawing.Size(96, 17);
-            this.radKhachVangLai.TabIndex = 0;
-            this.radKhachVangLai.TabStop = true;
-            this.radKhachVangLai.Text = "Khách vãng lai";
-            this.radKhachVangLai.UseVisualStyleBackColor = true;
             // 
             // grpTienSan
             // 
@@ -163,7 +138,7 @@
             this.grpTienSan.Controls.Add(this.lblGio);
             this.grpTienSan.Controls.Add(this.txtTenSan);
             this.grpTienSan.Controls.Add(this.lblSan);
-            this.grpTienSan.Location = new System.Drawing.Point(12, 200);
+            this.grpTienSan.Location = new System.Drawing.Point(12, 197);
             this.grpTienSan.Name = "grpTienSan";
             this.grpTienSan.Size = new System.Drawing.Size(266, 140);
             this.grpTienSan.TabIndex = 1;
@@ -416,8 +391,6 @@
         #endregion
 
         private System.Windows.Forms.GroupBox grpThongTin;
-        private System.Windows.Forms.RadioButton radKhachVangLai;
-        private System.Windows.Forms.RadioButton radKhachDatSan;
         private System.Windows.Forms.Label lblMaLich;
         private System.Windows.Forms.ComboBox cbxMaLich;
         private System.Windows.Forms.Label lblTenKH;

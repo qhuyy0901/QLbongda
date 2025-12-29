@@ -16,18 +16,15 @@ namespace TrangChu
     {
         private LichDatBUS busLichDat = new LichDatBUS();
         private DichVuBUS busDichVu = new DichVuBUS();
-        private HoaDonBUS busHoaDon = new HoaDonBUS(); // ===== THÊM BUS HÓA ĐƠN =====
+        private HoaDonBUS busHoaDon = new HoaDonBUS();
 
-        // ===== BIẾN LƯU TRỮ THÔNG TIN KHÁCH HÀNG =====
         private string tenKH = "";
         private string sdtKH = "";
-        private string loaiKhach = "VangLai"; // VangLai hoặc DatSan
         private string maLich = "";
         private List<DAL.CT_HoaDon_DichVu> listChiTiet = new List<DAL.CT_HoaDon_DichVu>();
         private decimal tongTienDichVu = 0;
         private decimal tienSan = 0;
 
-        // ===== FLAG KIỂM TRA THANH TOÁN THÀNH CÔNG =====
         public bool IsThanhToanThanhCong { get; set; } = false;
 
         public CT_HoaDon_DichVu()
@@ -36,31 +33,20 @@ namespace TrangChu
             this.Load += CT_HoaDon_DichVu_Load;
             btnThanhToan.Click += BtnThanhToan_Click;
             btnHuy.Click += BtnHuy_Click;
-            radKhachVangLai.CheckedChanged += RadKhach_CheckedChanged;
-            radKhachDatSan.CheckedChanged += RadKhach_CheckedChanged;
             cbxHinhThucTT.SelectedIndexChanged += CbxHinhThucTT_SelectedIndexChanged;
         }
 
-        // ===== NHẬN THÔNG TIN KHÁCH HÀNG =====
         public void SetKhachHang(string ten, string sdt)
         {
             tenKH = ten;
             sdtKH = sdt;
         }
 
-        // ===== NHẬN LOẠI KHÁCH HÀNG =====
-        public void SetLoaiKhach(string loai)
-        {
-            loaiKhach = loai;
-        }
-
-        // ===== NHẬN MÃ LỊCH ĐẶT SÂN =====
         public void SetMaLich(string maLichDat)
         {
             maLich = maLichDat;
         }
 
-        // ===== NHẬN CHI TIẾT DỊCH VỤ =====
         public void SetChiTietDichVu(List<DAL.CT_HoaDon_DichVu> list, decimal tongTienDV)
         {
             listChiTiet = list ?? new List<DAL.CT_HoaDon_DichVu>();
@@ -71,24 +57,23 @@ namespace TrangChu
         {
             try
             {
-                // ===== THIẾT LẬP HÌNH THỨC THANH TOÁN =====
                 cbxHinhThucTT.Items.Clear();
                 cbxHinhThucTT.Items.Add("Tiền mặt");
                 cbxHinhThucTT.Items.Add("Chuyển khoản");
                 cbxHinhThucTT.SelectedIndex = 0;
 
-                // ===== NGĂN CHẶN CHỈNH SỬA DATAGRIDVIEW =====
                 dgvCTDichVu.ReadOnly = true;
                 dgvCTDichVu.AllowUserToAddRows = false;
                 dgvCTDichVu.AllowUserToDeleteRows = false;
                 dgvCTDichVu.AllowUserToResizeRows = false;
                 dgvCTDichVu.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-                // ===== HIỂN THỊ THÔNG TIN KHÁCH HÀNG =====
+                // ===== LOAD DANH SÁCH LỊCH ĐẶT VÀO COMBOBOX =====
+                LoadDanhSachLichDat();
+
                 HienThiThongTinKhachHang();
 
-                // ===== HIỂN THỊ THÔNG TIN LỊCH ĐẶT (NẾU CÓ) =====
-                if (loaiKhach == "DatSan" && !string.IsNullOrWhiteSpace(maLich))
+                if (!string.IsNullOrWhiteSpace(maLich))
                 {
                     grpTienSan.Visible = true;
                     LoadThongTinLichDat();
@@ -96,17 +81,13 @@ namespace TrangChu
                 else
                 {
                     grpTienSan.Visible = false;
-                    radKhachVangLai.Checked = true;
                     tienSan = 0;
                 }
 
-                // ===== HIỂN THỊ CHI TIẾT DỊCH VỤ =====
                 LoadChiTietDichVu();
 
-                // ===== CẬP NHẬT TỔNG TIỀN =====
                 CapNhatTongTien();
 
-                // ===== KHÓA TOÀN BỘ TRỊ NHẬP LIỆU =====
                 KhoaTatCaControl();
             }
             catch (Exception ex)
@@ -116,22 +97,107 @@ namespace TrangChu
             }
         }
 
-        // ===== HIỂN THỊ THÔNG TIN KHÁCH HÀNG =====
+        // ===== LOAD DANH SÁCH LỊCH ĐẶT TỪngày hiện tại trở đi =====
+        private void LoadDanhSachLichDat()
+        {
+            try
+            {
+                // ===== HỦY SỰ KIỆN CŨ NẾU ĐÃ CÓ =====
+                cbxMaLich.SelectedIndexChanged -= CbxMaLich_SelectedIndexChanged;
+
+                DateTime homNay = DateTime.Now.Date;
+
+                // ===== LẤY TẤT CẢ LỊCH ĐẶT =====
+                var allLichs = busLichDat.GetAll();
+
+                // ===== LỌC LỊCH ĐẶT CÓ TRẠNG THÁI "ĐÃ ĐẶT" VÀ NGÀY >= HÔM NAY =====
+                var filteredLichs = allLichs
+   ?.Where(l => l.TrangThai == "Đã đặt" && l.NgayDat.HasValue && l.NgayDat.Value.Date >= homNay)
+   .OrderBy(l => l.NgayDat)
+.ThenBy(l => l.GioBD)
+     .ToList() ?? new List<DAL.LichDat>();
+
+        // ===== NẾU KHÔNG CÓ LỊCH NÀO THÌ HIỂN THỊ THÔNG BÁO =====
+          if (filteredLichs.Count == 0)
+      {
+         MessageBox.Show("⚠️ Không có lịch đặt nào từ hôm nay trở đi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+          cbxMaLich.DataSource = null;
+ return;
+       }
+
+         // ===== TẠO DANH SÁCH HIỂN THỊ =====
+       var displayList = filteredLichs.Select(l => new
+  {
+       MaLich = l.MaLich,
+          Display = $"{l.MaLich} - {l.MaSan} ({l.NgayDat:dd/MM/yyyy}) {l.GioBD}:00-{l.GioKT}:00 ({l.TenKH})"
+            }).ToList();
+
+   cbxMaLich.DataSource = displayList;
+cbxMaLich.DisplayMember = "Display";
+         cbxMaLich.ValueMember = "MaLich";
+
+       // ===== NẾU ĐÃ CÓ MALÍCH ĐƯỢC SET SẴN THÌ CHỌN LẠI =====
+     if (!string.IsNullOrWhiteSpace(maLich))
+            {
+          // Tìm xem MaLich có tồn tại trong danh sách không
+            var existingLich = displayList.FirstOrDefault(l => l.MaLich == maLich);
+      if (existingLich != null)
+         {
+  cbxMaLich.SelectedValue = maLich;
+            }
+      else
+   {
+      // Nếu không tìm thấy thì chọn lịch đầu tiên
+       cbxMaLich.SelectedIndex = 0;
+ }
+           }
+   else if (cbxMaLich.Items.Count > 0)
+     {
+     cbxMaLich.SelectedIndex = 0;
+         }
+
+     // ===== THÊM SỰ KIỆN CHANGE LẦN DUY NHẤT =====
+                cbxMaLich.SelectedIndexChanged += CbxMaLich_SelectedIndexChanged;
+     }
+  catch (Exception ex)
+   {
+   MessageBox.Show("❌ Lỗi load danh sách lịch đặt:\n" + ex.Message,
+            "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+       }
+    }
+
+        // ===== SỰ KIỆN KHI CHỌN LỊCH TRONG COMBOBOX =====
+        private void CbxMaLich_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (cbxMaLich.SelectedValue == null || string.IsNullOrWhiteSpace(cbxMaLich.SelectedValue.ToString()))
+                    return;
+
+                string selectedMaLich = cbxMaLich.SelectedValue.ToString();
+
+                // ===== CẬP NHẬT MALÍCH =====
+                maLich = selectedMaLich;
+
+                // ===== LOAD THÔNG TIN LỊCH =====
+                LoadThongTinLichDat();
+
+                // ===== CẬP NHẬT TỔNG TIỀN =====
+                CapNhatTongTien();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("❌ Lỗi khi chọn lịch:\n" + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         private void HienThiThongTinKhachHang()
         {
             try
             {
                 txtTenKH.Text = tenKH;
                 txtSDT.Text = sdtKH;
-
-                if (loaiKhach == "DatSan")
-                {
-                    radKhachDatSan.Checked = true;
-                }
-                else
-                {
-                    radKhachVangLai.Checked = true;
-                }
             }
             catch (Exception ex)
             {
@@ -139,7 +205,6 @@ namespace TrangChu
             }
         }
 
-        // ===== LOAD THÔNG TIN LỊCH ĐẶT =====
         private void LoadThongTinLichDat()
         {
             try
@@ -153,12 +218,10 @@ namespace TrangChu
 
                 if (lichDat != null)
                 {
-                    // ===== HIỂN THỊ THÔNG TIN SÂN =====
                     cbxMaLich.Text = lichDat.MaLich;
                     txtTenSan.Text = lichDat.MaSan;
                     txtKhungGio.Text = $"{lichDat.GioBD}:00 - {lichDat.GioKT}:00";
 
-                    // ===== HIỂN THỊ TIỀN SÂN =====
                     tienSan = lichDat.DonGiaThucTe ?? 0;
                     txtTienSan.Text = tienSan.ToString("N0");
 
@@ -171,7 +234,6 @@ namespace TrangChu
             }
         }
 
-        // ===== LOAD CHI TIẾT DỊCH VỤ VÀO DATAGRIDVIEW =====
         private void LoadChiTietDichVu()
         {
             try
@@ -183,14 +245,12 @@ namespace TrangChu
                 dt.Columns.Add("DonGia", typeof(decimal));
                 dt.Columns.Add("ThanhTien", typeof(decimal));
 
-                // ===== LOAD DỊCH VỤ TỪ DATABASE (EAGER LOADING) =====
                 var listWithDichVu = busDichVu.LoadChiTietWithDichVu(listChiTiet);
 
                 if (listWithDichVu != null && listWithDichVu.Count > 0)
                 {
                     foreach (var ct in listWithDichVu)
                     {
-                        // ===== LẤY THÔNG TIN DỊCH VỤ =====
                         string tenDV = ct.DichVu?.TenDV ?? "Không xác định";
                         decimal donGia = ct.DichVu?.DonGia ?? 0;
                         int soLuong = ct.SoLuong ?? 1;
@@ -202,10 +262,8 @@ namespace TrangChu
 
                 dgvCTDichVu.DataSource = dt;
 
-                // ===== ĐỊNH DẠNG CỘT TIỀN =====
                 FormatDichVuColumn();
 
-                // ===== HIỂN THỊ TỔNG TIỀN DỊCH VỤ =====
                 lblTongTienDV_Value.Text = tongTienDichVu.ToString("N0") + " VNĐ";
             }
             catch (Exception ex)
@@ -214,7 +272,6 @@ namespace TrangChu
             }
         }
 
-        // ===== ĐỊNH DẠNG CỘT TIỀN =====
         private void FormatDichVuColumn()
         {
             try
@@ -234,7 +291,6 @@ namespace TrangChu
             catch { }
         }
 
-        // ===== CẬP NHẬT TỔNG TIỀN =====
         private void CapNhatTongTien()
         {
             try
@@ -245,26 +301,17 @@ namespace TrangChu
             catch { }
         }
 
-        // ===== KHÓA TOÀN BỘ CONTROL (KHI ĐÃ NHẬP DỮ LIỆU) =====
         private void KhoaTatCaControl()
         {
             try
             {
-                // ===== KHÓA TÁT CẢ TEXTBOX =====
                 txtTenKH.ReadOnly = true;
                 txtSDT.ReadOnly = true;
                 txtTenSan.ReadOnly = true;
                 txtKhungGio.ReadOnly = true;
                 txtTienSan.ReadOnly = true;
-
-                // ===== KHÓA RADIOBUTTON (CÓ THỂ XEM NHƯNG KHÔNG CHỈNH) =====
-                radKhachVangLai.Enabled = false;
-                radKhachDatSan.Enabled = false;
-
-                // ===== KHÓA COMBOBOX =====
-                cbxMaLich.Enabled = false;
-
-                // ===== DATAAGRIDVIEW ĐÃ ĐƯỢC SET READONLY TRONG LOAD =====
+                // ===== KHÔNG KHÓA COMBOBOX LỊCH ĐẶT - CHO PHÉP CHỌN =====
+                cbxMaLich.Enabled = true;
             }
             catch (Exception ex)
             {
@@ -272,24 +319,6 @@ namespace TrangChu
             }
         }
 
-        // ===== SỰ KIỆN THAY ĐỔI LOẠI KHÁCH (CHỈ ĐỂ HIỂN THỊ) =====
-        private void RadKhach_CheckedChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                if (radKhachDatSan.Checked)
-                {
-                    grpTienSan.Visible = true;
-                }
-                else
-                {
-                    grpTienSan.Visible = false;
-                }
-            }
-            catch { }
-        }
-
-        // ===== SỰ KIỆN THAY ĐỔI HÌNH THỨC THANH TOÁN - HIỂN THỊ QR CODE =====
         private void CbxHinhThucTT_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -298,12 +327,10 @@ namespace TrangChu
 
                 if (hinhThuc == "Chuyển khoản")
                 {
-                    // ===== HIỂN THỊ QR CODE =====
                     HienThiQRCode();
                 }
                 else
                 {
-                    // ===== ẨN QR CODE NẾU CHỌN HÌNH THỨC KHÁC =====
                     picQRCode.Visible = false;
                     lblQRCode.Visible = false;
                 }
@@ -314,17 +341,14 @@ namespace TrangChu
             }
         }
 
-        // ===== HIỂN THỊ QR CODE TRỰ TIẾP TRÊN FORM =====
         private void HienThiQRCode()
         {
             try
             {
-                // ===== TÍNH TỔNG TIỀN =====
                 decimal tongTien = tienSan + tongTienDichVu;
 
                 try
                 {
-                    // ===== TẠO MÃ QR =====
                     Bitmap qrBitmap = BUS.QRCodeHelper.GenerateQRCode(tongTien, "Thanh toan dich vu");
                     picQRCode.Image = qrBitmap;
                     picQRCode.Visible = true;
@@ -332,7 +356,7 @@ namespace TrangChu
                 }
                 catch (Exception qrEx)
                 {
-                    MessageBox.Show("⚠️ Không thể tạo mã QR. Lỗi: " + qrEx.Message, 
+                    MessageBox.Show("⚠️ Không thể tạo mã QR. Lỗi: " + qrEx.Message,
                         "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     picQRCode.Visible = false;
                     lblQRCode.Visible = false;
@@ -344,18 +368,15 @@ namespace TrangChu
             }
         }
 
-        // ===== NÚT THANH TOÁN (LƯU HÓA ĐƠN VÀO DATABASE) =====
         private void BtnThanhToan_Click(object sender, EventArgs e)
         {
             try
             {
-                // ===== LẤY TỔNG TIỀN =====
                 string tongTienText = lblTongThanhToan.Text.Replace(" VNĐ", "").Replace(",", "");
                 decimal.TryParse(tongTienText, out decimal tongTien);
 
                 string hinhThucTT = cbxHinhThucTT.SelectedItem?.ToString() ?? "Tiền mặt";
 
-                // ===== HIỂN THỊ XÁC NHẬN =====
                 string message = $"✔ XÁC NHẬN THANH TOÁN\n\n" +
                     $"Hình thức TT: {hinhThucTT}\n" +
                     $"Tổng tiền: {tongTien:N0} VNĐ\n\n" +
@@ -366,17 +387,34 @@ namespace TrangChu
 
                 if (result == DialogResult.Yes)
                 {
-                    // ===== TẠO HÓA ĐƠN =====
-                    HoaDon hoaDon = new HoaDon
+                    // ===== ĐẢM BẢO MALÍCH CÓ GIÁ TRỊ HỢP LỆ =====
+                    string maLichHD = string.IsNullOrWhiteSpace(maLich) ? null : maLich;
+
+                    // ===== TẠO HÓA ĐƠN MỚI KHÔNG CÓ REFERENCE ĐẾN CONTEXT CŨ =====
+                    DAL.HoaDon hoaDon = new DAL.HoaDon
                     {
-                        MaLich = string.IsNullOrWhiteSpace(maLich) ? "KVL" : maLich,  // KVL = Khách Vãng Lai
+                        MaLich = maLichHD,
                         TongTien = tongTien,
                         ThoiGianThanhToan = DateTime.Now,
                         HinhThucTT = hinhThucTT
                     };
 
-                    // ===== LƯU HÓA ĐƠN VÀ CHI TIẾT VÀO DATABASE =====
-                    bool success = busHoaDon.ThanhToan(hoaDon, listChiTiet);
+                    // ===== TẠO DANH SÁCH CHI TIẾT MỚI KHÔNG LIÊN KẾT ĐẾN CONTEXT CŨ =====
+                    List<DAL.CT_HoaDon_DichVu> listChiTietNew = new List<DAL.CT_HoaDon_DichVu>();
+
+                    foreach (var item in listChiTiet)
+                    {
+                        // ===== TẠỌ OBJECT MỚI KHÔNG CÓ ENTITY TRACKING =====
+                        listChiTietNew.Add(new DAL.CT_HoaDon_DichVu
+                        {
+                            MaCT = item.MaCT,
+                            MaDV = item.MaDV,
+                            SoLuong = item.SoLuong,
+                            ThanhTien = item.ThanhTien
+                        });
+                    }
+
+                    bool success = busHoaDon.ThanhToan(hoaDon, listChiTietNew);
 
                     if (success)
                     {
@@ -399,7 +437,6 @@ namespace TrangChu
             }
         }
 
-        // ===== NÚT HỦY / THOÁT =====
         private void BtnHuy_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Bạn có muốn hủy thanh toán?",
