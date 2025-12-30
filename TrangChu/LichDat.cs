@@ -58,8 +58,10 @@ namespace TrangChu
                 dtpGioKetThuc.Value = DateTime.Today.AddHours(23);
 
                 txtTimKiem.KeyDown += TxtTimKiem_KeyDown;
+                // ✅ THÊM: Click hàng để xem thông tin (không load)
                 dgvDatSan.CellClick += dgvDatSan_CellClick;
-
+                // ✅ GIỮ LẠI: Click header cột để sắp xếp
+                dgvDatSan.CellContentClick += dgvDatSan_CellContentClick;
 
                 // ===== NGĂN CHẶN CHỈNH SỬA TRỰC TIẾP TRÊN DATAGRIDVIEW =====
                 dgvDatSan.ReadOnly = true;
@@ -80,157 +82,10 @@ namespace TrangChu
             }
         }
 
-        // ===== SỰ KIỆN SẮP XẾP KHI CLICK VÀO HEADER CỘT =====
-
-
-        // ===== METHOD SẮP XẾP DATAGRIDVIEW =====
-        private void SortDataGridView(string columnName, SortOrder sortOrder)
-        {
-            try
-            {
-                if (dgvDatSan.DataSource == null)
-                    return;
-
-                // ===== LẤY DANH SÁCH HIỆN TẠI =====
-                List<DAL.LichDat> currentData = null;
-
-                // ===== KIỂM TRA NẾU LÀ BINDING SOURCE =====
-                if (dgvDatSan.DataSource is BindingSource bs)
-                {
-                    currentData = (List<DAL.LichDat>)bs.DataSource;
-                }
-                else if (dgvDatSan.DataSource is List<DAL.LichDat> list)
-                {
-                    currentData = list;
-                }
-
-                if (currentData == null || currentData.Count == 0)
-                    return;
-
-                // ===== SẮP XẾP DANH SÁCH DỰA TRÊN REFLECTION =====
-                if (sortOrder == SortOrder.Ascending)
-                {
-                    currentData = currentData
-                        .OrderBy(x => GetPropertyValue(x, columnName))
-                        .ToList();
-                }
-                else
-                {
-                    currentData = currentData
-                        .OrderByDescending(x => GetPropertyValue(x, columnName))
-                        .ToList();
-                }
-
-                // ===== CẬP NHẬT DATAGRIDVIEW =====
-                dgvDatSan.DataSource = null;
-                dgvDatSan.DataSource = currentData;
-                ReapplyColumnBindings();
-                FormatDonGiaColumn();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi sắp xếp: {ex.Message}");
-            }
-        }
-
-        // ===== HELPER METHOD LẤY GIÁ TRỊ PROPERTY =====
-        private object GetPropertyValue(DAL.LichDat item, string propertyName)
-        {
-            try
-            {
-                var property = item.GetType().GetProperty(propertyName);
-                return property?.GetValue(item) ?? "";
-            }
-            catch
-            {
-                return "";
-            }
-        }
-
-        // ===== HIỂN THỊ DẤU TAM GIÁC (SORT INDICATOR) =====
-        private void ShowSortIndicator(int columnIndex, SortOrder sortOrder)
-        {
-            try
-            {
-                // ===== XÓA DẤU TẤT CẢ CỘT CŨ =====
-                foreach (DataGridViewColumn col in dgvDatSan.Columns)
-                {
-                    col.HeaderText = col.HeaderText.Replace(" ▲", "").Replace(" ▼", "");
-                }
-
-                // ===== THÊM DẤU TAM GIÁC VÀO CỘT ĐƯỢC CHỌN =====
-                string sortSymbol = sortOrder == SortOrder.Ascending ? " ▲" : " ▼";
-                dgvDatSan.Columns[columnIndex].HeaderText += sortSymbol;
-            }
-            catch { }
-        }
-
-        private void TxtTimKiem_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnTimKiem_Click(sender, e);
-                e.Handled = true;
-            }
-        }
-
-        private void LoadComboBoxSan()
-        {
-            cbxMaSan.DataSource = busSanBong.GetListSanBong();
-            cbxMaSan.DisplayMember = "MaSan";
-            cbxMaSan.ValueMember = "MaSan";
-        }
-
-        private void RefreshData()
-        {
-            try
-            {
-                var data = busLichDat.GetAll();
-                dgvDatSan.DataSource = null;
-                dgvDatSan.DataSource = data;
-                ReapplyColumnBindings();
-
-                FormatDonGiaColumn();
-
-                // ===== RESET TRẠNG THÁI SẮP XẾP =====
-                sortedColumn = "";
-                sortOrder = SortOrder.Ascending;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi làm mới dữ liệu: {ex.Message}");
-            }
-        }
-
-        private void FormatDonGiaColumn()
-        {
-            try
-            {
-                if (dgvDatSan.Columns["clDonGiaThucTe"] != null)
-                {
-                    dgvDatSan.Columns["clDonGiaThucTe"].DefaultCellStyle.Format = "0.00";
-                    dgvDatSan.Columns["clDonGiaThucTe"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                }
-            }
-            catch { }
-        }
-
-        private void ReapplyColumnBindings()
-        {
-            clMaLich.DataPropertyName = "MaLich";
-            clMaSan.DataPropertyName = "MaSan";
-            clSDT_KH.DataPropertyName = "SDT_KH";
-            clTenKH.DataPropertyName = "TenKH";
-            clNgayDat.DataPropertyName = "NgayDat";
-            clGioBatDau.DataPropertyName = "GioBD";
-            clGioKetThuc.DataPropertyName = "GioKT";
-            clTrangThai.DataPropertyName = "TrangThai";
-            clDonGiaThucTe.DataPropertyName = "DonGiaThucTe";
-        }
-
+        // ✅ THÊM METHOD MỚI: Xem thông tin từ hàng (KHÔNG LOAD LẠI BẢNG)
         private void dgvDatSan_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex < 0) return;
+            if (e.RowIndex < 0) return;  // ✅ Bỏ qua nếu click header
 
             try
             {
@@ -336,6 +191,151 @@ namespace TrangChu
             {
                 MessageBox.Show($"Lỗi lấy dữ liệu: {ex.Message}");
             }
+        }
+
+        // ===== METHOD SẮP XẾP DATAGRIDVIEW (KHÔNG RELOAD DATASOURCE) =====
+        private void SortDataGridView(string columnName, SortOrder sortOrder)
+        {
+            try
+            {
+                if (dgvDatSan.DataSource == null)
+                    return;
+
+                // ===== LẤY DANH SÁCH HIỆN TẠI =====
+                List<DAL.LichDat> currentData = null;
+
+                // ===== KIỂM TRA NẾU LÀ BINDING SOURCE =====
+                if (dgvDatSan.DataSource is BindingSource bs)
+                {
+                    currentData = (List<DAL.LichDat>)bs.DataSource;
+                }
+                else if (dgvDatSan.DataSource is List<DAL.LichDat> list)
+                {
+                    currentData = list;
+                }
+
+                if (currentData == null || currentData.Count == 0)
+                    return;
+
+                // ===== SẮP XẾP DANH SÁCH DỰA TRÊN REFLECTION =====
+                if (sortOrder == SortOrder.Ascending)
+                {
+                    currentData = currentData
+                        .OrderBy(x => GetPropertyValue(x, columnName))
+                        .ToList();
+                }
+                else
+                {
+                    currentData = currentData
+                        .OrderByDescending(x => GetPropertyValue(x, columnName))
+                        .ToList();
+                }
+
+                // ✅ ĐỔI: Không gán lại DataSource, chỉ cập nhật Refresh
+                dgvDatSan.DataSource = null;
+                dgvDatSan.DataSource = currentData;
+                ReapplyColumnBindings();
+                FormatDonGiaColumn();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi sắp xếp: {ex.Message}");
+            }
+        }
+
+        // ===== HELPER METHOD LẤY GIÁ TRỊ PROPERTY =====
+        private object GetPropertyValue(DAL.LichDat item, string propertyName)
+        {
+            try
+            {
+                var property = item.GetType().GetProperty(propertyName);
+                return property?.GetValue(item) ?? "";
+            }
+            catch
+            {
+                return "";
+            }
+        }
+
+        // ===== HIỂN THỊ DẤU TAM GIÁC (SORT INDICATOR) =====
+        private void ShowSortIndicator(int columnIndex, SortOrder sortOrder)
+        {
+            try
+            {
+                // ===== XÓA DẤU TẤT CẢ CỘT CŨ =====
+                foreach (DataGridViewColumn col in dgvDatSan.Columns)
+                {
+                    col.HeaderText = col.HeaderText.Replace(" ▲", "").Replace(" ▼", "");
+                }
+
+                // ===== THÊM DẤU TAM GIÁC VÀO CỘT ĐƯỢC CHỌN =====
+                string sortSymbol = sortOrder == SortOrder.Ascending ? " ▲" : " ▼";
+                dgvDatSan.Columns[columnIndex].HeaderText += sortSymbol;
+            }
+            catch { }
+        }
+
+        private void TxtTimKiem_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnTimKiem_Click(sender, e);
+                e.Handled = true;
+            }
+        }
+
+        private void LoadComboBoxSan()
+        {
+            cbxMaSan.DataSource = busSanBong.GetListSanBong();
+            cbxMaSan.DisplayMember = "MaSan";
+            cbxMaSan.ValueMember = "MaSan";
+        }
+
+        private void RefreshData()
+        {
+            try
+            {
+                var data = busLichDat.GetAll();
+                dgvDatSan.DataSource = null;
+                dgvDatSan.DataSource = data;
+                ReapplyColumnBindings();
+
+                FormatDonGiaColumn();
+
+                // ===== RESET TRẠNG THÁI SẮP XẾP =====
+                sortedColumn = "";
+                sortOrder = SortOrder.Ascending;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Lỗi làm mới dữ liệu: {ex.Message}");
+            }
+        }
+
+        private void FormatDonGiaColumn()
+        {
+            try
+            {
+                if (dgvDatSan.Columns["clDonGiaThucTe"] != null)
+                {
+                    dgvDatSan.Columns["clDonGiaThucTe"].DefaultCellStyle.Format = "0.00";
+                    dgvDatSan.Columns["clDonGiaThucTe"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                }
+            }
+            catch { }
+        }
+
+        private void ReapplyColumnBindings()
+        {
+            clMaLich.DataPropertyName = "MaLich";
+            clMaSan.DataPropertyName = "MaSan";
+            clSDT_KH.DataPropertyName = "SDT_KH";
+            clTenKH.DataPropertyName = "TenKH";
+            clNgayDat.DataPropertyName = "NgayDat";
+            clGioBatDau.DataPropertyName = "GioBD";
+            clGioKetThuc.DataPropertyName = "GioKT";
+            clTrangThai.DataPropertyName = "TrangThai";
+            clDonGiaThucTe.DataPropertyName = "DonGiaThucTe";
         }
 
         // ===== VALIDATE SỐ ĐIỆN THOẠI =====
@@ -1189,31 +1189,36 @@ namespace TrangChu
 
         private void dgvDatSan_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            try
+            // ✅ CHỈ SẮP XẾP KHI CLICK TRÊN COLUMN HEADER (e.RowIndex == -1)
+            if (e.RowIndex == -1)  // ✅ -1 = click header
             {
-                string columnName = dgvDatSan.Columns[e.ColumnIndex].Name;
-
-                // ===== NẾU CLICK CÙNG CỘT LẦN THỨ 2, ĐẢO CHIỀU SẮP XẾP =====
-                if (sortedColumn == columnName)
+                try
                 {
-                    sortOrder = sortOrder == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
+                    string columnName = dgvDatSan.Columns[e.ColumnIndex].Name;
+
+                    // ===== NẾU CLICK CÙNG CỘT LẦN THỨ 2, ĐẢO CHIỀU SẮP XẾP =====
+                    if (sortedColumn == columnName)
+                    {
+                        sortOrder = sortOrder == SortOrder.Ascending ? SortOrder.Descending : SortOrder.Ascending;
+                    }
+                    else
+                    {
+                        sortedColumn = columnName;
+                        sortOrder = SortOrder.Ascending;
+                    }
+
+                    // ===== SẮP XẾP DỮ LIỆU =====
+                    SortDataGridView(columnName, sortOrder);
+
+                    // ===== HIỂN THỊ DẤU TAM GIÁC =====
+                    ShowSortIndicator(e.ColumnIndex, sortOrder);
                 }
-                else
+                catch (Exception ex)
                 {
-                    sortedColumn = columnName;
-                    sortOrder = SortOrder.Ascending;
+                    MessageBox.Show($"Lỗi sắp xếp: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-
-                // ===== SẮP XẾP DỮ LIỆU =====
-                SortDataGridView(columnName, sortOrder);
-
-                // ===== HIỂN THỊ DẤU TAM GIÁC =====
-                ShowSortIndicator(e.ColumnIndex, sortOrder);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Lỗi sắp xếp: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            // ✅ KHÔNG LÀM GÌ NẾU CLICK TRÊN HÀNG
         }
     }
     

@@ -389,7 +389,6 @@
             this.dgvDatSan.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvDatSan.Size = new System.Drawing.Size(723, 371);
             this.dgvDatSan.TabIndex = 13;
-            this.dgvDatSan.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDatSan_CellClick);
             this.dgvDatSan.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDatSan_CellContentClick);
             // 
             // clMaLich
