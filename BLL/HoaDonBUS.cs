@@ -45,6 +45,13 @@ namespace BUS
                         return false;
                     }
 
+                    // ✅ KIỂM TRA: MaLich bắt buộc phải tồn tại
+                    if (string.IsNullOrEmpty(hd.MaLich))
+                    {
+                        System.Diagnostics.Debug.WriteLine("❌ MaLich không được rỗng - yêu cầu phải có lịch đặt");
+                        return false;
+                    }
+
                     // ===== SINH MÃ HÓA ĐƠN TỰ ĐỘNG =====
                     if (string.IsNullOrEmpty(hd.MaHD))
                     {
@@ -57,24 +64,19 @@ namespace BUS
                         hd.ThoiGianThanhToan = DateTime.Now;
                     }
 
-                    // ===== KIỂM TRA MALÍCH CÓ HỢP LỆ KHÔNG =====
-                    // Nếu MaLich rỗng hoặc "KVL" (khách vãng lai), để NULL thay vì "KVL"
-                    // vì "KVL" không tồn tại trong bảng LichDat
-                    if (string.IsNullOrEmpty(hd.MaLich) || hd.MaLich == "KVL")
+                    // ✅ KIỂM TRA: MaLich phải tồn tại trong bảng LichDat
+                    var lichDat = db.LichDats.FirstOrDefault(x => x.MaLich == hd.MaLich);
+                    if (lichDat == null)
                     {
-                        // ✅ ĐỔI: Thay vì để "KVL", hãy để NULL
-                        // Nếu MaLich nullable trong Database, điều này sẽ giải quyết vấn đề FK
-                        hd.MaLich = null;
+                        System.Diagnostics.Debug.WriteLine($"❌ Lịch đặt {hd.MaLich} không tồn tại trong database");
+                        return false;
                     }
-                    else
+
+                    // ✅ KIỂM TRA: Lịch đặt phải ở trạng thái "Đã đặt"
+                    if (lichDat.TrangThai != "Đã đặt")
                     {
-                        // ✅ KIỂM TRA: Nếu MaLich không NULL, phải tồn tại trong bảng LichDat
-                        var lichDat = db.LichDats.FirstOrDefault(x => x.MaLich == hd.MaLich);
-                        if (lichDat == null)
-                        {
-                            System.Diagnostics.Debug.WriteLine($"❌ Lịch đặt {hd.MaLich} không tồn tại trong database");
-                            return false;
-                        }
+                        System.Diagnostics.Debug.WriteLine($"⚠️ Lịch đặt {hd.MaLich} không ở trạng thái 'Đã đặt'. Trạng thái hiện tại: {lichDat.TrangThai}");
+                        return false;
                     }
 
                     // 1️⃣ LƯU HÓA ĐƠN TRƯỚC
@@ -131,15 +133,16 @@ namespace BUS
                         System.Diagnostics.Debug.WriteLine($"✅ Lưu {listChiTiet.Count} chi tiết dịch vụ thành công");
                     }
 
-                    // 3️⃣ CẬP NHẬT TRẠNG THÁI LỊCH ĐẶT (CHỈ NẾU CÓ MALÍCH HỢP LỆ)
+                    // 3️⃣ CẬP NHẬT TRẠNG THÁI LỊCH ĐẶT: "Đã đặt" → "Đã thanh toán"
                     if (!string.IsNullOrEmpty(hd.MaLich))
                     {
-                        var lich = db.LichDats.FirstOrDefault(x => x.MaLich == hd.MaLich);
-                        if (lich != null)
+                        // ✅ Re-fetch để đảm bảo không bị lỗi state
+                        var lichDatUpdate = db.LichDats.FirstOrDefault(x => x.MaLich == hd.MaLich);
+                        if (lichDatUpdate != null)
                         {
-                            lich.TrangThai = "Hoàn Thành";
+                            lichDatUpdate.TrangThai = "Đã thanh toán";
                             db.SaveChanges();
-                            System.Diagnostics.Debug.WriteLine($"✅ Cập nhật lịch đặt {hd.MaLich} thành 'Hoàn Thành'");
+                            System.Diagnostics.Debug.WriteLine($"✅ Cập nhật trạng thái lịch đặt {hd.MaLich}: 'Đã đặt' → 'Đã thanh toán'");
                         }
                     }
 
@@ -187,45 +190,6 @@ namespace BUS
             }
         }
 
-        // ===== PHƯƠNG THỨC THANH TOÁN ĐƠN GIẢN (CHỈ HÓA ĐƠN, KHÔNG CHI TIẾT) =====
-        public bool ThanhToanDonGian(HoaDon hd)
-        {
-            try
-            {
-                if (hd == null)
-                {
-                    System.Diagnostics.Debug.WriteLine("❌ HoaDon không được null");
-                    return false;
-                }
-
-                if (string.IsNullOrEmpty(hd.MaHD))
-                {
-                    hd.MaHD = GenerateMaHoaDon();
-                }
-
-                if (!hd.ThoiGianThanhToan.HasValue)
-                {
-                    hd.ThoiGianThanhToan = DateTime.Now;
-                }
-
-                // ✅ ĐỔI: Để NULL thay vì "KVL"
-                if (string.IsNullOrEmpty(hd.MaLich))
-                {
-                    hd.MaLich = null;
-                }
-
-                db.HoaDons.Add(hd);
-                db.SaveChanges();
-                System.Diagnostics.Debug.WriteLine($"✅ Thanh toán đơn giản thành công: {hd.MaHD}");
-                return true;
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"❌ Lỗi thanh toán đơn giản: {ex.Message}");
-                return false;
-            }
-        }
-
         // ===== PHƯƠNG THỨC DISPOSE =====
         public void Dispose()
         {
@@ -238,25 +202,25 @@ namespace BUS
             try
             {
                 var result = (from hd in db.HoaDons
-                              join ld in db.LichDats on hd.MaLich equals ld.MaLich into lichGroup
-                              from ld in lichGroup.DefaultIfEmpty()
+                              join ld in db.LichDats on hd.MaLich equals ld.MaLich
                               select new
                               {
                                   MaHD = hd.MaHD,
                                   MaLich = hd.MaLich,
-                                  TenKH = ld != null ? ld.TenKH : "Khách vãng lai",
-                                  SDT_KH = ld != null ? ld.SDT_KH : "N/A",
-                                  NgayDat = ld != null ? ld.NgayDat : null,
-                                  MaSan = ld != null ? ld.MaSan : "N/A",
-                                  GioBD = ld != null ? ld.GioBD : (int?)null,
-                                  GioKT = ld != null ? ld.GioKT : (int?)null,
+                                  TenKH = ld.TenKH,
+                                  SDT_KH = ld.SDT_KH,
+                                  NgayDat = ld.NgayDat,
+                                  MaSan = ld.MaSan,
+                                  GioBD = ld.GioBD,
+                                  GioKT = ld.GioKT,
+                                  TrangThaiLich = ld.TrangThai,
                                   TongTien = hd.TongTien,
                                   ThoiGianThanhToan = hd.ThoiGianThanhToan,
                                   HinhThucTT = hd.HinhThucTT
                               })
                        .AsEnumerable()
                        .Select(x => (dynamic)x)
-                .ToList();
+                       .ToList();
 
                 return result;
             }
@@ -276,9 +240,8 @@ namespace BUS
                     return new List<dynamic>();
 
                 var result = (from hd in db.HoaDons
-                              join ld in db.LichDats on hd.MaLich equals ld.MaLich into lichGroup
-                              from ld in lichGroup.DefaultIfEmpty()
-                              where ld != null && ld.SDT_KH == sdt
+                              join ld in db.LichDats on hd.MaLich equals ld.MaLich
+                              where ld.SDT_KH == sdt
                               select new
                               {
                                   MaHD = hd.MaHD,
@@ -289,13 +252,14 @@ namespace BUS
                                   MaSan = ld.MaSan,
                                   GioBD = ld.GioBD,
                                   GioKT = ld.GioKT,
+                                  TrangThaiLich = ld.TrangThai,
                                   TongTien = hd.TongTien,
                                   ThoiGianThanhToan = hd.ThoiGianThanhToan,
                                   HinhThucTT = hd.HinhThucTT
                               })
-                  .AsEnumerable()
-             .Select(x => (dynamic)x)
-             .ToList();
+                              .AsEnumerable()
+                              .Select(x => (dynamic)x)
+                              .ToList();
 
                 return result;
             }
@@ -315,8 +279,8 @@ namespace BUS
                     return new List<CT_HoaDon_DichVu>();
 
                 var result = db.CT_HoaDon_DichVu
-                .Where(x => x.MaHD == maHD)
-                   .ToList();
+                    .Where(x => x.MaHD == maHD)
+                    .ToList();
 
                 return result;
             }
@@ -324,6 +288,24 @@ namespace BUS
             {
                 System.Diagnostics.Debug.WriteLine($"❌ Lỗi lấy chi tiết hóa đơn: {ex.Message}");
                 return new List<CT_HoaDon_DichVu>();
+            }
+        }
+
+        // ===== LẤY TRẠNG THÁI LỊCH ĐẶT =====
+        public string GetTrangThaiLichDat(string maLich)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(maLich))
+                    return null;
+
+                var lich = db.LichDats.FirstOrDefault(x => x.MaLich == maLich);
+                return lich?.TrangThai;
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Lỗi lấy trạng thái lịch: {ex.Message}");
+                return null;
             }
         }
     }

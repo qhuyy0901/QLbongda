@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace TrangChu
 {
@@ -89,17 +90,14 @@ namespace TrangChu
                 // ===== TÌM VÀ CHỌN LỊCH ĐẶT =====
                 if (!string.IsNullOrWhiteSpace(defaultMaLich))
                 {
-                    // ===== KIỂM TRA DATASOURCE CÓ HỢP LỆ KHÔNG =====
                     if (cbxLichDat.DataSource != null && cbxLichDat.DataSource is List<DAL.LichDat> lichDatList)
                     {
                         var selectedLich = lichDatList.FirstOrDefault(l => l.MaLich == defaultMaLich);
                         
                         if (selectedLich != null)
                         {
-                            // ===== ENABLE COMBOBOX ĐỂ CÓ THỂ CHỌN =====
                             cbxLichDat.Enabled = true;
                             cbxLichDat.SelectedItem = selectedLich;
-                            // ===== SAU ĐÓ DISABLE LẠI ĐỂ KHÔNG CHO THAY ĐỔI =====
                             cbxLichDat.Enabled = false;
                         }
                         else
@@ -134,6 +132,7 @@ namespace TrangChu
             try
             {
                 cbxLichDat.SelectedIndexChanged += CbxLichDat_SelectedIndexChanged;
+                dgvDichVu.CellClick += dgvDichVu_CellClick;
             }
             catch (Exception ex)
             {
@@ -156,8 +155,6 @@ namespace TrangChu
                     .ThenBy(l => l.GioBD)
                     .ToList();
 
-
-                // ===== CẬP NHẬT DATASOURCE CỦA COMBOBOX =====
                 cbxLichDat.DataSource = null;
                 cbxLichDat.Items.Clear();
                 cbxLichDat.DisplayMember = "ThongTinLich";
@@ -172,7 +169,6 @@ namespace TrangChu
                 }
                 else
                 {
-                    // ===== NẾU KHÔNG CÓ MÃ LỊCH MẶC ĐỊNH, MỞ COMBOBOX =====
                     cbxLichDat.Enabled = string.IsNullOrWhiteSpace(defaultMaLich);
                     cbxLichDat.SelectedIndex = -1;
                 }
@@ -195,6 +191,19 @@ namespace TrangChu
                 {
                     txtTenKH.Clear();
                     txtSDT.Clear();
+
+                    // ===== KHI KHÔNG CHỌN LỊCH, MỞ KHÓA CÁC TEXTBOX VÀ NÚT DỊCH VỤ =====
+                    txtMaDVu.Enabled = true;
+                    txtTenDVu.Enabled = true;
+                    txtDonGiaDVu.Enabled = true;
+                    txtMaDVu.BackColor = System.Drawing.Color.White;
+                    txtTenDVu.BackColor = System.Drawing.Color.White;
+                    txtDonGiaDVu.BackColor = System.Drawing.Color.White;
+
+                    btnThemDVu.Enabled = true;
+                    btnSuaDVu.Enabled = true;
+                    btnXoaDVu.Enabled = true;
+
                     return;
                 }
 
@@ -204,6 +213,18 @@ namespace TrangChu
                 {
                     txtTenKH.Text = selectedLich.TenKH ?? "";
                     txtSDT.Text = selectedLich.SDT_KH ?? "";
+
+                    // ===== KHI ĐÃ CHỌN LỊCH, KHÓA CÁC TEXTBOX VÀ NÚT DỊCH VỤ =====
+                    txtMaDVu.Enabled = false;
+                    txtTenDVu.Enabled = false;
+                    txtDonGiaDVu.Enabled = false;
+                    txtMaDVu.BackColor = System.Drawing.Color.LightGray;
+                    txtTenDVu.BackColor = System.Drawing.Color.LightGray;
+                    txtDonGiaDVu.BackColor = System.Drawing.Color.LightGray;
+
+                    btnThemDVu.Enabled = false;
+                    btnSuaDVu.Enabled = false;
+                    btnXoaDVu.Enabled = false;
                 }
             }
             catch (Exception ex)
@@ -224,6 +245,8 @@ namespace TrangChu
                 dtDichVu.Columns.Add("TenDV", typeof(string));
                 dtDichVu.Columns.Add("DonGia", typeof(decimal));
                 dgvDichVu.DataSource = dtDichVu;
+                dgvDichVu.DataSource = dtDichVu;
+                dgvDichVu.CellClick += dgvDichVu_CellClick; 
 
                 dtGioHang.Columns.Clear();
                 dtGioHang.Rows.Clear();
@@ -235,17 +258,7 @@ namespace TrangChu
                 dtGioHang.Columns.Add("ThanhTien", typeof(decimal), "DonGia * SoLuong");
                 dgvGioHang.DataSource = dtGioHang;
 
-                dgvDichVu.ReadOnly = true;
-                dgvDichVu.AllowUserToAddRows = false;
-                dgvDichVu.AllowUserToDeleteRows = false;
-                dgvDichVu.AllowUserToResizeRows = false;
-                dgvDichVu.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
-                dgvGioHang.ReadOnly = false;
-                dgvGioHang.AllowUserToAddRows = false;
-                dgvGioHang.AllowUserToDeleteRows = false;
-                dgvGioHang.AllowUserToResizeRows = false;
-                dgvGioHang.SelectionMode = DataGridViewSelectionMode.CellSelect;
 
                 if (dgvGioHang.Columns.Count > 0)
                 {
@@ -393,11 +406,10 @@ namespace TrangChu
                     return;
                 }
 
-                // ===== KIỂM TRA CÓ CHỌN LỊCH ĐẶT KHÔNG =====
+                // ✅ KIỂM TRA LỊCH ĐẶT BẮTBUỘC
                 string maLich = "";
                 if (cbxLichDat.SelectedIndex >= 0)
                 {
-                    // ===== LẤY GIÁ TRỊ TỪ VALUEEMBER KHÔNG PHẢI SELECTEDVALUE =====
                     var selectedItem = cbxLichDat.SelectedItem as DAL.LichDat;
                     if (selectedItem != null)
                     {
@@ -407,7 +419,7 @@ namespace TrangChu
 
                 if (string.IsNullOrWhiteSpace(maLich))
                 {
-                    MessageBox.Show("❌ Vui lòng chọn lịch đặt sân!",
+                    MessageBox.Show("❌ Vui lòng chọn lịch đặt sân! (Lịch đặt là bắt buộc)",
                         "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     cbxLichDat.Focus();
                     return;
@@ -452,7 +464,7 @@ namespace TrangChu
                 frmThanhToan.ShowDialog();
                 this.Show();
 
-                // ===== NẾU THANH TOÁN THÀNH CÔNG, RESET FORM =====
+                // ===== NẾU THANH TOÁN THÀNH CÔNG, RESET FORM VÀ LẤY LẠI DỮ LIỆU =====
                 if (frmThanhToan.IsThanhToanThanhCong)
                 {
                     dtGioHang.Rows.Clear();
@@ -460,7 +472,10 @@ namespace TrangChu
                     txtSDT.Clear();
                     cbxLichDat.SelectedIndex = -1;
 
-                    MessageBox.Show("✔ Thanh toán thành công!",
+                    // ✅ LẤY LẠI DANH SÁCH LỊCH ĐẶT (LOẠI LỊCH ĐẶT ĐÃ THANH TOÁN)
+                    LoadLichDat();
+
+                    MessageBox.Show($"✔ Thanh toán thành công!\n\n📋 Hóa đơn đã được lưu.\n💰 Trạng thái lịch đặt [{maLich}] được cập nhật thành 'Đã thanh toán'",
                         "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
@@ -476,5 +491,284 @@ namespace TrangChu
             this.Close();
         }
 
+        private void btnThemDVu_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string maDV = txtMaDVu.Text.Trim();
+                string tenDV = txtTenDVu.Text.Trim();
+                string donGiaText = txtDonGiaDVu.Text.Trim();
+
+                // ===== KIỂM TRA VALIDATION =====
+                if (string.IsNullOrWhiteSpace(maDV))
+                {
+                    MessageBox.Show("❌ Vui lòng nhập Mã Dịch Vụ!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtMaDVu.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(tenDV))
+                {
+                    MessageBox.Show("❌ Vui lòng nhập Tên Dịch Vụ!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtTenDVu.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(donGiaText) || !decimal.TryParse(donGiaText, out decimal donGia) || donGia <= 0)
+                {
+                    MessageBox.Show("❌ Vui lòng nhập Đơn Giá hợp lệ (phải > 0)!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtDonGiaDVu.Focus();
+                    return;
+                }
+
+                // ===== KIỂM TRA TRÙNG LẬP MÃ =====
+                var existingDV = dtDichVu.AsEnumerable().FirstOrDefault(x => x["MaDV"].ToString() == maDV);
+                if (existingDV != null)
+                {
+                    MessageBox.Show($"❌ Mã Dịch Vụ [{maDV}] đã tồn tại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtMaDVu.Focus();
+                    return;
+                }
+
+                // ===== THÊM DỮ LIỆU VÀO BẢNG =====
+                DAL.DichVu dichVuMoi = new DAL.DichVu
+                {
+                    MaDV = maDV,
+                    TenDV = tenDV,
+                    DonGia = donGia
+                };
+
+                // ===== GỌI BUS ĐỂ THÊM VÀO DATABASE =====
+                try
+                {
+                    bool success = busDichVu.InsertDichVu(dichVuMoi);
+                    if (success)
+                    {
+                        MessageBox.Show("✔ Thêm dịch vụ thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadDichVu();
+                        ResetDichVuForm();
+                    }
+                    else
+                    {
+                        MessageBox.Show("❌ Lỗi thêm dịch vụ vào database!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception exBus)
+                {
+                    MessageBox.Show($"❌ Lỗi từ BUS: {exBus.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("❌ Lỗi thêm dịch vụ:\n" + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnSuaDVu_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgvDichVu.CurrentRow == null)
+                {
+                    MessageBox.Show("❌ Vui lòng chọn dịch vụ cần sửa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string maDV = dgvDichVu.CurrentRow.Cells["MaDV"].Value?.ToString() ?? "";
+                string tenDV = txtTenDVu.Text.Trim();
+                string donGiaText = txtDonGiaDVu.Text.Trim();
+
+                // ===== KIỂM TRA VALIDATION =====
+                if (string.IsNullOrWhiteSpace(tenDV))
+                {
+                    MessageBox.Show("❌ Vui lòng nhập Tên Dịch Vụ!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtTenDVu.Focus();
+                    return;
+                }
+
+                if (string.IsNullOrWhiteSpace(donGiaText) || !decimal.TryParse(donGiaText, out decimal donGia) || donGia <= 0)
+                {
+                    MessageBox.Show("❌ Vui lòng nhập Đơn Giá hợp lệ (phải > 0)!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtDonGiaDVu.Focus();
+                    return;
+                }
+
+                // ===== CHUẨN BỊ DỮ LIỆU CẬP NHẬT =====
+                DAL.DichVu dichVuCapNhat = new DAL.DichVu
+                {
+                    MaDV = maDV,
+                    TenDV = tenDV,
+                    DonGia = donGia
+                };
+
+                // ===== GỌI BUS ĐỂ CẬP NHẬT DATABASE =====
+                try
+                {
+                    bool success = busDichVu.UpdateDichVu(dichVuCapNhat);
+                    if (success)
+                    {
+                        MessageBox.Show("✔ Cập nhật dịch vụ thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        LoadDichVu();
+                        ResetDichVuForm();
+                    }
+                    else
+                    {
+                        MessageBox.Show("❌ Lỗi cập nhật dịch vụ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                catch (Exception exBus)
+                {
+                    MessageBox.Show($"❌ Lỗi từ BUS: {exBus.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("❌ Lỗi cập nhật dịch vụ:\n" + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnXoaDVu_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dgvDichVu.CurrentRow == null)
+                {
+                    MessageBox.Show("❌ Vui lòng chọn dịch vụ cần xóa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string maDV = dgvDichVu.CurrentRow.Cells["MaDV"].Value?.ToString() ?? "";
+                string tenDV = dgvDichVu.CurrentRow.Cells["TenDV"].Value?.ToString() ?? "";
+
+                DialogResult result = MessageBox.Show(
+                    $"Bạn có chắc chắn muốn xóa dịch vụ [{maDV}] - {tenDV}?\n\nHành động này không thể hoàn tác!",
+                    "Xác Nhận Xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (result == DialogResult.Yes)
+                {
+                    try
+                    {
+                        bool success = busDichVu.DeleteDichVu(maDV);
+                        if (success)
+                        {
+                            MessageBox.Show("✔ Xóa dịch vụ thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            LoadDichVu();
+                            ResetDichVuForm();
+                        }
+                        else
+                        {
+                            MessageBox.Show("❌ Lỗi xóa dịch vụ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                    }
+                    catch (Exception exBus)
+                    {
+                        MessageBox.Show($"❌ Lỗi từ BUS: {exBus.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("❌ Lỗi xóa dịch vụ:\n" + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void txtTimKiemDVu_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                string searchKeyword = txtTimKiemDVu.Text.Trim().ToLower();
+
+                // ===== NẾU TỪ KHÓA TRỐNG, LOAD LẠI TẬT CẢ DỊCH VỤ TỪ DATABASE =====
+                if (string.IsNullOrWhiteSpace(searchKeyword))
+                {
+                    LoadDichVu();
+                    dgvDichVu.DataSource = dtDichVu;
+                    return;
+                }
+
+                // ===== LỌC DỊCH VỤ THEO TỪ KHÓA =====
+                DataTable dtFiltered = dtDichVu.Clone();
+
+                foreach (DataRow row in dtDichVu.Rows)
+                {
+                    string maDV = row["MaDV"]?.ToString() ?? "";
+                    string tenDV = row["TenDV"]?.ToString() ?? "";
+
+                    // Tìm kiếm theo Mã DV hoặc Tên DV (không phân biệt hoa/thường)
+                    if (maDV.ToLower().Contains(searchKeyword) || tenDV.ToLower().Contains(searchKeyword))
+                    {
+                        dtFiltered.ImportRow(row);
+                    }
+                }
+
+                // ===== CẬP NHẬT HIỂN THỊ =====
+                dgvDichVu.DataSource = dtFiltered;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("❌ Lỗi tìm kiếm dịch vụ:\n" + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // ===== HỖ TRỢ: TẠI KHI CHỌN DÒNG TRONG BẢNG, ĐIỀN DỮ LIỆU VÀO TEXTBOX =====
+        private void dgvDichVu_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            try
+            {
+                if (e.RowIndex < 0)
+                    return;
+
+                DataGridViewRow row = dgvDichVu.Rows[e.RowIndex];
+
+                if (row.Cells["MaDV"].Value != null)
+                    txtMaDVu.Text = row.Cells["MaDV"].Value.ToString();
+
+                if (row.Cells["TenDV"].Value != null)
+                    txtTenDVu.Text = row.Cells["TenDV"].Value.ToString();
+
+                if (row.Cells["DonGia"].Value != null)
+                    txtDonGiaDVu.Text = row.Cells["DonGia"].Value.ToString();
+
+                // ===== KHÓA MÃ DỊCH VỤ KHI CHỌN ĐỂ SỬA =====
+                txtMaDVu.ReadOnly = true;
+                txtMaDVu.BackColor = System.Drawing.Color.LightGray;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("❌ Lỗi lấy dữ liệu:\n" + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // ===== HELPER: RESET FORM DỊCH VỤ =====
+        private void ResetDichVuForm()
+        {
+            try
+            {
+                txtMaDVu.Clear();
+                txtTenDVu.Clear();
+                txtDonGiaDVu.Clear();
+
+                // ===== MỞ KHÓA MÃ DỊCH VỤ KHI RESET (CHUẨN BỊ THÊM MỚI) =====
+                txtMaDVu.ReadOnly = false;
+                txtMaDVu.BackColor = System.Drawing.Color.White;
+
+                txtMaDVu.Focus();
+            }
+            catch { }
+        }
+
+        // ===== TRONG METHOD InitTable(), THÊM EVENT HANDLER NÀY =====
+        // Gọi trong DichVu_Load hoặc InitTable()
+        private void SetupDichVuGridEvents()
+        {
+            try
+            {
+                dgvDichVu.CellClick += dgvDichVu_CellClick;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("❌ Lỗi thiết lập sự kiện:\n" + ex.Message);
+            }
+        }
     }
 }

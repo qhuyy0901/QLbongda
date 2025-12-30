@@ -46,6 +46,35 @@ namespace BUS
             }
         }
 
+        public bool UpdateDichVu(DichVu dichVu)
+        {
+            var existingDV = db.DichVus.FirstOrDefault(d => d.MaDV == dichVu.MaDV);
+            if (existingDV == null)
+                return false;
+
+            existingDV.TenDV = dichVu.TenDV;
+            existingDV.DonGia = dichVu.DonGia;
+            // If you have DonVi or other fields, update them here as needed
+
+            db.SaveChanges();
+            return true;
+        }
+
+
+        public bool InsertDichVu(DichVu dichVu)
+        {
+            try
+            {
+                db.DichVus.Add(dichVu);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         /// <summary>
         /// ✅ LOAD THÔNG TIN DỊCH VỤ CHO CHI TIẾT HÓA ĐƠN (EAGER LOADING)
         /// Đảm bảo rằng dữ liệu từ SQL được đồng bộ vào CT_HoaDon_DichVu
