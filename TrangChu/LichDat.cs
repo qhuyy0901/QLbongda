@@ -1190,7 +1190,7 @@ namespace TrangChu
         private void dgvDatSan_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             // ✅ CHỈ SẮP XẾP KHI CLICK TRÊN COLUMN HEADER (e.RowIndex == -1)
-            if (e.RowIndex == -1)  // ✅ -1 = click header
+            if (e.RowIndex == -1)
             {
                 try
                 {
