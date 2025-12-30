@@ -63,10 +63,10 @@
             this.btnSan6 = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
-            this.btnTimKiem = new System.Windows.Forms.Button();
             this.txtTimKiem = new System.Windows.Forms.TextBox();
             this.btnTaiLai = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDatSan)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -144,21 +144,25 @@
             // 
             // dtpGioBatDau
             // 
-            this.dtpGioBatDau.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dtpGioBatDau.CustomFormat = "HH:00";
+            this.dtpGioBatDau.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpGioBatDau.Location = new System.Drawing.Point(110, 217);
             this.dtpGioBatDau.Name = "dtpGioBatDau";
             this.dtpGioBatDau.ShowUpDown = true;
             this.dtpGioBatDau.Size = new System.Drawing.Size(160, 25);
             this.dtpGioBatDau.TabIndex = 6;
+            this.dtpGioBatDau.Value = new System.DateTime(2025, 12, 30, 15, 0, 0, 0);
             // 
             // dtpGioKetThuc
             // 
-            this.dtpGioKetThuc.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.dtpGioKetThuc.CustomFormat = "HH:00";
+            this.dtpGioKetThuc.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpGioKetThuc.Location = new System.Drawing.Point(110, 257);
             this.dtpGioKetThuc.Name = "dtpGioKetThuc";
             this.dtpGioKetThuc.ShowUpDown = true;
             this.dtpGioKetThuc.Size = new System.Drawing.Size(160, 25);
             this.dtpGioKetThuc.TabIndex = 7;
+            this.dtpGioKetThuc.Value = new System.DateTime(2025, 12, 30, 23, 0, 0, 0);
             // 
             // btnDatSAn
             // 
@@ -239,11 +243,15 @@
             // 
             // dtpNgayDat
             // 
-            this.dtpNgayDat.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpNgayDat.CustomFormat = "dd/MM/yyyy";
+            this.dtpNgayDat.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpNgayDat.Location = new System.Drawing.Point(110, 177);
+            this.dtpNgayDat.MaxDate = new System.DateTime(2026, 1, 29, 15, 2, 10, 761);
+            this.dtpNgayDat.MinDate = new System.DateTime(2025, 12, 30, 0, 0, 0, 0);
             this.dtpNgayDat.Name = "dtpNgayDat";
             this.dtpNgayDat.Size = new System.Drawing.Size(160, 25);
             this.dtpNgayDat.TabIndex = 5;
+            this.dtpNgayDat.Value = new System.DateTime(2025, 12, 30, 15, 2, 10, 761);
             // 
             // groupBox1
             // 
@@ -348,6 +356,9 @@
             // 
             // dgvDatSan
             // 
+            this.dgvDatSan.AllowUserToAddRows = false;
+            this.dgvDatSan.AllowUserToDeleteRows = false;
+            this.dgvDatSan.AllowUserToResizeRows = false;
             this.dgvDatSan.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDatSan.BackgroundColor = System.Drawing.Color.White;
             this.dgvDatSan.BorderStyle = System.Windows.Forms.BorderStyle.None;
@@ -377,6 +388,7 @@
             this.dgvDatSan.GridColor = System.Drawing.Color.Silver;
             this.dgvDatSan.Location = new System.Drawing.Point(306, 240);
             this.dgvDatSan.Name = "dgvDatSan";
+            this.dgvDatSan.ReadOnly = true;
             this.dgvDatSan.RowHeadersVisible = false;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.WhiteSmoke;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -393,48 +405,66 @@
             // 
             // clMaLich
             // 
+            this.clMaLich.DataPropertyName = "MaLich";
             this.clMaLich.HeaderText = "Mã Lịch";
             this.clMaLich.Name = "clMaLich";
+            this.clMaLich.ReadOnly = true;
             // 
             // clMaSan
             // 
+            this.clMaSan.DataPropertyName = "MaSan";
             this.clMaSan.HeaderText = "Mã Sân";
             this.clMaSan.Name = "clMaSan";
+            this.clMaSan.ReadOnly = true;
             // 
             // clSDT_KH
             // 
+            this.clSDT_KH.DataPropertyName = "SDT_KH";
             this.clSDT_KH.HeaderText = "SĐT KH";
             this.clSDT_KH.Name = "clSDT_KH";
+            this.clSDT_KH.ReadOnly = true;
             // 
             // clTenKH
             // 
+            this.clTenKH.DataPropertyName = "TenKH";
             this.clTenKH.HeaderText = "Tên KH";
             this.clTenKH.Name = "clTenKH";
+            this.clTenKH.ReadOnly = true;
             // 
             // clNgayDat
             // 
+            this.clNgayDat.DataPropertyName = "NgayDat";
             this.clNgayDat.HeaderText = "Ngày Đặt";
             this.clNgayDat.Name = "clNgayDat";
+            this.clNgayDat.ReadOnly = true;
             // 
             // clGioBatDau
             // 
+            this.clGioBatDau.DataPropertyName = "GioBD";
             this.clGioBatDau.HeaderText = "Bắt Đầu";
             this.clGioBatDau.Name = "clGioBatDau";
+            this.clGioBatDau.ReadOnly = true;
             // 
             // clGioKetThuc
             // 
+            this.clGioKetThuc.DataPropertyName = "GioKT";
             this.clGioKetThuc.HeaderText = "Kết Thúc";
             this.clGioKetThuc.Name = "clGioKetThuc";
+            this.clGioKetThuc.ReadOnly = true;
             // 
             // clTrangThai
             // 
+            this.clTrangThai.DataPropertyName = "TrangThai";
             this.clTrangThai.HeaderText = "Trạng Thái";
             this.clTrangThai.Name = "clTrangThai";
+            this.clTrangThai.ReadOnly = true;
             // 
             // clDonGiaThucTe
             // 
+            this.clDonGiaThucTe.DataPropertyName = "DonGiaThucTe";
             this.clDonGiaThucTe.HeaderText = "Đơn Giá";
             this.clDonGiaThucTe.Name = "clDonGiaThucTe";
+            this.clDonGiaThucTe.ReadOnly = true;
             // 
             // label1
             // 
@@ -578,35 +608,18 @@
             this.label16.TabIndex = 36;
             this.label16.Text = "SÂN 7v7";
             // 
-            // btnTimKiem
-            // 
-            this.btnTimKiem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTimKiem.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.btnTimKiem.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnTimKiem.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.btnTimKiem.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTimKiem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTimKiem.Image = ((System.Drawing.Image)(resources.GetObject("btnTimKiem.Image")));
-            this.btnTimKiem.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTimKiem.Location = new System.Drawing.Point(357, 207);
-            this.btnTimKiem.Name = "btnTimKiem";
-            this.btnTimKiem.Size = new System.Drawing.Size(108, 33);
-            this.btnTimKiem.TabIndex = 37;
-            this.btnTimKiem.Text = "Tìm Kiếm";
-            this.btnTimKiem.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnTimKiem.UseVisualStyleBackColor = false;
-            this.btnTimKiem.Click += new System.EventHandler(this.btnTimKiem_Click);
-            // 
             // txtTimKiem
             // 
+            this.txtTimKiem.TextChanged += new System.EventHandler(this.TxtTimKiem_TextChanged);
             this.txtTimKiem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTimKiem.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtTimKiem.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtTimKiem.Location = new System.Drawing.Point(463, 207);
+            this.txtTimKiem.Location = new System.Drawing.Point(442, 217);
             this.txtTimKiem.Multiline = true;
             this.txtTimKiem.Name = "txtTimKiem";
-            this.txtTimKiem.Size = new System.Drawing.Size(140, 33);
+            this.txtTimKiem.Size = new System.Drawing.Size(140, 23);
             this.txtTimKiem.TabIndex = 35;
+            this.txtTimKiem.TextChanged += new System.EventHandler(this.TxtTimKiem_TextChanged);
             // 
             // btnTaiLai
             // 
@@ -630,9 +643,9 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.White;
+            this.groupBox2.Controls.Add(this.label13);
             this.groupBox2.Controls.Add(this.btnTaiLai);
             this.groupBox2.Controls.Add(this.txtTimKiem);
-            this.groupBox2.Controls.Add(this.btnTimKiem);
             this.groupBox2.Controls.Add(this.label16);
             this.groupBox2.Controls.Add(this.label12);
             this.groupBox2.Controls.Add(this.btnSan6);
@@ -655,6 +668,15 @@
             this.groupBox2.TabIndex = 27;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "SƠ ĐỒ SÂN BÓNG";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(360, 219);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(76, 19);
+            this.label13.TabIndex = 40;
+            this.label13.Text = "Tìm Kiếm:";
             // 
             // LichDat
             // 
@@ -726,10 +748,10 @@
         private System.Windows.Forms.Button btnSan6;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Button btnTimKiem;
         private System.Windows.Forms.TextBox txtTimKiem;
         private System.Windows.Forms.Button btnTaiLai;
         private System.Windows.Forms.Button btnThanhToan;
         private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Label label13;
     }
 }
