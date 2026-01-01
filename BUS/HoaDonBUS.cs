@@ -415,5 +415,23 @@ namespace BUS
         {
             db?.Dispose();
         }
+
+        // ===== LẤY TRẠNG THÁI LỊCH ĐẶT =====
+        public string GetTrangThaiLichDat(string maLich)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(maLich))
+                    return "";
+
+                var lich = db.LichDats.FirstOrDefault(x => x.MaLich == maLich);
+                return lich?.TrangThai ?? "";
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"❌ Lỗi GetTrangThaiLichDat: {ex.Message}");
+                return "";
+            }
+        }
     }
 }

@@ -36,16 +36,23 @@ namespace BUS
                 if (dv == null)
                     return false;
 
+                // ===== KIỂM TRA XEM DỊCH VỤ CÓ ĐƯỢC SỬ DỤNG TRONG HÓA ĐƠN KHÔNG =====
+                var isUsed = db.CT_HoaDon_DichVu.Any(x => x.MaDV == maDV);
+                if (isUsed)
+                {
+                    throw new Exception("Dịch vụ này đã được sử dụng trong hóa đơn và không thể xóa.");
+                }
+
                 db.DichVus.Remove(dv);
                 db.SaveChanges();
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                System.Diagnostics.Debug.WriteLine($"❌ Lỗi DeleteDichVu: {ex.Message}");
+                throw new Exception($"Lỗi xóa dịch vụ: {ex.Message}");
             }
         }
-
         public bool UpdateDichVu(DichVu dichVu)
         {
             var existingDV = db.DichVus.FirstOrDefault(d => d.MaDV == dichVu.MaDV);
@@ -75,10 +82,6 @@ namespace BUS
             }
         }
 
-        /// <summary>
-        /// ✅ LOAD THÔNG TIN DỊCH VỤ CHO CHI TIẾT HÓA ĐƠN (EAGER LOADING)
-        /// Đảm bảo rằng dữ liệu từ SQL được đồng bộ vào CT_HoaDon_DichVu
-        /// </summary>
         public List<CT_HoaDon_DichVu> LoadChiTietWithDichVu(List<CT_HoaDon_DichVu> listChiTiet)
         {
             try

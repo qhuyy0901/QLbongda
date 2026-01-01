@@ -57,6 +57,8 @@
             this.lblTongTienDV_Text = new System.Windows.Forms.Label();
             this.lblTongTienSan_Value = new System.Windows.Forms.Label();
             this.lblTongTienSan_Text = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtEmaill = new System.Windows.Forms.TextBox();
             this.grpThongTin.SuspendLayout();
             this.grpTienSan.SuspendLayout();
             this.grpDichVu.SuspendLayout();
@@ -67,6 +69,8 @@
             // 
             // grpThongTin
             // 
+            this.grpThongTin.Controls.Add(this.txtEmaill);
+            this.grpThongTin.Controls.Add(this.label1);
             this.grpThongTin.Controls.Add(this.txtSDT);
             this.grpThongTin.Controls.Add(this.lblSDT);
             this.grpThongTin.Controls.Add(this.txtTenKH);
@@ -75,14 +79,14 @@
             this.grpThongTin.Controls.Add(this.lblMaLich);
             this.grpThongTin.Location = new System.Drawing.Point(12, 12);
             this.grpThongTin.Name = "grpThongTin";
-            this.grpThongTin.Size = new System.Drawing.Size(266, 165);
+            this.grpThongTin.Size = new System.Drawing.Size(266, 179);
             this.grpThongTin.TabIndex = 0;
             this.grpThongTin.TabStop = false;
             this.grpThongTin.Text = "Thông Tin Khách Hàng / Lịch Đặt";
             // 
             // txtSDT
             // 
-            this.txtSDT.Location = new System.Drawing.Point(100, 115);
+            this.txtSDT.Location = new System.Drawing.Point(100, 101);
             this.txtSDT.Name = "txtSDT";
             this.txtSDT.Size = new System.Drawing.Size(145, 20);
             this.txtSDT.TabIndex = 7;
@@ -90,7 +94,7 @@
             // lblSDT
             // 
             this.lblSDT.AutoSize = true;
-            this.lblSDT.Location = new System.Drawing.Point(20, 118);
+            this.lblSDT.Location = new System.Drawing.Point(20, 104);
             this.lblSDT.Name = "lblSDT";
             this.lblSDT.Size = new System.Drawing.Size(32, 13);
             this.lblSDT.TabIndex = 6;
@@ -98,7 +102,7 @@
             // 
             // txtTenKH
             // 
-            this.txtTenKH.Location = new System.Drawing.Point(100, 80);
+            this.txtTenKH.Location = new System.Drawing.Point(100, 66);
             this.txtTenKH.Name = "txtTenKH";
             this.txtTenKH.Size = new System.Drawing.Size(145, 20);
             this.txtTenKH.TabIndex = 5;
@@ -106,7 +110,7 @@
             // lblTenKH
             // 
             this.lblTenKH.AutoSize = true;
-            this.lblTenKH.Location = new System.Drawing.Point(20, 83);
+            this.lblTenKH.Location = new System.Drawing.Point(20, 69);
             this.lblTenKH.Name = "lblTenKH";
             this.lblTenKH.Size = new System.Drawing.Size(47, 13);
             this.lblTenKH.TabIndex = 4;
@@ -116,7 +120,7 @@
             // 
             this.cbxMaLich.Enabled = false;
             this.cbxMaLich.FormattingEnabled = true;
-            this.cbxMaLich.Location = new System.Drawing.Point(100, 45);
+            this.cbxMaLich.Location = new System.Drawing.Point(100, 31);
             this.cbxMaLich.Name = "cbxMaLich";
             this.cbxMaLich.Size = new System.Drawing.Size(145, 21);
             this.cbxMaLich.TabIndex = 3;
@@ -124,7 +128,7 @@
             // lblMaLich
             // 
             this.lblMaLich.AutoSize = true;
-            this.lblMaLich.Location = new System.Drawing.Point(20, 48);
+            this.lblMaLich.Location = new System.Drawing.Point(20, 34);
             this.lblMaLich.Name = "lblMaLich";
             this.lblMaLich.Size = new System.Drawing.Size(48, 13);
             this.lblMaLich.TabIndex = 2;
@@ -294,6 +298,7 @@
             this.cbxHinhThucTT.Name = "cbxHinhThucTT";
             this.cbxHinhThucTT.Size = new System.Drawing.Size(124, 21);
             this.cbxHinhThucTT.TabIndex = 7;
+            this.cbxHinhThucTT.SelectedIndexChanged += new System.EventHandler(this.cbxHinhThucTT_SelectedIndexChanged_1);
             // 
             // label5
             // 
@@ -363,6 +368,22 @@
             this.lblTongTienSan_Text.TabIndex = 0;
             this.lblTongTienSan_Text.Text = "Tiền Sân:";
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(20, 143);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Email:";
+            // 
+            // txtEmaill
+            // 
+            this.txtEmaill.Location = new System.Drawing.Point(100, 140);
+            this.txtEmaill.Name = "txtEmaill";
+            this.txtEmaill.Size = new System.Drawing.Size(145, 20);
+            this.txtEmaill.TabIndex = 9;
+            // 
             // CT_HoaDon_DichVu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -420,5 +441,7 @@
         // ===== THÊM CONTROL CHO QR CODE =====
         private System.Windows.Forms.PictureBox picQRCode;
         private System.Windows.Forms.Label lblQRCode;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox txtEmaill;
     }
 }

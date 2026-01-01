@@ -14,7 +14,7 @@ namespace TrangChu
 {
     public partial class CT_HoaDon_DichVu : Form
     {
-        private LichDatBUS busLichDat = new LichDatBUS();
+        private BUS.LichDatBUS busLichDat = new BUS.LichDatBUS();
         private DichVuBUS busDichVu = new DichVuBUS();
         private HoaDonBUS busHoaDon = new HoaDonBUS();
 
@@ -33,7 +33,6 @@ namespace TrangChu
             this.Load += CT_HoaDon_DichVu_Load;
             btnThanhToan.Click += BtnThanhToan_Click;
             btnHuy.Click += BtnHuy_Click;
-            cbxHinhThucTT.SelectedIndexChanged += CbxHinhThucTT_SelectedIndexChanged;
         }
 
         public void SetKhachHang(string ten, string sdt)
@@ -319,27 +318,7 @@ cbxMaLich.DisplayMember = "Display";
             }
         }
 
-        private void CbxHinhThucTT_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                string hinhThuc = cbxHinhThucTT.SelectedItem?.ToString() ?? "";
-
-                if (hinhThuc == "Chuyển khoản")
-                {
-                    HienThiQRCode();
-                }
-                else
-                {
-                    picQRCode.Visible = false;
-                    lblQRCode.Visible = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("❌ Lỗi khi chọn hình thức thanh toán:\n" + ex.Message);
-            }
-        }
+       
 
         private void HienThiQRCode()
         {
@@ -372,12 +351,32 @@ cbxMaLich.DisplayMember = "Display";
         {
             try
             {
+                // ===== KIỂM TRA LỊCH ĐẶT TRƯỚC KHI THANH TOÁN =====
+                if (string.IsNullOrWhiteSpace(maLich))
+                {
+                    MessageBox.Show("❌ Vui lòng chọn lịch đặt trước khi thanh toán!",
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // ✅ KIỂM TRA TRẠNG THÁI LỊCH TRƯỚC KHI GỌI THANH TOÁN
+                string trangThaiHienTai = busHoaDon.GetTrangThaiLichDat(maLich);
+                if (trangThaiHienTai != "Đã đặt")
+                {
+                    MessageBox.Show($"❌ Không thể thanh toán!\n\n" +
+                        $"Lịch đặt [{maLich}] có trạng thái: '{trangThaiHienTai}'\n\n" +
+                        $"💡 Chỉ có thể thanh toán lịch ở trạng thái 'Đã đặt'.",
+                        "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 string tongTienText = lblTongThanhToan.Text.Replace(" VNĐ", "").Replace(",", "");
                 decimal.TryParse(tongTienText, out decimal tongTien);
 
                 string hinhThucTT = cbxHinhThucTT.SelectedItem?.ToString() ?? "Tiền mặt";
 
                 string message = $"✔ XÁC NHẬN THANH TOÁN\n\n" +
+                    $"Mã lịch: {maLich}\n" +
                     $"Hình thức TT: {hinhThucTT}\n" +
                     $"Tổng tiền: {tongTien:N0} VNĐ\n\n" +
                     $"Bạn có muốn xác nhận?";
@@ -387,24 +386,18 @@ cbxMaLich.DisplayMember = "Display";
 
                 if (result == DialogResult.Yes)
                 {
-                    // ===== ĐẢM BẢO MALÍCH CÓ GIÁ TRỊ HỢP LỆ =====
-                    string maLichHD = string.IsNullOrWhiteSpace(maLich) ? null : maLich;
-
-                    // ===== TẠO HÓA ĐƠN MỚI KHÔNG CÓ REFERENCE ĐẾN CONTEXT CŨ =====
                     DAL.HoaDon hoaDon = new DAL.HoaDon
                     {
-                        MaLich = maLichHD,
+                        MaLich = maLich,
                         TongTien = tongTien,
                         ThoiGianThanhToan = DateTime.Now,
                         HinhThucTT = hinhThucTT
                     };
 
-                    // ===== TẠO DANH SÁCH CHI TIẾT MỚI KHÔNG LIÊN KẾT ĐẾN CONTEXT CŨ =====
                     List<DAL.CT_HoaDon_DichVu> listChiTietNew = new List<DAL.CT_HoaDon_DichVu>();
 
                     foreach (var item in listChiTiet)
                     {
-                        // ===== TẠỌ OBJECT MỚI KHÔNG CÓ ENTITY TRACKING =====
                         listChiTietNew.Add(new DAL.CT_HoaDon_DichVu
                         {
                             MaCT = item.MaCT,
@@ -421,19 +414,71 @@ cbxMaLich.DisplayMember = "Display";
                         MessageBox.Show("✔ THANH TOÁN THÀNH CÔNG!\n\n💰 Hóa đơn đã được lưu vào hệ thống.",
                             "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                        // ===== GỬI EMAIL NẾU CÓ =====
+                        string emailKH = txtEmaill.Text.Trim();
+                        if (!string.IsNullOrWhiteSpace(emailKH))
+                        {
+                            try
+                            {
+                                bool emailSent = EmailBUS.SendPaymentNotification(
+                                    toEmail: emailKH,
+                                    tenKH: tenKH,
+                                    maLich: maLich,
+                                    maSan: txtTenSan.Text,
+                                    khungGio: txtKhungGio.Text,
+                                    tienSan: tienSan,
+                                    tienDichVu: tongTienDichVu,
+                                    tongTien: tongTien,
+                                    hinhThucTT: hinhThucTT,
+                                    thoiGianTT: DateTime.Now
+                                );
+
+                                if (emailSent)
+                                {
+                                    MessageBox.Show($"📧 Email xác nhận đã được gửi đến:\n{emailKH}",
+                                        "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                }
+                                else
+                                {
+                                    MessageBox.Show($"⚠️ Lỗi gửi email đến {emailKH}.\n\n💡 Có thể do email không hợp lệ hoặc lỗi kết nối mạng.",
+                                        "Cảnh Báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                }
+                            }
+                            catch (Exception emailEx)
+                            {
+                                MessageBox.Show($"⚠️ Lỗi gửi email: {emailEx.Message}",
+                                    "Cảnh Báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+                        }
+
                         IsThanhToanThanhCong = true;
                         this.Close();
                     }
                     else
                     {
-                        MessageBox.Show("❌ Lỗi lưu hóa đơn vào database!\n\nVui lòng thử lại.",
+                        // ✅ KIỂM TRA LẠI TRẠNG THÁI ĐỂ XÁC ĐỊNH NGUYÊN NHÂN
+                        string trangThaiSau = busHoaDon.GetTrangThaiLichDat(maLich);
+                        
+                        string errorDetail = "";
+                        if (trangThaiSau == "Đã thanh toán" || trangThaiSau == "Hoàn Thành")
+                        {
+                            errorDetail = $"\n\n💡 Lịch đặt này có thể đã được thanh toán trước đó!";
+                        }
+                        else if (trangThaiSau == "Đã hủy")
+                        {
+                            errorDetail = $"\n\n💡 Lịch đặt này đã bị hủy!";
+                        }
+                        
+                        MessageBox.Show($"❌ Lỗi lưu hóa đơn vào database!{errorDetail}\n\nVui lòng kiểm tra lại và thử lại.",
                             "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("❌ Lỗi thanh toán:\n" + ex.Message);
+                MessageBox.Show("❌ Lỗi thanh toán:\n" + ex.Message + 
+                    "\n\n📍 Chi tiết:\n" + ex.StackTrace,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -448,5 +493,33 @@ cbxMaLich.DisplayMember = "Display";
                 this.Close();
             }
         }
+
+
+        private void cbxHinhThucTT_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            try
+            {
+                string hinhThuc = cbxHinhThucTT.SelectedItem?.ToString() ?? "";
+
+                if (hinhThuc == "Chuyển khoản")
+                {
+                    // Generate and show QR Code
+                    HienThiQRCode();
+                }
+                else
+                {
+                    // Hide QR Code for cash payments
+                    picQRCode.Visible = false;
+                    lblQRCode.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("❌ Lỗi khi chọn hình thức thanh toán:\n" + ex.Message);
+            }
+        }
+
+        private System.Windows.Forms.Label lblEmail;
+private System.Windows.Forms.TextBox txtEmail;
     }
 }

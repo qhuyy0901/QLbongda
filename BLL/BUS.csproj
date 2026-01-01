@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DichVuBUS.cs" />
+    <Compile Include="EmailBUS.cs" />
     <Compile Include="GiaSanBUS.cs" />
     <Compile Include="HoaDonBUS.cs" />
     <Compile Include="LichDatBUS.cs" />

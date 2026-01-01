@@ -69,7 +69,6 @@
     <Compile Include="DichVu.cs" />
     <Compile Include="GiaSan.cs" />
     <Compile Include="HoaDon.cs" />
-    <Compile Include="HoaDonBUS.cs" />
     <Compile Include="KhachHang.cs" />
     <Compile Include="LichDat.cs" />
     <Compile Include="Model1.cs" />

@@ -11,7 +11,7 @@ namespace TrangChu
 {
     public partial class LichDat : Form
     {
-        private LichDatBUS busLichDat = new LichDatBUS();
+        private BUS.LichDatBUS busLichDat = new BUS.LichDatBUS();
         private SanBongBUS busSanBong = new SanBongBUS();
         private bool isEditing = false;
 
@@ -69,27 +69,16 @@ namespace TrangChu
         {
             try
             {
-                string keyword = txtTimKiem.Text.Trim();
+                lastSearchKeyword = txtTimKiem.Text.Trim(); // Lưu từ khóa mới nhất
 
-                // Nếu không nhập gì → load lại toàn bộ
-                if (string.IsNullOrEmpty(keyword))
-                {
-                    RefreshData();
-                    return;
-                }
-
-                // Gọi BUS tìm kiếm
-                var result = busLichDat.Search(keyword);
-
-                dgvDatSan.DataSource = null;
-                dgvDatSan.DataSource = result;
-
-                ReapplyColumnBindings();
-                FormatDonGiaColumn();
+                // Reset timer: Nếu người dùng gõ liên tục, timer sẽ bị reset và không chạy ngay
+                searchTimer.Stop();
+                searchTimer.Start();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi tìm kiếm: " + ex.Message);
+                // Log lỗi lặng lẽ để không làm phiền người dùng khi đang gõ
+                System.Diagnostics.Debug.WriteLine("Lỗi text change: " + ex.Message);
             }
         }
 
@@ -131,7 +120,7 @@ namespace TrangChu
 
                 // Cập nhật DataGridView
                 dgvDatSan.DataSource = null; // Clear trước để tránh lỗi binding
-                
+
                 if (results != null && results.Count > 0)
                 {
                     dgvDatSan.DataSource = results;
@@ -149,13 +138,14 @@ namespace TrangChu
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"❌ Lỗi PerformSearch: {ex.Message}");
-                MessageBox.Show($"Lỗi tìm kiếm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                // Không hiện MessageBox ở đây để tránh popup liên tục khi đang gõ
             }
         }
 
         private void btnTimKiem_Click(object sender, EventArgs e)
         {
-            // Vì đã tìm kiếm real-time, nút này chỉ cần focus vào ô nhập
+            // Vì đã tìm kiếm real-time, nút này chỉ cần focus vào ô nhập hoặc tìm kiếm ngay lập tức
+            PerformSearch(txtTimKiem.Text.Trim());
             txtTimKiem.Focus();
         }
 
@@ -171,17 +161,26 @@ namespace TrangChu
             {
                 DataGridViewRow row = dgvDatSan.Rows[e.RowIndex];
 
-                if (row.Cells[1].Value != null)
+                if (row.Cells["clMaSan"].Value != null)
                 {
-                    cbxMaSan.Text = row.Cells[1].Value.ToString();
-                    cbxMaSan.SelectedValue = row.Cells[1].Value.ToString();
+                    cbxMaSan.Text = row.Cells["clMaSan"].Value.ToString();
+                    // Cố gắng set selected value nếu có
+                    foreach (var item in cbxMaSan.Items)
+                    {
+                        // Giả sử item là SanBong hoặc string
+                        if (item.ToString() == row.Cells["clMaSan"].Value.ToString())
+                        {
+                            cbxMaSan.SelectedItem = item;
+                            break;
+                        }
+                    }
                 }
 
-                if (row.Cells[2].Value != null)
-                    txtSDT.Text = row.Cells[2].Value.ToString();
+                if (row.Cells["clSDT_KH"].Value != null)
+                    txtSDT.Text = row.Cells["clSDT_KH"].Value.ToString();
 
-                if (row.Cells[3].Value != null)
-                    txtTenKhachHang.Text = row.Cells[3].Value.ToString();
+                if (row.Cells["clTenKH"].Value != null)
+                    txtTenKhachHang.Text = row.Cells["clTenKH"].Value.ToString();
 
                 // Tính toán và hiển thị đơn giá
                 try
@@ -190,55 +189,53 @@ namespace TrangChu
                     int gioKT = 0;
                     decimal giaThucTe = 0;
 
-                    if (row.Cells[5].Value != null) gioBD = Convert.ToInt32(row.Cells[5].Value);
-                    if (row.Cells[6].Value != null) gioKT = Convert.ToInt32(row.Cells[6].Value);
+                    if (row.Cells["clGioBatDau"].Value != null) gioBD = Convert.ToInt32(row.Cells["clGioBatDau"].Value);
+                    if (row.Cells["clGioKetThuc"].Value != null) gioKT = Convert.ToInt32(row.Cells["clGioKetThuc"].Value);
 
-                    if (row.DataBoundItem is DAL.LichDat lichData && lichData.DonGiaThucTe.HasValue)
+                    if (row.Cells["clDonGiaThucTe"].Value != null && row.Cells["clDonGiaThucTe"].Value != DBNull.Value)
                     {
-                        giaThucTe = lichData.DonGiaThucTe.Value;
-                    }
-                    else if (row.Cells[8].Value != null && row.Cells[8].Value != DBNull.Value)
-                    {
-                        decimal.TryParse(row.Cells[8].Value.ToString(), out giaThucTe);
+                        decimal.TryParse(row.Cells["clDonGiaThucTe"].Value.ToString(), out giaThucTe);
                     }
 
                     int soGio = gioKT - gioBD;
+
+                    // Hiển thị đơn giá theo giờ (để người dùng dễ sửa)
                     if (soGio > 0 && giaThucTe > 0)
                     {
                         decimal donGiaHangGio = giaThucTe / soGio;
-                        txtDonGia.Text = donGiaHangGio.ToString("0.00");
+                        txtDonGia.Text = donGiaHangGio.ToString("0");
                     }
                     else if (giaThucTe > 0)
                     {
-                        txtDonGia.Text = giaThucTe.ToString("0.00");
+                        txtDonGia.Text = giaThucTe.ToString("0");
                     }
                     else
                     {
-                        txtDonGia.Text = "0.00";
+                        txtDonGia.Text = "0";
                     }
                 }
                 catch
                 {
-                    txtDonGia.Text = "0.00";
+                    txtDonGia.Text = "0";
                 }
 
-                if (row.Cells[4].Value != null)
+                if (row.Cells["clNgayDat"].Value != null)
                 {
-                    DateTime ngayDat = Convert.ToDateTime(row.Cells[4].Value);
-                    dtpNgayDat.MinDate = new DateTime(1900, 1, 1);
-                    dtpNgayDat.MaxDate = DateTime.Now.AddDays(365);
-                    dtpNgayDat.Value = ngayDat;
+                    DateTime ngayDat = Convert.ToDateTime(row.Cells["clNgayDat"].Value);
+                    // Kiểm tra min/max date để tránh lỗi crash datetimepicker
+                    if (ngayDat >= dtpNgayDat.MinDate && ngayDat <= dtpNgayDat.MaxDate)
+                        dtpNgayDat.Value = ngayDat;
                 }
 
-                if (row.Cells[5].Value != null)
+                if (row.Cells["clGioBatDau"].Value != null)
                 {
-                    int gioBD = Convert.ToInt32(row.Cells[5].Value);
+                    int gioBD = Convert.ToInt32(row.Cells["clGioBatDau"].Value);
                     dtpGioBatDau.Value = DateTime.Today.AddHours(gioBD);
                 }
 
-                if (row.Cells[6].Value != null)
+                if (row.Cells["clGioKetThuc"].Value != null)
                 {
-                    int gioKT = Convert.ToInt32(row.Cells[6].Value);
+                    int gioKT = Convert.ToInt32(row.Cells["clGioKetThuc"].Value);
                     dtpGioKetThuc.Value = DateTime.Today.AddHours(gioKT);
                 }
 
@@ -265,10 +262,24 @@ namespace TrangChu
 
                 if (currentData == null || currentData.Count == 0) return;
 
+                // Lưu ý: PropertyName phải khớp với tên thuộc tính trong Class DAL.LichDat
+                // Cần ánh xạ columnName (tên cột grid) sang PropertyName (tên thuộc tính class)
+                string propName = "";
+                if (columnName == "clMaLich") propName = "MaLich";
+                else if (columnName == "clMaSan") propName = "MaSan";
+                else if (columnName == "clSDT_KH") propName = "SDT_KH";
+                else if (columnName == "clTenKH") propName = "TenKH";
+                else if (columnName == "clNgayDat") propName = "NgayDat";
+                else if (columnName == "clGioBatDau") propName = "GioBD";
+                else if (columnName == "clGioKetThuc") propName = "GioKT";
+                else if (columnName == "clDonGiaThucTe") propName = "DonGiaThucTe";
+                else if (columnName == "clTrangThai") propName = "TrangThai";
+                else return; // Không tìm thấy cột tương ứng
+
                 if (sortOrder == SortOrder.Ascending)
-                    currentData = currentData.OrderBy(x => GetPropertyValue(x, columnName)).ToList();
+                    currentData = currentData.OrderBy(x => GetPropertyValue(x, propName)).ToList();
                 else
-                    currentData = currentData.OrderByDescending(x => GetPropertyValue(x, columnName)).ToList();
+                    currentData = currentData.OrderByDescending(x => GetPropertyValue(x, propName)).ToList();
 
                 dgvDatSan.DataSource = null;
                 dgvDatSan.DataSource = currentData;
@@ -340,7 +351,7 @@ namespace TrangChu
             {
                 if (dgvDatSan.Columns["clDonGiaThucTe"] != null)
                 {
-                    dgvDatSan.Columns["clDonGiaThucTe"].DefaultCellStyle.Format = "0.00";
+                    dgvDatSan.Columns["clDonGiaThucTe"].DefaultCellStyle.Format = "N0"; // Định dạng tiền tệ
                     dgvDatSan.Columns["clDonGiaThucTe"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 }
             }
@@ -349,15 +360,16 @@ namespace TrangChu
 
         private void ReapplyColumnBindings()
         {
-            clMaLich.DataPropertyName = "MaLich";
-            clMaSan.DataPropertyName = "MaSan";
-            clSDT_KH.DataPropertyName = "SDT_KH";
-            clTenKH.DataPropertyName = "TenKH";
-            clNgayDat.DataPropertyName = "NgayDat";
-            clGioBatDau.DataPropertyName = "GioBD";
-            clGioKetThuc.DataPropertyName = "GioKT";
-            clTrangThai.DataPropertyName = "TrangThai";
-            clDonGiaThucTe.DataPropertyName = "DonGiaThucTe";
+            // Gán DataPropertyName để DataGridView biết cột nào hiển thị dữ liệu nào
+            dgvDatSan.Columns["clMaLich"].DataPropertyName = "MaLich";
+            dgvDatSan.Columns["clMaSan"].DataPropertyName = "MaSan";
+            dgvDatSan.Columns["clSDT_KH"].DataPropertyName = "SDT_KH";
+            dgvDatSan.Columns["clTenKH"].DataPropertyName = "TenKH";
+            dgvDatSan.Columns["clNgayDat"].DataPropertyName = "NgayDat";
+            dgvDatSan.Columns["clGioBatDau"].DataPropertyName = "GioBD";
+            dgvDatSan.Columns["clGioKetThuc"].DataPropertyName = "GioKT";
+            dgvDatSan.Columns["clTrangThai"].DataPropertyName = "TrangThai";
+            dgvDatSan.Columns["clDonGiaThucTe"].DataPropertyName = "DonGiaThucTe";
         }
 
         private bool IsValidPhoneNumber(string phoneNumber)
@@ -375,9 +387,9 @@ namespace TrangChu
                 txtSDT.Focus();
                 return false;
             }
-            if (cleanPhone.Length != 10)
+            if (cleanPhone.Length < 9 || cleanPhone.Length > 11) // Cho phép 9-11 số
             {
-                MessageBox.Show($"❌ Số điện thoại phải có đúng 10 chữ số!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"❌ Số điện thoại không hợp lệ (9-11 số)!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtSDT.Focus();
                 return false;
             }
@@ -403,14 +415,12 @@ namespace TrangChu
 
         private bool IsValidSanCode(string maSan)
         {
-            if (string.IsNullOrWhiteSpace(maSan)) return false;
-            string[] validSans = { "San1", "San2", "San3", "San4", "San5", "San6" };
-            if (!validSans.Contains(maSan.Trim()))
+            if (string.IsNullOrWhiteSpace(maSan))
             {
-                MessageBox.Show($"❌ Mã sân '{maSan}' không tồn tại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cbxMaSan.Focus();
+                MessageBox.Show("❌ Vui lòng chọn sân!", "Cảnh báo");
                 return false;
             }
+            // Logic kiểm tra mã sân hợp lệ (nếu cần thiết, hiện tại ComboBox đã hạn chế)
             return true;
         }
 
@@ -447,7 +457,7 @@ namespace TrangChu
 
             DAL.LichDat lich = new DAL.LichDat
             {
-                MaLich = null,
+                MaLich = null, // Tự sinh
                 MaSan = cbxMaSan.Text.Trim(),
                 SDT_KH = txtSDT.Text.Trim(),
                 TenKH = txtTenKhachHang.Text.Trim(),
@@ -508,8 +518,12 @@ namespace TrangChu
 
         private void btnHuySan_Click(object sender, EventArgs e)
         {
-            if (dgvDatSan.CurrentRow == null) return;
-            string maLich = dgvDatSan.CurrentRow.Cells[0].Value?.ToString();
+            if (dgvDatSan.CurrentRow == null)
+            {
+                MessageBox.Show("Vui lòng chọn lịch để hủy!");
+                return;
+            }
+            string maLich = dgvDatSan.CurrentRow.Cells["clMaLich"].Value?.ToString();
 
             if (MessageBox.Show($"Bạn có chắc muốn hủy lịch [{maLich}]?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
@@ -524,20 +538,33 @@ namespace TrangChu
 
         private void btnSua_Click(object sender, EventArgs e)
         {
-            if (dgvDatSan.SelectedRows.Count == 0) return;
+            if (dgvDatSan.SelectedRows.Count == 0 || dgvDatSan.CurrentRow == null)
+            {
+                MessageBox.Show("Vui lòng chọn lịch để sửa!");
+                return;
+            }
 
-            string maLich = dgvDatSan.CurrentRow.Cells[0].Value.ToString();
+            string maLich = dgvDatSan.CurrentRow.Cells["clMaLich"].Value.ToString();
 
             // Logic kiểm tra ngày quá khứ
             DateTime ngayDat = dtpNgayDat.Value.Date;
             if (ngayDat < DateTime.Now.Date)
             {
-                MessageBox.Show("❌ Không thể sửa lịch trong quá khứ!", "Cảnh báo");
+                MessageBox.Show("❌ Không thể sửa lịch chuyển về ngày quá khứ!", "Cảnh báo");
                 return;
             }
 
+            if (!IsValidPhoneNumber(txtSDT.Text)) return;
+            if (!IsValidPrice(txtDonGia.Text)) return;
+
             int gioBD = dtpGioBatDau.Value.Hour;
             int gioKT = dtpGioKetThuc.Value.Hour;
+            if (gioBD >= gioKT)
+            {
+                MessageBox.Show("Giờ bắt đầu phải nhỏ hơn giờ kết thúc!");
+                return;
+            }
+
             int soGio = gioKT - gioBD;
             decimal donGia = decimal.Parse(txtDonGia.Text);
             decimal tongGia = soGio * donGia;
@@ -565,8 +592,12 @@ namespace TrangChu
 
         private void btnXoa_Click(object sender, EventArgs e)
         {
-            if (dgvDatSan.CurrentRow == null) return;
-            string maLich = dgvDatSan.CurrentRow.Cells[0].Value?.ToString();
+            if (dgvDatSan.CurrentRow == null)
+            {
+                MessageBox.Show("Vui lòng chọn lịch để xóa!");
+                return;
+            }
+            string maLich = dgvDatSan.CurrentRow.Cells["clMaLich"].Value?.ToString();
 
             if (MessageBox.Show($"Bạn có chắc chắn xóa lịch [{maLich}]? Không thể hoàn tác!", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
@@ -605,6 +636,7 @@ namespace TrangChu
         private string GetMaSanFromButton(Button btn)
         {
             if (btn == null) return "";
+            // Logic map tên button sang mã sân. Bạn có thể sửa lại cho đúng mã trong DB của bạn.
             if (btn.Name == "btnSan1") return "San1";
             if (btn.Name == "btnSan2") return "San2";
             if (btn.Name == "btnSan3") return "San3";
@@ -619,8 +651,11 @@ namespace TrangChu
             Button[] btns = { btnSan1, btnSan2, btnSan3, btnSan4, btnSan5, btnSan6 };
             foreach (Button btn in btns)
             {
-                btn.MouseEnter += FieldButton_MouseEnter;
-                btn.Click += FieldButton_Click;
+                if (btn != null)
+                {
+                    btn.MouseEnter += FieldButton_MouseEnter;
+                    btn.Click += FieldButton_Click;
+                }
             }
         }
 
@@ -646,38 +681,134 @@ namespace TrangChu
             }
         }
 
+        // ====================================================================
+        // ✅ NÚT THANH TOÁN (LOGIC HOÀN CHỈNH)
+        // ====================================================================
         private void btnThanhToan_Click(object sender, EventArgs e)
         {
-            if (dgvDatSan.SelectedRows.Count == 0) return;
-
-            // Lấy thông tin từ row được chọn
-            string maLich = dgvDatSan.CurrentRow.Cells[0].Value.ToString();
-            string trangThai = dgvDatSan.CurrentRow.Cells[7].Value.ToString(); // Index 7 là cột Trạng Thái
-            string tenKH = dgvDatSan.CurrentRow.Cells[3].Value.ToString();
-            string sdtKH = dgvDatSan.CurrentRow.Cells[2].Value.ToString();
-
-            if (trangThai != "Đã đặt")
+            try
             {
-                MessageBox.Show("Chỉ thanh toán được lịch có trạng thái 'Đã đặt'!");
-                return;
-            }
+                // 1. KIỂM TRA ĐÃ CHỌN DÒNG CHƯA
+                if (dgvDatSan.SelectedRows.Count == 0 || dgvDatSan.CurrentRow == null)
+                {
+                    MessageBox.Show("❌ Vui lòng chọn lịch đặt để thanh toán!",
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
-            CT_HoaDon_DichVu frm = new CT_HoaDon_DichVu();
-            frm.SetKhachHang(tenKH, sdtKH);
-            frm.SetMaLich(maLich);
-            this.Hide();
-            frm.ShowDialog();
-            this.Show();
-            RefreshData();
+                // 2. LẤY DỮ LIỆU TỪ DÒNG ĐƯỢC CHỌN
+                DataGridViewRow row = dgvDatSan.CurrentRow;
+
+                string maLich = row.Cells["clMaLich"].Value?.ToString()?.Trim() ?? "";
+                string trangThai = row.Cells["clTrangThai"].Value?.ToString()?.Trim() ?? "";
+                string ngayDatString = row.Cells["clNgayDat"].Value?.ToString()?.Trim() ?? "";
+
+                string tenKH = row.Cells["clTenKH"].Value?.ToString()?.Trim() ?? "";
+                string sdtKH = row.Cells["clSDT_KH"].Value?.ToString()?.Trim() ?? "";
+
+                // Lấy tiền sân
+                decimal tienSan = 0;
+                if (row.Cells["clDonGiaThucTe"].Value != null)
+                {
+                    decimal.TryParse(row.Cells["clDonGiaThucTe"].Value.ToString(), out tienSan);
+                }
+
+                // =============================================================
+                // 🛑 BẮT ĐẦU RÀNG BUỘC (VALIDATION)
+                // =============================================================
+
+                // 1. RÀNG BUỘC TRẠNG THÁI
+                if (trangThai.Equals("Đã hủy", StringComparison.OrdinalIgnoreCase))
+                {
+                    MessageBox.Show("⛔ Lịch này ĐÃ HỦY, không thể thực hiện thanh toán!",
+                        "Cấm", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                if (trangThai.Equals("Đã thanh toán", StringComparison.OrdinalIgnoreCase))
+                {
+                    MessageBox.Show("⛔ Lịch này ĐÃ THANH TOÁN rồi!",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                if (!trangThai.Equals("Đã đặt", StringComparison.OrdinalIgnoreCase))
+                {
+                    MessageBox.Show($"⚠️ Trạng thái hiện tại là '{trangThai}'.\nChỉ được phép thanh toán các lịch có trạng thái 'Đã đặt'.",
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // 2. RÀNG BUỘC THỜI GIAN (CHẶN NGÀY QUÁ KHỨ)
+                if (DateTime.TryParse(ngayDatString, out DateTime ngayDat))
+                {
+                    // So sánh ngày: Nếu Ngày đặt < Ngày hôm nay -> Chặn
+                    if (ngayDat.Date < DateTime.Now.Date)
+                    {
+                        MessageBox.Show($"⛔ Không được phép thanh toán cho lịch trong quá khứ!\n\n" +
+                            $"📅 Ngày đặt: {ngayDat:dd/MM/yyyy}\n" +
+                            $"🕒 Hôm nay: {DateTime.Now:dd/MM/yyyy}\n\n" +
+                            "Vui lòng kiểm tra lại ngày đặt.",
+                            "Vi phạm quy tắc", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        return;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("❌ Lỗi định dạng ngày tháng của lịch đặt!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // =============================================================
+                // ✅ MỞ FORM THANH TOÁN VÀ TRUYỀN DỮ LIỆU
+                // =============================================================
+
+                CT_HoaDon_DichVu frmThanhToan = new CT_HoaDon_DichVu();
+
+                // Truyền thông tin khách hàng & mã lịch
+                frmThanhToan.SetKhachHang(tenKH, sdtKH);
+                frmThanhToan.SetMaLich(maLich);
+
+                // Truyền tiền sân (nếu form bên kia có hàm nhận)
+                // frmThanhToan.SetTienSan(tienSan); 
+
+                this.Hide();
+                frmThanhToan.ShowDialog();
+                this.Show();
+
+                // ✅ KHI THANH TOÁN THÀNH CÔNG -> CẬP NHẬT TRẠNG THÁI
+                if (frmThanhToan.IsThanhToanThanhCong)
+                {
+                    bool updateResult = busLichDat.UpdateTrangThai(maLich, "Đã thanh toán");
+
+                    if (updateResult)
+                    {
+                        RefreshData(); // Tải lại danh sách
+
+                        MessageBox.Show($"✔ Thanh toán thành công!\nLịch [{maLich}] đã chuyển sang trạng thái 'Đã thanh toán'.",
+                            "Hoàn tất", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show($"⚠️ Thanh toán xong nhưng lỗi cập nhật trạng thái cho lịch [{maLich}].",
+                            "Lỗi nhỏ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"❌ Lỗi xử lý: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Show();
+            }
         }
 
         private void btnThemDivhVu_Click(object sender, EventArgs e)
         {
             if (dgvDatSan.SelectedRows.Count == 0) return;
 
-            string maLich = dgvDatSan.CurrentRow.Cells[0].Value.ToString();
-            string tenKH = dgvDatSan.CurrentRow.Cells[3].Value.ToString();
-            string sdtKH = dgvDatSan.CurrentRow.Cells[2].Value.ToString();
+            string maLich = dgvDatSan.CurrentRow.Cells["clMaLich"].Value.ToString();
+            string tenKH = dgvDatSan.CurrentRow.Cells["clTenKH"].Value.ToString();
+            string sdtKH = dgvDatSan.CurrentRow.Cells["clSDT_KH"].Value.ToString();
 
             DichVu frm = new DichVu();
             frm.SetDefaultCustomer(tenKH, sdtKH, maLich);

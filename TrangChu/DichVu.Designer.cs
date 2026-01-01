@@ -101,7 +101,6 @@ namespace TrangChu
             this.txtTimKiemDVu.Name = "txtTimKiemDVu";
             this.txtTimKiemDVu.Size = new System.Drawing.Size(114, 22);
             this.txtTimKiemDVu.TabIndex = 10;
-            this.txtTimKiemDVu.TextChanged += new System.EventHandler(this.txtTimKiemDVu_TextChanged);
             // 
             // label1
             // 

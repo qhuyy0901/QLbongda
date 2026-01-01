@@ -118,7 +118,7 @@ namespace TrangChu
         private void btnDoanhThu_Click(object sender, EventArgs e)
         {
             this.Hide();
-            DT_HoaDon frm = new DT_HoaDon();
+            TKe_HoaDon frm = new TKe_HoaDon();
             frm.ShowDialog();
             this.Show();
         }

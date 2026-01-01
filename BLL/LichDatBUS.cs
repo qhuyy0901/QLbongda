@@ -81,6 +81,18 @@ namespace BUS
             return true;
         }
 
+
+        public bool UpdateTrangThai(string maLich, string trangThai)
+        {
+            var lich = db.LichDats.FirstOrDefault(l => l.MaLich == maLich);
+            if (lich == null) return false;
+            lich.TrangThai = trangThai;
+            db.SaveChanges();
+            return true;
+        }
+
+
+
         // ===== VALIDATE MÃ SÂN (CHỈ CHẤP NHẬN SAN1-SAN6) =====
         private bool IsValidSanCode(string maSan)
         {
@@ -173,7 +185,7 @@ namespace BUS
             }
         }
 
-        public List<LichDat> GetAll()
+        public List<DAL.LichDat> GetAll()
         {
             return db.LichDats
                 .Where(x => x.TrangThai != "Đã xóa")
@@ -182,7 +194,7 @@ namespace BUS
                 .ToList();
         }
 
-        public List<LichDat> Search(string keyword)
+        public List<DAL.LichDat> Search(string keyword)
         {
             try
             {
@@ -240,7 +252,7 @@ namespace BUS
             }
         }
 
-        public bool Insert(LichDat lich)
+        public bool Insert(DAL.LichDat lich)
         {
             try
             {
@@ -309,7 +321,7 @@ namespace BUS
             }
         }
 
-        public bool Update(LichDat lich)
+        public bool Update(DAL.LichDat lich)
         {
             try
             {
@@ -403,7 +415,7 @@ namespace BUS
         }
 
         // ===== LẤY DANH SÁCH LỊCH THEO TRẠNG THÁI =====
-        public List<LichDat> GetByStatus(string trangThai)
+        public List<DAL.LichDat> GetByStatus(string trangThai)
         {
             try
             {
@@ -420,7 +432,7 @@ namespace BUS
             }
             catch
             {
-                return new List<LichDat>();
+                return new List<DAL.LichDat>();
             }
         }
     }

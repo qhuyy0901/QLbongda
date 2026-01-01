@@ -8,11 +8,11 @@ using System.Windows.Forms;
 
 namespace TrangChu
 {
-    public partial class DT_HoaDon : Form
+    public partial class TKe_HoaDon : Form
     {
         private HoaDonBUS busHoaDon = new HoaDonBUS();
 
-        public DT_HoaDon()
+        public TKe_HoaDon()
         {
             InitializeComponent();
             dgvHoaDon.AutoGenerateColumns = false;
@@ -225,6 +225,22 @@ namespace TrangChu
         private void btnInHoaDon_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Chức năng in/xuất Excel đang phát triển...", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void thốngKêSânToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ThongKeSan frm = new ThongKeSan();
+            this.Hide();
+            frm.ShowDialog();
+            frm.Show();
+        }
+
+        private void thốngKêToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ThongKeDoanhThu frm = new ThongKeDoanhThu();
+            this.Hide();
+            frm.ShowDialog();
+            frm.Show();
         }
     }
 }

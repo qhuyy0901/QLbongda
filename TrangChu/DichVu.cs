@@ -149,8 +149,8 @@ namespace TrangChu
                 DateTime homNay = DateTime.Now.Date;
                 List<DAL.LichDat> lichDatList = allLichDat
                     .Where(l => l.NgayDat.HasValue && 
-                                l.NgayDat.Value >= homNay && 
-                                l.TrangThai == "Đã đặt")
+                                l.NgayDat.Value.Date >= homNay &&  // ✅ CHỈ CÁC LỊCH TỪ HÔM NAY TRỞ ĐI
+                                l.TrangThai == "Đã đặt")            // ✅ CHỈ LỊCH CÓ TRẠNG THÁI "ĐÃ ĐẶT"
                     .OrderBy(l => l.NgayDat)
                     .ThenBy(l => l.GioBD)
                     .ToList();
@@ -408,12 +408,14 @@ namespace TrangChu
 
                 // ✅ KIỂM TRA LỊCH ĐẶT BẮTBUỘC
                 string maLich = "";
+                DAL.LichDat selectedLich = null;
+                
                 if (cbxLichDat.SelectedIndex >= 0)
                 {
-                    var selectedItem = cbxLichDat.SelectedItem as DAL.LichDat;
-                    if (selectedItem != null)
+                    selectedLich = cbxLichDat.SelectedItem as DAL.LichDat;
+                    if (selectedLich != null)
                     {
-                        maLich = selectedItem.MaLich;
+                        maLich = selectedLich.MaLich;
                     }
                 }
 
@@ -422,6 +424,38 @@ namespace TrangChu
                     MessageBox.Show("❌ Vui lòng chọn lịch đặt sân! (Lịch đặt là bắt buộc)",
                         "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     cbxLichDat.Focus();
+                    return;
+                }
+
+                // ===== KIỂM TRA LẠI TRẠNG THÁI LỊCH ĐẶT TRƯỚC KHI THANH TOÁN =====
+                var lichDatVerify = busLichDat.GetAll().FirstOrDefault(l => l.MaLich == maLich);
+                
+                if (lichDatVerify == null)
+                {
+                    MessageBox.Show("❌ Lịch đặt không tồn tại trong hệ thống!",
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // ✅ KIỂM TRA TRẠNG THÁI: PHẢI LÀ "ĐÃ ĐẶT"
+                if (lichDatVerify.TrangThai != "Đã đặt")
+                {
+                    MessageBox.Show($"❌ Lịch đặt [{maLich}] không ở trạng thái 'Đã đặt'!\n\n" +
+                        $"Trạng thái hiện tại: {lichDatVerify.TrangThai}\n\n" +
+                        $"💡 Chỉ có thể thanh toán lịch ở trạng thái 'Đã đặt'.",
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    LoadLichDat(); // Tải lại danh sách lịch
+                    return;
+                }
+
+                // ✅ KIỂM TRA NGÀY: PHẢI LÀ HÔM NAY HOẶC TRONG TƯƠING LAI
+                DateTime ngayDatHomNay = lichDatVerify.NgayDat?.Date ?? DateTime.Now.AddDays(-1);
+                if (ngayDatHomNay < DateTime.Now.Date)
+                {
+                    MessageBox.Show($"❌ Không thể thanh toán lịch trong quá khứ!\n\n" +
+                        $"Lịch đặt ngày: {ngayDatHomNay:dd/MM/yyyy}\n\n" +
+                        $"💡 Chỉ có thể thanh toán lịch từ hôm nay trở đi.",
+                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -481,7 +515,7 @@ namespace TrangChu
             }
             catch (Exception ex)
             {
-                MessageBox.Show("❌ Lỗi thanh toán:\n" + ex.Message,
+                MessageBox.Show("❌ Lỗi thanh toán:\n" + ex.Message + "\n\n📍 StackTrace:\n" + ex.StackTrace,
                     "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -522,7 +556,7 @@ namespace TrangChu
                 }
 
                 // ===== KIỂM TRA TRÙNG LẬP MÃ =====
-                var existingDV = dtDichVu.AsEnumerable().FirstOrDefault(x => x["MaDV"].ToString() == maDV);
+                var existingDV = busDichVu.GetAllDichVu().FirstOrDefault(x => x.MaDV == maDV);
                 if (existingDV != null)
                 {
                     MessageBox.Show($"❌ Mã Dịch Vụ [{maDV}] đã tồn tại!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -530,7 +564,7 @@ namespace TrangChu
                     return;
                 }
 
-                // ===== THÊM DỮ LIỆU VÀO BẢNG =====
+                // ===== THÊM DỮ LIỆU VÀO DATABASE =====
                 DAL.DichVu dichVuMoi = new DAL.DichVu
                 {
                     MaDV = maDV,
@@ -538,7 +572,6 @@ namespace TrangChu
                     DonGia = donGia
                 };
 
-                // ===== GỌI BUS ĐỂ THÊM VÀO DATABASE =====
                 try
                 {
                     bool success = busDichVu.InsertDichVu(dichVuMoi);
@@ -547,6 +580,7 @@ namespace TrangChu
                         MessageBox.Show("✔ Thêm dịch vụ thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LoadDichVu();
                         ResetDichVuForm();
+                        txtTimKiemDVu.Clear(); // Reset tìm kiếm
                     }
                     else
                     {
@@ -574,11 +608,17 @@ namespace TrangChu
                     return;
                 }
 
-                string maDV = dgvDichVu.CurrentRow.Cells["MaDV"].Value?.ToString() ?? "";
+                string maDV = txtMaDVu.Text.Trim();
                 string tenDV = txtTenDVu.Text.Trim();
                 string donGiaText = txtDonGiaDVu.Text.Trim();
 
                 // ===== KIỂM TRA VALIDATION =====
+                if (string.IsNullOrWhiteSpace(maDV))
+                {
+                    MessageBox.Show("❌ Mã Dịch Vụ không hợp lệ!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 if (string.IsNullOrWhiteSpace(tenDV))
                 {
                     MessageBox.Show("❌ Vui lòng nhập Tên Dịch Vụ!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -610,6 +650,7 @@ namespace TrangChu
                         MessageBox.Show("✔ Cập nhật dịch vụ thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         LoadDichVu();
                         ResetDichVuForm();
+                        txtTimKiemDVu.Clear(); // Reset tìm kiếm
                     }
                     else
                     {
@@ -640,6 +681,12 @@ namespace TrangChu
                 string maDV = dgvDichVu.CurrentRow.Cells["MaDV"].Value?.ToString() ?? "";
                 string tenDV = dgvDichVu.CurrentRow.Cells["TenDV"].Value?.ToString() ?? "";
 
+                if (string.IsNullOrWhiteSpace(maDV))
+                {
+                    MessageBox.Show("❌ Không tìm thấy Mã Dịch Vụ!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 DialogResult result = MessageBox.Show(
                     $"Bạn có chắc chắn muốn xóa dịch vụ [{maDV}] - {tenDV}?\n\nHành động này không thể hoàn tác!",
                     "Xác Nhận Xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -654,15 +701,17 @@ namespace TrangChu
                             MessageBox.Show("✔ Xóa dịch vụ thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             LoadDichVu();
                             ResetDichVuForm();
+                            txtTimKiemDVu.Clear(); // Reset tìm kiếm
                         }
                         else
                         {
-                            MessageBox.Show("❌ Lỗi xóa dịch vụ!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("❌ Lỗi xóa dịch vụ! Có thể dịch vụ này đã được sử dụng trong hóa đơn.\n\n💡 Không thể xóa dịch vụ được sử dụng trong hóa đơn.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                     catch (Exception exBus)
                     {
-                        MessageBox.Show($"❌ Lỗi từ BUS: {exBus.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show($"❌ Lỗi: {exBus.Message}\n\n💡 Có thể dịch vụ này đã được sử dụng trong hóa đơn hoặc có lỗi cơ sở dữ liệu.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        ResetDichVuForm();
                     }
                 }
             }
@@ -672,45 +721,6 @@ namespace TrangChu
             }
         }
 
-        private void txtTimKiemDVu_TextChanged(object sender, EventArgs e)
-        {
-            try
-            {
-                string searchKeyword = txtTimKiemDVu.Text.Trim().ToLower();
-
-                // ===== NẾU TỪ KHÓA TRỐNG, LOAD LẠI TẬT CẢ DỊCH VỤ TỪ DATABASE =====
-                if (string.IsNullOrWhiteSpace(searchKeyword))
-                {
-                    LoadDichVu();
-                    dgvDichVu.DataSource = dtDichVu;
-                    return;
-                }
-
-                // ===== LỌC DỊCH VỤ THEO TỪ KHÓA =====
-                DataTable dtFiltered = dtDichVu.Clone();
-
-                foreach (DataRow row in dtDichVu.Rows)
-                {
-                    string maDV = row["MaDV"]?.ToString() ?? "";
-                    string tenDV = row["TenDV"]?.ToString() ?? "";
-
-                    // Tìm kiếm theo Mã DV hoặc Tên DV (không phân biệt hoa/thường)
-                    if (maDV.ToLower().Contains(searchKeyword) || tenDV.ToLower().Contains(searchKeyword))
-                    {
-                        dtFiltered.ImportRow(row);
-                    }
-                }
-
-                // ===== CẬP NHẬT HIỂN THỊ =====
-                dgvDichVu.DataSource = dtFiltered;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("❌ Lỗi tìm kiếm dịch vụ:\n" + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        // ===== HỖ TRỢ: TẠI KHI CHỌN DÒNG TRONG BẢNG, ĐIỀN DỮ LIỆU VÀO TEXTBOX =====
         private void dgvDichVu_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             try
@@ -722,12 +732,18 @@ namespace TrangChu
 
                 if (row.Cells["MaDV"].Value != null)
                     txtMaDVu.Text = row.Cells["MaDV"].Value.ToString();
+                else
+                    txtMaDVu.Text = "";
 
                 if (row.Cells["TenDV"].Value != null)
                     txtTenDVu.Text = row.Cells["TenDV"].Value.ToString();
+                else
+                    txtTenDVu.Text = "";
 
                 if (row.Cells["DonGia"].Value != null)
                     txtDonGiaDVu.Text = row.Cells["DonGia"].Value.ToString();
+                else
+                    txtDonGiaDVu.Text = "";
 
                 // ===== KHÓA MÃ DỊCH VỤ KHI CHỌN ĐỂ SỬA =====
                 txtMaDVu.ReadOnly = true;
@@ -739,7 +755,6 @@ namespace TrangChu
             }
         }
 
-        // ===== HELPER: RESET FORM DỊCH VỤ =====
         private void ResetDichVuForm()
         {
             try
@@ -752,12 +767,16 @@ namespace TrangChu
                 txtMaDVu.ReadOnly = false;
                 txtMaDVu.BackColor = System.Drawing.Color.White;
 
+                dgvDichVu.ClearSelection(); // Bỏ chọn hàng trong DataGridView
                 txtMaDVu.Focus();
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show("❌ Lỗi reset form: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        // ===== TRONG METHOD InitTable(), THÊM EVENT HANDLER NÀY =====
+        // ===== TRONG METHOD InitTable(), TH ÊM EVENT HANDLER NÀY =====
         // Gọi trong DichVu_Load hoặc InitTable()
         private void SetupDichVuGridEvents()
         {
