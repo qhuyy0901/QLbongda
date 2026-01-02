@@ -1,93 +1,191 @@
-﻿using System;
+﻿using BUS;
+using DAL;
+using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using BUS; // Gọi BUS của bạn
 
 namespace TrangChu
 {
     public partial class ThongKeSan : Form
     {
-        private LichDatBUS busLichDat = new LichDatBUS(); // Giả sử bạn lấy dữ liệu từ Lịch Đặt
+        private readonly LichDatBUS busLichDat = new LichDatBUS();
+        private readonly SanBongBUS busSanBong = new SanBongBUS();
 
         public ThongKeSan()
         {
             InitializeComponent();
-            LoadCombobox();
-            dtpTuNgay.Value = DateTime.Now.AddDays(-30); // Mặc định 30 ngày
-            dtpDenNgay.Value = DateTime.Now;
         }
 
-        private void LoadCombobox()
+        private void ThongKeSan_Load(object sender, EventArgs e)
         {
-            cbxSan.Items.Add("Tất cả");
-            cbxSan.Items.Add("San1");
-            cbxSan.Items.Add("San2");
-            // ... load từ CSDL thì tốt hơn
-            cbxSan.SelectedIndex = 0;
+            LoadComboboxSan();
+            SetDefaultDate();
+        }
+
+        private void SetDefaultDate()
+        {
+            DateTime now = DateTime.Now;
+            dtpTuNgay.Value = new DateTime(now.Year, now.Month, 1);
+            dtpDenNgay.Value = now;
+        }
+
+        private void LoadComboboxSan()
+        {
+            try
+            {
+                var listSan = busSanBong.GetListSanBong();
+                cbxSan.Items.Clear();
+                cbxSan.Items.Add("Tất cả");
+
+                foreach (var san in listSan)
+                {
+                    cbxSan.Items.Add(san.MaSan);
+                }
+                cbxSan.SelectedIndex = 0;
+            }
+            catch
+            {
+                cbxSan.Items.Add("Tất cả");
+                cbxSan.Items.Add("San1");
+                cbxSan.Items.Add("San2");
+                cbxSan.SelectedIndex = 0;
+            }
         }
 
         private void btnThongKe_Click(object sender, EventArgs e)
         {
-            DateTime from = dtpTuNgay.Value.Date;
-            DateTime to = dtpDenNgay.Value.Date.AddDays(1).AddSeconds(-1);
-            string selectedSan = cbxSan.SelectedItem.ToString();
-
-            // 1. Lấy dữ liệu thô từ BUS
-            var listData = busLichDat.GetAll()
-                .Where(x => x.NgayDat >= from && x.NgayDat <= to);
-
-            if (selectedSan != "Tất cả")
+            try
             {
-                listData = listData.Where(x => x.MaSan == selectedSan);
-            }
+                // 1. Lấy tham số
+                DateTime fromDate = dtpTuNgay.Value.Date;
+                DateTime toDate = dtpDenNgay.Value.Date.AddDays(1).AddSeconds(-1);
+                string selectedSan = cbxSan.SelectedItem?.ToString() ?? "Tất cả";
 
-            var data = listData.ToList();
+                // 2. Lấy dữ liệu
+                var allLichDat = busLichDat.GetAll();
 
-            // 2. Xử lý Biểu đồ 1: Tổng Giờ Hoạt Động (Nhóm theo Sân)
-            var chart1Data = data
-                .Where(x => x.TrangThai == "Đã thanh toán" || x.TrangThai == "Đã đặt")
-                .GroupBy(x => x.MaSan)
-                .Select(g => new { San = g.Key, TongGio = g.Sum(x => x.GioKT - x.GioBD) })
-                .ToList();
+                // 3. Lọc dữ liệu
+                var filteredQuery = allLichDat.Where(x => x.NgayDat.HasValue &&
+                                                          x.NgayDat.Value >= fromDate &&
+                                                          x.NgayDat.Value <= toDate);
 
-            chartGioHoatDong.Series["Số Giờ"].Points.Clear();
-            foreach (var item in chart1Data)
-            {
-                chartGioHoatDong.Series["Số Giờ"].Points.AddXY(item.San, item.TongGio);
-            }
-
-            // 3. Xử lý Biểu đồ 2: Doanh Thu (Nhóm theo Sân)
-            var chart2Data = data
-                .Where(x => x.TrangThai == "Đã thanh toán") // Chỉ tính tiền đã thanh toán
-                .GroupBy(x => x.MaSan)
-                .Select(g => new { San = g.Key, DoanhThu = g.Sum(x => x.DonGiaThucTe ?? 0) })
-                .ToList();
-
-            chartDoanhThu.Series["Doanh Thu (VNĐ)"].Points.Clear();
-            foreach (var item in chart2Data)
-            {
-                chartDoanhThu.Series["Doanh Thu (VNĐ)"].Points.AddXY(item.San, item.DoanhThu);
-            }
-
-            // 4. Xử lý Biểu đồ 3: Trạng thái (Đếm số lần)
-            var chart3Data = data
-                .GroupBy(x => x.MaSan)
-                .Select(g => new
+                if (selectedSan != "Tất cả")
                 {
-                    San = g.Key,
-                    DaThanhToan = g.Count(x => x.TrangThai == "Đã thanh toán"),
-                    DaHuy = g.Count(x => x.TrangThai == "Đã hủy")
-                })
-                .ToList();
+                    filteredQuery = filteredQuery.Where(x => x.MaSan == selectedSan);
+                }
 
+                var dataToList = filteredQuery.ToList();
+
+                if (dataToList.Count == 0)
+                {
+                    MessageBox.Show("Không tìm thấy dữ liệu nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ClearCharts();
+                    return;
+                }
+
+                // 4. Vẽ biểu đồ
+                DrawChartGioHoatDong(dataToList);
+                DrawChartDoanhThu(dataToList);
+                DrawChartTrangThai(dataToList);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi: " + ex.Message + "\n\nStack Trace:\n" + ex.StackTrace);
+            }
+        }
+
+        private void DrawChartGioHoatDong(List<DAL.LichDat> data)
+        {
+            try
+            {
+                var chartData = data
+                    .Where(x => x.TrangThai == "Đã thanh toán" || x.TrangThai == "Đã đặt")
+                    .GroupBy(x => x.MaSan)
+                    .Select(g => new
+                    {
+                        San = g.Key,
+                        TongGio = g.Sum(x => Convert.ToDouble(x.GioKT ?? 0) - Convert.ToDouble(x.GioBD ?? 0))
+                    })
+                    .OrderBy(x => x.San)
+                    .ToList();
+
+                chartGioHoatDong.Series["Số Giờ"].Points.Clear();
+                foreach (var item in chartData)
+                {
+                    chartGioHoatDong.Series["Số Giờ"].Points.AddXY(item.San, item.TongGio);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi vẽ biểu đồ giờ hoạt động: " + ex.Message);
+            }
+        }
+
+        private void DrawChartDoanhThu(List<DAL.LichDat> data)
+        {
+            try
+            {
+                var chartData = data
+                    .Where(x => x.TrangThai == "Đã thanh toán")
+                    .GroupBy(x => x.MaSan)
+                    .Select(g => new
+                    {
+                        San = g.Key,
+                        DoanhThu = g.Sum(x => x.DonGiaThucTe ?? 0)
+                    })
+                    .OrderBy(x => x.San)
+                    .ToList();
+
+                chartDoanhThu.Series["Doanh Thu (VNĐ)"].Points.Clear();
+                foreach (var item in chartData)
+                {
+                    chartDoanhThu.Series["Doanh Thu (VNĐ)"].Points.AddXY(item.San, item.DoanhThu);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi vẽ biểu đồ doanh thu: " + ex.Message);
+            }
+        }
+
+        private void DrawChartTrangThai(List<DAL.LichDat> data)
+        {
+            try
+            {
+                var chartData = data
+                    .GroupBy(x => x.MaSan)
+                    .Select(g => new
+                    {
+                        San = g.Key,
+                        DaThanhToan = g.Count(x => x.TrangThai == "Đã thanh toán"),
+                        DaHuy = g.Count(x => x.TrangThai == "Đã hủy" || x.TrangThai == "Hủy")
+                    })
+                    .OrderBy(x => x.San)
+                    .ToList();
+
+                chartTrangThai.Series["Đã Thanh Toán"].Points.Clear();
+                chartTrangThai.Series["Đã Hủy"].Points.Clear();
+
+                foreach (var item in chartData)
+                {
+                    chartTrangThai.Series["Đã Thanh Toán"].Points.AddXY(item.San, item.DaThanhToan);
+                    chartTrangThai.Series["Đã Hủy"].Points.AddXY(item.San, item.DaHuy);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi vẽ biểu đồ trạng thái: " + ex.Message);
+            }
+        }
+
+        private void ClearCharts()
+        {
+            chartGioHoatDong.Series["Số Giờ"].Points.Clear();
+            chartDoanhThu.Series["Doanh Thu (VNĐ)"].Points.Clear();
             chartTrangThai.Series["Đã Thanh Toán"].Points.Clear();
             chartTrangThai.Series["Đã Hủy"].Points.Clear();
-
-            foreach (var item in chart3Data)
-            {
-                chartTrangThai.Series["Đã Thanh Toán"].Points.AddXY(item.San, item.DaThanhToan);
-                chartTrangThai.Series["Đã Hủy"].Points.AddXY(item.San, item.DaHuy);
-            }
         }
     }
 }

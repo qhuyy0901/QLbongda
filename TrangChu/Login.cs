@@ -12,6 +12,7 @@ namespace TrangChu
         public Login()
         {
             InitializeComponent();
+            chkShowPassword.CheckedChanged += chkShowPassword_CheckedChanged;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
@@ -63,6 +64,9 @@ namespace TrangChu
 
         private void Login_Load(object sender, EventArgs e)
         {
+            txtPass.UseSystemPasswordChar = true;
+            txtPass.PasswordChar = '*';
+
             try
             {
                 // Test kết nối database
@@ -79,5 +83,11 @@ namespace TrangChu
             }
         }
 
+        private void chkShowPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            // Checked => hiện rõ; Unchecked => che bằng '*'
+            txtPass.UseSystemPasswordChar = !chkShowPassword.Checked;
+            txtPass.PasswordChar = txtPass.UseSystemPasswordChar ? '*' : '\0';
+        }
     }
 }

@@ -187,5 +187,10 @@ namespace TrangChu
             var val = obj.GetType().GetProperty(propName)?.GetValue(obj, null);
             return (DateTime?)val;
         }
+
+        private void btnTroVe_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

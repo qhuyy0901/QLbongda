@@ -22,7 +22,7 @@ namespace TrangChu
     {
         private UserRole CurrentRole;
         // API Key
-        private const string API_KEY = "AIzaSyBUhB7glzJW1lkUJnw47t2_J-pIOETx23s";
+        private const string API_KEY = "";
         private readonly HttpClient httpClient = new HttpClient();
 
         private LichDatBUS busLichDat = new LichDatBUS();
@@ -64,7 +64,7 @@ namespace TrangChu
             lblRole.Text = $"Đang chat với vai trò: {CurrentRole.ToString().ToUpper()}";
             lblRole.ForeColor = (CurrentRole == UserRole.admin) ? Color.Red : Color.Blue;
 
-            string greeting = "Gemini: Xin chào 👋 Tôi là trợ lý ảo của sân bóng. Tôi có thể giúp gì cho bạn?";
+            string greeting = "Chat Hi: Xin chào 👋 Tôi là trợ lý ảo của sân bóng. Tôi có thể giúp gì cho bạn?";
             AppendChatLog(greeting, isUser: false);
         }
 
@@ -174,7 +174,7 @@ Câu hỏi: {userMessage}";
         {
             try
             {
-                string url = $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={API_KEY}";
+                string url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=" + API_KEY;
                 var requestBody = new
                 {
                     contents = new[] { new { parts = new[] { new { text = BuildFullPrompt(message) } } } }
@@ -186,15 +186,19 @@ Câu hỏi: {userMessage}";
                 var response = await httpClient.PostAsync(url, content);
                 string responseString = await response.Content.ReadAsStringAsync();
 
-                if (!response.IsSuccessStatusCode) return $"Lỗi API: {response.StatusCode}";
+                if (!response.IsSuccessStatusCode)
+                    return $"Lỗi API: {(int)response.StatusCode} {response.StatusCode} - {responseString}";
 
                 dynamic data = JsonConvert.DeserializeObject(responseString);
-                if (data.candidates != null && data.candidates.Count > 0)
+                if (data?.candidates != null && data.candidates.Count > 0)
                     return data.candidates[0].content.parts[0].text;
 
                 return "AI không phản hồi.";
             }
-            catch (Exception ex) { return $"Lỗi hệ thống: {ex.Message}"; }
+            catch (Exception ex)
+            {
+                return $"Lỗi hệ thống: {ex.Message}";
+            }
         }
 
         private async void btnSend_Click(object sender, EventArgs e)
