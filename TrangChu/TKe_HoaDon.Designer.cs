@@ -222,6 +222,7 @@
             this.thToolStripMenuItem.Name = "thToolStripMenuItem";
             this.thToolStripMenuItem.Size = new System.Drawing.Size(135, 20);
             this.thToolStripMenuItem.Text = "Thống Kê Doanh Thu";
+            this.thToolStripMenuItem.Click += new System.EventHandler(this.thToolStripMenuItem_Click);
             // 
             // thốngKêSânToolStripMenuItem
             // 

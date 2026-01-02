@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TrangChu));
             this.panelMenu = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -38,16 +37,16 @@
             this.bntDangXuat = new System.Windows.Forms.Button();
             this.btnDatSan = new System.Windows.Forms.Button();
             this.btnDichVu = new System.Windows.Forms.Button();
-            this.lblTenSan = new System.Windows.Forms.Label();
-            this.picNen = new System.Windows.Forms.PictureBox();
-            this.guna2ContextMenuStrip1 = new Guna.UI2.WinForms.Guna2ContextMenuStrip();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.chatToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.hDSDToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblTenSan = new System.Windows.Forms.Label();
+            this.picNen = new System.Windows.Forms.PictureBox();
             this.panelMenu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picNen)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picNen)).BeginInit();
             this.SuspendLayout();
             // 
             // panelMenu
@@ -60,16 +59,17 @@
             this.panelMenu.Controls.Add(this.bntDangXuat);
             this.panelMenu.Controls.Add(this.btnDatSan);
             this.panelMenu.Controls.Add(this.btnDichVu);
+            this.panelMenu.Controls.Add(this.menuStrip1);
             this.panelMenu.Dock = System.Windows.Forms.DockStyle.Left;
             this.panelMenu.Location = new System.Drawing.Point(0, 0);
             this.panelMenu.Name = "panelMenu";
-            this.panelMenu.Size = new System.Drawing.Size(240, 558);
+            this.panelMenu.Size = new System.Drawing.Size(254, 558);
             this.panelMenu.TabIndex = 0;
             // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::TrangChu.Properties.Resources.avt;
-            this.pictureBox1.Location = new System.Drawing.Point(55, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(52, 32);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(120, 120);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -85,7 +85,7 @@
             this.btnQuanLyTK.ForeColor = System.Drawing.Color.ForestGreen;
             this.btnQuanLyTK.Image = ((System.Drawing.Image)(resources.GetObject("btnQuanLyTK.Image")));
             this.btnQuanLyTK.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnQuanLyTK.Location = new System.Drawing.Point(43, 392);
+            this.btnQuanLyTK.Location = new System.Drawing.Point(43, 397);
             this.btnQuanLyTK.Name = "btnQuanLyTK";
             this.btnQuanLyTK.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnQuanLyTK.Size = new System.Drawing.Size(143, 45);
@@ -105,7 +105,7 @@
             this.btnDoanhThu.ForeColor = System.Drawing.Color.ForestGreen;
             this.btnDoanhThu.Image = ((System.Drawing.Image)(resources.GetObject("btnDoanhThu.Image")));
             this.btnDoanhThu.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDoanhThu.Location = new System.Drawing.Point(43, 327);
+            this.btnDoanhThu.Location = new System.Drawing.Point(43, 332);
             this.btnDoanhThu.Name = "btnDoanhThu";
             this.btnDoanhThu.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnDoanhThu.Size = new System.Drawing.Size(143, 45);
@@ -121,7 +121,7 @@
             this.lblUserName.AutoSize = true;
             this.lblUserName.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblUserName.ForeColor = System.Drawing.Color.White;
-            this.lblUserName.Location = new System.Drawing.Point(55, 145);
+            this.lblUserName.Location = new System.Drawing.Point(52, 165);
             this.lblUserName.Name = "lblUserName";
             this.lblUserName.Size = new System.Drawing.Size(122, 20);
             this.lblUserName.TabIndex = 5;
@@ -157,7 +157,7 @@
             this.btnDatSan.ForeColor = System.Drawing.Color.ForestGreen;
             this.btnDatSan.Image = ((System.Drawing.Image)(resources.GetObject("btnDatSan.Image")));
             this.btnDatSan.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDatSan.Location = new System.Drawing.Point(43, 197);
+            this.btnDatSan.Location = new System.Drawing.Point(43, 202);
             this.btnDatSan.Name = "btnDatSan";
             this.btnDatSan.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnDatSan.Size = new System.Drawing.Size(143, 45);
@@ -177,7 +177,7 @@
             this.btnDichVu.ForeColor = System.Drawing.Color.ForestGreen;
             this.btnDichVu.Image = ((System.Drawing.Image)(resources.GetObject("btnDichVu.Image")));
             this.btnDichVu.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnDichVu.Location = new System.Drawing.Point(43, 262);
+            this.btnDichVu.Location = new System.Drawing.Point(43, 267);
             this.btnDichVu.Name = "btnDichVu";
             this.btnDichVu.Padding = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnDichVu.Size = new System.Drawing.Size(143, 45);
@@ -187,6 +187,42 @@
             this.btnDichVu.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnDichVu.UseVisualStyleBackColor = false;
             this.btnDichVu.Click += new System.EventHandler(this.btnDichVu_Click);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.BackColor = System.Drawing.Color.ForestGreen;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.helpToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(254, 24);
+            this.menuStrip1.TabIndex = 8;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.chatToolStripMenuItem,
+            this.hDSDToolStripMenuItem});
+            this.helpToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.helpToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // chatToolStripMenuItem
+            // 
+            this.chatToolStripMenuItem.Name = "chatToolStripMenuItem";
+            this.chatToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+            this.chatToolStripMenuItem.Text = "Chat";
+            this.chatToolStripMenuItem.Click += new System.EventHandler(this.chatToolStripMenuItem_Click);
+            // 
+            // hDSDToolStripMenuItem
+            // 
+            this.hDSDToolStripMenuItem.Name = "hDSDToolStripMenuItem";
+            this.hDSDToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+            this.hDSDToolStripMenuItem.Text = "HDSD";
+            this.hDSDToolStripMenuItem.Click += new System.EventHandler(this.hDSDToolStripMenuItem_Click);
             // 
             // lblTenSan
             // 
@@ -213,66 +249,25 @@
             this.picNen.TabIndex = 3;
             this.picNen.TabStop = false;
             // 
-            // guna2ContextMenuStrip1
-            // 
-            this.guna2ContextMenuStrip1.Name = "guna2ContextMenuStrip1";
-            this.guna2ContextMenuStrip1.RenderStyle.ArrowColor = System.Drawing.Color.FromArgb(((int)(((byte)(151)))), ((int)(((byte)(143)))), ((int)(((byte)(255)))));
-            this.guna2ContextMenuStrip1.RenderStyle.BorderColor = System.Drawing.Color.Gainsboro;
-            this.guna2ContextMenuStrip1.RenderStyle.ColorTable = null;
-            this.guna2ContextMenuStrip1.RenderStyle.RoundedEdges = true;
-            this.guna2ContextMenuStrip1.RenderStyle.SelectionArrowColor = System.Drawing.Color.White;
-            this.guna2ContextMenuStrip1.RenderStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.guna2ContextMenuStrip1.RenderStyle.SelectionForeColor = System.Drawing.Color.White;
-            this.guna2ContextMenuStrip1.RenderStyle.SeparatorColor = System.Drawing.Color.Gainsboro;
-            this.guna2ContextMenuStrip1.RenderStyle.TextRenderingHint = System.Drawing.Text.TextRenderingHint.SystemDefault;
-            this.guna2ContextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.BackColor = System.Drawing.Color.Green;
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.helpToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(240, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(795, 24);
-            this.menuStrip1.TabIndex = 6;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // helpToolStripMenuItem
-            // 
-            this.helpToolStripMenuItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.helpToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
-            this.helpToolStripMenuItem.Text = "Help";
-            this.helpToolStripMenuItem.Click += new System.EventHandler(this.helpToolStripMenuItem_Click);
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
             // TrangChu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1035, 558);
-            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.picNen);
             this.Controls.Add(this.lblTenSan);
             this.Controls.Add(this.panelMenu);
             this.ForeColor = System.Drawing.Color.Black;
-            this.MainMenuStrip = this.menuStrip1;
             this.Name = "TrangChu";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Hệ thống quản lý sân bóng đá Nhật Vượng";
             this.panelMenu.ResumeLayout(false);
             this.panelMenu.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picNen)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picNen)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -290,9 +285,9 @@
         private System.Windows.Forms.Button btnDoanhThu;
         private System.Windows.Forms.Button btnQuanLyTK;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private Guna.UI2.WinForms.Guna2ContextMenuStrip guna2ContextMenuStrip1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem chatToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem hDSDToolStripMenuItem;
     }
 }

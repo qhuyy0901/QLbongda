@@ -41,12 +41,13 @@ namespace TrangChu
                 // Load Combobox Năm
                 int currentYear = DateTime.Now.Year;
                 cboNam.Items.Clear();
-                for (int i = currentYear; i >= currentYear - 5; i--) cboNam.Items.Add(i);
-                cboNam.SelectedIndex = 0;
+                cboNam.Items.Add("Tất cả");
+                for (int i = currentYear; i >= currentYear - 2; i--) cboNam.Items.Add(i);
+                cboNam.SelectedIndex = 1; // chọn năm hiện tại
 
                 // Load Combobox Tháng
                 cboThang.Items.Clear();
-                cboThang.Items.Add("Tất cả"); // Index 0
+                cboThang.Items.Add("Tất cả");
                 for (int i = 1; i <= 12; i++) cboThang.Items.Add(i);
                 cboThang.SelectedIndex = DateTime.Now.Month;
 
@@ -65,7 +66,10 @@ namespace TrangChu
         {
             try
             {
-                int nam = int.Parse(cboNam.SelectedItem.ToString());
+                var selectedYear = cboNam.SelectedItem?.ToString();
+                bool allYears = selectedYear == "Tất cả";
+                int nam = allYears ? DateTime.Now.Year : int.Parse(selectedYear);
+
                 int thang = cboThang.SelectedIndex; // 0 = Tất cả
 
                 // Lấy dữ liệu thô từ BUS
@@ -78,13 +82,10 @@ namespace TrangChu
                     // Chuyển đổi dữ liệu thô sang DTO chuẩn
                     foreach (var item in rawData)
                     {
-                        // Dùng Reflection lấy dữ liệu an toàn
                         DateTime? ngayTT = GetPropValue<DateTime?>(item, "ThoiGianThanhToan");
-                        // Nếu DB dùng tên 'NgayLap', sửa thành:
-                        // DateTime? ngayTT = GetPropValue<DateTime?>(item, "NgayLap");
 
-                        // Lọc theo năm và tháng
-                        if (ngayTT.HasValue && ngayTT.Value.Year == nam)
+                        // Lọc theo năm và tháng (cho phép "Tất cả")
+                        if (ngayTT.HasValue && (allYears || ngayTT.Value.Year == nam))
                         {
                             if (thang == 0 || ngayTT.Value.Month == thang)
                             {
@@ -110,7 +111,7 @@ namespace TrangChu
 
                 if (listReportData.Count == 0)
                 {
-                    MessageBox.Show($"⚠️ Không có hóa đơn nào trong tháng {thang}/{nam}!", "Thông báo");
+                    MessageBox.Show($"⚠️ Không có hóa đơn nào trong tháng {thang}/{(allYears ? "Tất cả" : nam.ToString())}!", "Thông báo");
                 }
             }
             catch (Exception ex)
@@ -286,6 +287,16 @@ namespace TrangChu
             LoadDataAndRefreshReport();
             ApplySearchFilter();
 
+        }
+
+        private void thToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            ThongKeDoanhThu frmDichVu = new ThongKeDoanhThu();
+            frmDichVu.ShowDialog();
+
+            this.Show();
         }
     }
 }

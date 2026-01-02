@@ -1,16 +1,20 @@
-﻿using System;
+﻿using BUS;
+using DAL;
+using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using BUS; // Gọi BUS của bạn
-using DAL; // Gọi Entity Framework Models
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace TrangChu
 {
     public partial class ThongKeDoanhThu : Form
     {
-        private LichDatBUS busLichDat = new LichDatBUS();
-        private HoaDonBUS busHoaDon = new HoaDonBUS(); // Cần thêm hàm lấy tất cả chi tiết dịch vụ
+        private HoaDonBUS busHoaDon = new HoaDonBUS();
+
+        // Biến toàn cục lưu danh sách hóa đơn để không phải query DB nhiều lần
+        private List<dynamic> rawDataHoaDon;
 
         public ThongKeDoanhThu()
         {
@@ -20,16 +24,19 @@ namespace TrangChu
 
         private void LoadCombobox()
         {
-            // Load Năm (5 năm gần nhất)
+            // 1. Load Năm
             int currentYear = DateTime.Now.Year;
-            for (int i = currentYear; i >= currentYear - 5; i--)
+            cbNam.Items.Clear();
+            cbNam.Items.Add("Tất cả");
+            for (int i = currentYear; i >= currentYear - 4; i--) // Lấy 5 năm gần nhất
             {
                 cbNam.Items.Add(i);
             }
-            cbNam.SelectedIndex = 0; // Chọn năm hiện tại
+            cbNam.SelectedIndex = 1; // Chọn năm hiện tại
 
-            // Load Tháng
-            cbThang.Items.Add("Tất cả"); // Index 0
+            // 2. Load Tháng
+            cbThang.Items.Clear();
+            cbThang.Items.Add("Tất cả");
             for (int i = 1; i <= 12; i++)
             {
                 cbThang.Items.Add("Tháng " + i);
@@ -39,75 +46,146 @@ namespace TrangChu
 
         private void btnThongKe_Click(object sender, EventArgs e)
         {
-            int nam = (int)cbNam.SelectedItem;
-            int thang = cbThang.SelectedIndex; // 0 là Tất cả, 1-12 là tháng
+            try
+            {
+                if (cbNam.SelectedItem == null) return;
 
-            // 1. LẤY DỮ LIỆU TỪ BUS
-            var listLich = busLichDat.GetAll();
-            // var listHoaDonChiTiet = busHoaDon.GetAllChiTiet(); // Bạn cần viết hàm này trong BUS
+                // 1. Lấy tham số lọc
+                string selectedYear = cbNam.SelectedItem.ToString();
+                int nam = (selectedYear == "Tất cả") ? 0 : int.Parse(selectedYear);
+                int thang = cbThang.SelectedIndex; // 0 = Tất cả
 
-            // Giả lập dữ liệu nếu chưa có hàm BUS (Để test giao diện)
-            // Bạn hãy thay thế đoạn này bằng logic gọi DB thực tế
-            decimal tongTienSan = CalculateTongTienSan(listLich, nam, thang);
-            decimal tongTienDV = CalculateTongTienDichVu(nam, thang);
+                // 2. Tải dữ liệu thô một lần duy nhất
+                rawDataHoaDon = busHoaDon.GetHoaDonWithCustomerInfo();
 
-            // 2. HIỂN THỊ LÊN LABELS
-            lblTongSan.Text = tongTienSan.ToString("N0") + " VNĐ";
-            lblTongDichVu.Text = tongTienDV.ToString("N0") + " VNĐ";
-            lblTongCong.Text = (tongTienSan + tongTienDV).ToString("N0") + " VNĐ";
+                // 3. Xử lý hiển thị theo kịch bản
+                chartDoanhThu.Series["Doanh Thu Sân"].Points.Clear();
+                chartDoanhThu.Series["Doanh Thu Dịch Vụ"].Points.Clear();
 
-            // 3. VẼ BIỂU ĐỒ
-            DrawChart(tongTienSan, tongTienDV);
+                decimal grandTotalSan = 0;
+                decimal grandTotalDV = 0;
+
+                // === TRƯỜNG HỢP 1: TẤT CẢ NĂM (Vẽ biểu đồ theo cột NĂM) ===
+                if (nam == 0)
+                {
+                    // Lấy danh sách các năm có trong dữ liệu hoặc 5 năm gần nhất
+                    int currentYear = DateTime.Now.Year;
+                    for (int y = currentYear - 4; y <= currentYear; y++)
+                    {
+                        var result = CalculateRevenue(y, 0); // Tính tổng năm y, tất cả tháng
+                        AddChartPoint(y.ToString(), result.TienSan, result.TienDV);
+
+                        grandTotalSan += result.TienSan;
+                        grandTotalDV += result.TienDV;
+                    }
+                }
+                // === TRƯỜNG HỢP 2: 1 NĂM CỤ THỂ + TẤT CẢ THÁNG (Vẽ biểu đồ theo cột THÁNG) ===
+                else if (thang == 0)
+                {
+                    for (int m = 1; m <= 12; m++)
+                    {
+                        var result = CalculateRevenue(nam, m); // Tính tổng năm nam, tháng m
+                        AddChartPoint("T" + m, result.TienSan, result.TienDV);
+
+                        grandTotalSan += result.TienSan;
+                        grandTotalDV += result.TienDV;
+                    }
+                }
+                // === TRƯỜNG HỢP 3: 1 NĂM + 1 THÁNG CỤ THỂ (Vẽ 1 cột duy nhất) ===
+                else
+                {
+                    var result = CalculateRevenue(nam, thang);
+                    AddChartPoint($"T{thang}/{nam}", result.TienSan, result.TienDV);
+
+                    grandTotalSan = result.TienSan;
+                    grandTotalDV = result.TienDV;
+                }
+
+                // 4. Hiển thị tổng số liệu lên Label
+                decimal grandTotal = grandTotalSan + grandTotalDV;
+                lblTongSan.Text = grandTotalSan.ToString("N0") + " VNĐ";
+                lblTongDichVu.Text = grandTotalDV.ToString("N0") + " VNĐ";
+                lblTongCong.Text = grandTotal.ToString("N0") + " VNĐ";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tính toán: " + ex.Message);
+            }
         }
 
-        // Hàm tính tiền Sân
-        private decimal CalculateTongTienSan(System.Collections.Generic.List<DAL.LichDat> list, int nam, int thang)
+        // --- HÀM TÍNH TOÁN DOANH THU CHO 1 KHOẢNG THỜI GIAN ---
+        // Trả về: (Tiền Sân, Tiền Dịch Vụ)
+        private (decimal TienSan, decimal TienDV) CalculateRevenue(int year, int month)
         {
-            var query = list.Where(x => x.NgayDat.HasValue &&
-                                        x.NgayDat.Value.Year == nam &&
-                                        x.TrangThai == "Đã thanh toán"); // Chỉ tính đã thanh toán
+            decimal tongHD = 0;
 
-            if (thang > 0) // Nếu chọn tháng cụ thể
+            // 1. Tính Tổng Hóa Đơn từ list rawData (đã load từ DB)
+            if (rawDataHoaDon != null)
             {
-                query = query.Where(x => x.NgayDat.Value.Month == thang);
+                foreach (var item in rawDataHoaDon)
+                {
+                    DateTime? ngayTT = GetDateValue(item, "ThoiGianThanhToan");
+                    if (ngayTT.HasValue)
+                    {
+                        // Kiểm tra Năm
+                        if (year != 0 && ngayTT.Value.Year != year) continue;
+                        // Kiểm tra Tháng
+                        if (month != 0 && ngayTT.Value.Month != month) continue;
+
+                        tongHD += GetDecimalValue(item, "TongTien");
+                    }
+                }
             }
 
-            return query.Sum(x => x.DonGiaThucTe ?? 0);
+            // 2. Tính Tiền Dịch Vụ (Gọi BUS để query chính xác từ bảng chi tiết)
+            decimal tienDV = busHoaDon.GetTongDoanhThuDichVu(year, month);
+
+            // 3. Tính Tiền Sân = Tổng Hóa Đơn - Tiền Dịch Vụ
+            decimal tienSan = tongHD - tienDV;
+            if (tienSan < 0) tienSan = 0;
+
+            return (tienSan, tienDV);
         }
 
-        // Hàm tính tiền Dịch vụ (Cần logic lấy từ DB thật)
-        private decimal CalculateTongTienDichVu(int nam, int thang)
+        // --- HÀM VẼ ĐIỂM LÊN BIỂU ĐỒ ---
+        private void AddChartPoint(string label, decimal san, decimal dichVu)
         {
-            // TODO: Viết hàm trong BUS để lấy danh sách CT_HoaDon_DichVu
-            // Sau đó Filter theo ngày tháng của Hóa Đơn cha
+            // --- CỘT DOANH THU SÂN ---
+            // Sử dụng AddXY: Tham số 1 là Nhãn (Trục X), Tham số 2 là Giá trị (Trục Y)
+            // Hàm này trả về vị trí (index) của điểm vừa thêm
+            int p1 = chartDoanhThu.Series["Doanh Thu Sân"].Points.AddXY(label, Convert.ToDouble(san));
 
-            // Code mẫu giả định:
-            /*
-            var listHD = busHoaDon.GetAll(); // Lấy list hóa đơn
-            var query = listHD.Where(x => x.ThoiGianThanhToan.Value.Year == nam);
-            if (thang > 0) query = query.Where(x => x.ThoiGianThanhToan.Value.Month == thang);
-            
-            // Tính tổng tiền dịch vụ (Giả sử TongTien trong HoaDon là bao gồm cả Sân + DV)
-            // Thì bạn phải trừ đi tiền sân, hoặc query vào bảng chi tiết.
-            */
+            // Thiết lập hiển thị số tiền trên đầu cột
+            if (san > 0)
+            {
+                chartDoanhThu.Series["Doanh Thu Sân"].Points[p1].Label = string.Format("{0:N0}", san);
+                chartDoanhThu.Series["Doanh Thu Sân"].Points[p1].LabelForeColor = System.Drawing.Color.Black; // Màu chữ
+            }
 
-            return 0; // Tạm thời trả về 0 để không lỗi
+            // --- CỘT DOANH THU DỊCH VỤ ---
+            int p2 = chartDoanhThu.Series["Doanh Thu Dịch Vụ"].Points.AddXY(label, Convert.ToDouble(dichVu));
+
+            // Thiết lập hiển thị số tiền trên đầu cột
+            if (dichVu > 0)
+            {
+                chartDoanhThu.Series["Doanh Thu Dịch Vụ"].Points[p2].Label = string.Format("{0:N0}", dichVu);
+                chartDoanhThu.Series["Doanh Thu Dịch Vụ"].Points[p2].LabelForeColor = System.Drawing.Color.Red; // Màu chữ
+            }
         }
 
-        private void DrawChart(decimal san, decimal dichVu)
+        // --- REFLECTION HELPERS ---
+        private decimal GetDecimalValue(object obj, string propName)
         {
-            // Xóa dữ liệu cũ
-            chartDoanhThu.Series["Doanh Thu Sân"].Points.Clear();
-            chartDoanhThu.Series["Doanh Thu Dịch Vụ"].Points.Clear();
+            if (obj == null) return 0;
+            var val = obj.GetType().GetProperty(propName)?.GetValue(obj, null);
+            return Convert.ToDecimal(val ?? 0);
+        }
 
-            // Thêm điểm dữ liệu mới
-            // Cột Sân
-            var p1 = chartDoanhThu.Series["Doanh Thu Sân"].Points.Add(Convert.ToDouble(san));
-            chartDoanhThu.Series["Doanh Thu Sân"].Points[0].AxisLabel = "Sân Bóng";
-
-            // Cột Dịch Vụ
-            var p2 = chartDoanhThu.Series["Doanh Thu Dịch Vụ"].Points.Add(Convert.ToDouble(dichVu));
-            chartDoanhThu.Series["Doanh Thu Dịch Vụ"].Points[0].AxisLabel = "Dịch Vụ";
+        private DateTime? GetDateValue(object obj, string propName)
+        {
+            if (obj == null) return null;
+            var val = obj.GetType().GetProperty(propName)?.GetValue(obj, null);
+            return (DateTime?)val;
         }
     }
 }

@@ -121,7 +121,20 @@ namespace TrangChu
             this.Show();
         }
 
-        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+   
+
+
+        private void chatToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            // Convert string Role to UserRole enum before passing
+            UserRole userRole = (UserRole)Enum.Parse(typeof(UserRole), currentUser.Role, true);
+            chat frm = new chat(userRole);
+            frm.ShowDialog();
+            this.Show();
+        }
+
+        private void hDSDToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Hide();
             HDSD frm = new HDSD();

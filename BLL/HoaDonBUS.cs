@@ -196,6 +196,38 @@ namespace BUS
             db?.Dispose();
         }
 
+        public decimal GetTongDoanhThuDichVu(int nam, int thang)
+        {
+            try
+            {
+                var query = from ct in db.CT_HoaDon_DichVu
+                            join hd in db.HoaDons on ct.MaHD equals hd.MaHD
+                            where hd.ThoiGianThanhToan.HasValue
+                            select new { ct.ThanhTien, hd.ThoiGianThanhToan };
+
+                // ✅ SỬA LẠI ĐOẠN NÀY: Chỉ lọc năm nếu nam > 0
+                if (nam > 0)
+                {
+                    query = query.Where(x => x.ThoiGianThanhToan.Value.Year == nam);
+                }
+
+                // Lọc tháng nếu có chọn tháng
+                if (thang > 0)
+                {
+                    query = query.Where(x => x.ThoiGianThanhToan.Value.Month == thang);
+                }
+
+                decimal? total = query.Sum(x => x.ThanhTien);
+                return total ?? 0;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+
+
         // ===== LẤY DANH SÁCH HÓA ĐƠN VỚI THÔNG TIN KHÁCH HÀNG VÀ LỊCH ĐẶT =====
         public List<dynamic> GetHoaDonWithCustomerInfo()
         {
