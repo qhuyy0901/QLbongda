@@ -43,7 +43,7 @@
             this.panelFilter.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelFilter.Location = new System.Drawing.Point(0, 0);
             this.panelFilter.Name = "panelFilter";
-            this.panelFilter.Size = new System.Drawing.Size(984, 80);
+            this.panelFilter.Size = new System.Drawing.Size(1000, 80);
             this.panelFilter.TabIndex = 0;
             // 
             // groupBoxFilter
@@ -58,7 +58,7 @@
             this.groupBoxFilter.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.groupBoxFilter.Location = new System.Drawing.Point(0, 0);
             this.groupBoxFilter.Name = "groupBoxFilter";
-            this.groupBoxFilter.Size = new System.Drawing.Size(984, 80);
+            this.groupBoxFilter.Size = new System.Drawing.Size(1000, 80);
             this.groupBoxFilter.TabIndex = 0;
             this.groupBoxFilter.TabStop = false;
             this.groupBoxFilter.Text = "BỘ LỌC THỐNG KÊ";
@@ -69,7 +69,7 @@
             this.btnTaiLai.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnTaiLai.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTaiLai.ForeColor = System.Drawing.Color.White;
-            this.btnTaiLai.Location = new System.Drawing.Point(540, 28);
+            this.btnTaiLai.Location = new System.Drawing.Point(550, 28);
             this.btnTaiLai.Name = "btnTaiLai";
             this.btnTaiLai.Size = new System.Drawing.Size(100, 32);
             this.btnTaiLai.TabIndex = 5;
@@ -83,7 +83,7 @@
             this.btnLoc.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLoc.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLoc.ForeColor = System.Drawing.Color.White;
-            this.btnLoc.Location = new System.Drawing.Point(420, 28);
+            this.btnLoc.Location = new System.Drawing.Point(430, 28);
             this.btnLoc.Name = "btnLoc";
             this.btnLoc.Size = new System.Drawing.Size(100, 32);
             this.btnLoc.TabIndex = 4;
@@ -96,7 +96,7 @@
             this.cboThang.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboThang.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cboThang.FormattingEnabled = true;
-            this.cboThang.Location = new System.Drawing.Point(260, 32);
+            this.cboThang.Location = new System.Drawing.Point(270, 32);
             this.cboThang.Name = "cboThang";
             this.cboThang.Size = new System.Drawing.Size(120, 25);
             this.cboThang.TabIndex = 3;
@@ -105,7 +105,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label2.Location = new System.Drawing.Point(200, 35);
+            this.label2.Location = new System.Drawing.Point(210, 35);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(50, 19);
             this.label2.TabIndex = 2;
@@ -116,7 +116,7 @@
             this.cboNam.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboNam.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.cboNam.FormattingEnabled = true;
-            this.cboNam.Location = new System.Drawing.Point(70, 32);
+            this.cboNam.Location = new System.Drawing.Point(80, 32);
             this.cboNam.Name = "cboNam";
             this.cboNam.Size = new System.Drawing.Size(100, 25);
             this.cboNam.TabIndex = 1;
@@ -125,7 +125,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label1.Location = new System.Drawing.Point(20, 35);
+            this.label1.Location = new System.Drawing.Point(30, 35);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(44, 19);
             this.label1.TabIndex = 0;
@@ -143,22 +143,22 @@
             this.panelFooter.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panelFooter.Location = new System.Drawing.Point(0, 501);
             this.panelFooter.Name = "panelFooter";
-            this.panelFooter.Size = new System.Drawing.Size(984, 60);
+            this.panelFooter.Size = new System.Drawing.Size(1000, 60);
             this.panelFooter.TabIndex = 1;
             // 
             // btnTroVe
             // 
             this.btnTroVe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTroVe.BackColor = System.Drawing.Color.Gray;
+            this.btnTroVe.BackColor = System.Drawing.Color.DimGray;
             this.btnTroVe.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnTroVe.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTroVe.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnTroVe.ForeColor = System.Drawing.Color.White;
-            this.btnTroVe.Location = new System.Drawing.Point(892, 13);
+            this.btnTroVe.Location = new System.Drawing.Point(880, 13);
             this.btnTroVe.Name = "btnTroVe";
-            this.btnTroVe.Size = new System.Drawing.Size(80, 35);
+            this.btnTroVe.Size = new System.Drawing.Size(100, 35);
             this.btnTroVe.TabIndex = 5;
-            this.btnTroVe.Text = "🔙 Trở về";
+            this.btnTroVe.Text = "🔙 Thoát";
             this.btnTroVe.UseVisualStyleBackColor = false;
             this.btnTroVe.Click += new System.EventHandler(this.btnTroVe_Click);
             // 
@@ -170,11 +170,11 @@
             this.btnXemChiTiet.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXemChiTiet.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnXemChiTiet.ForeColor = System.Drawing.Color.White;
-            this.btnXemChiTiet.Location = new System.Drawing.Point(776, 13);
+            this.btnXemChiTiet.Location = new System.Drawing.Point(760, 13);
             this.btnXemChiTiet.Name = "btnXemChiTiet";
-            this.btnXemChiTiet.Size = new System.Drawing.Size(110, 35);
+            this.btnXemChiTiet.Size = new System.Drawing.Size(120, 35);
             this.btnXemChiTiet.TabIndex = 4;
-            this.btnXemChiTiet.Text = "🔍 Xem Chi Tiết";
+            this.btnXemChiTiet.Text = "🔍 Xem CT";
             this.btnXemChiTiet.UseVisualStyleBackColor = false;
             this.btnXemChiTiet.Click += new System.EventHandler(this.btnXemChiTiet_Click);
             // 
@@ -185,7 +185,7 @@
             this.btnXuatExcel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXuatExcel.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnXuatExcel.ForeColor = System.Drawing.Color.White;
-            this.btnXuatExcel.Location = new System.Drawing.Point(540, 13);
+            this.btnXuatExcel.Location = new System.Drawing.Point(550, 13);
             this.btnXuatExcel.Name = "btnXuatExcel";
             this.btnXuatExcel.Size = new System.Drawing.Size(100, 35);
             this.btnXuatExcel.TabIndex = 3;
@@ -200,7 +200,7 @@
             this.btnXuatPDF.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnXuatPDF.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
             this.btnXuatPDF.ForeColor = System.Drawing.Color.White;
-            this.btnXuatPDF.Location = new System.Drawing.Point(430, 13);
+            this.btnXuatPDF.Location = new System.Drawing.Point(440, 13);
             this.btnXuatPDF.Name = "btnXuatPDF";
             this.btnXuatPDF.Size = new System.Drawing.Size(100, 35);
             this.btnXuatPDF.TabIndex = 2;
@@ -235,7 +235,7 @@
             this.panelReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelReport.Location = new System.Drawing.Point(0, 80);
             this.panelReport.Name = "panelReport";
-            this.panelReport.Size = new System.Drawing.Size(984, 421);
+            this.panelReport.Size = new System.Drawing.Size(1000, 421);
             this.panelReport.TabIndex = 2;
             // 
             // reportViewer1
@@ -244,14 +244,14 @@
             this.reportViewer1.Location = new System.Drawing.Point(0, 0);
             this.reportViewer1.Name = "reportViewer1";
             this.reportViewer1.ServerReport.BearerToken = null;
-            this.reportViewer1.Size = new System.Drawing.Size(984, 421);
+            this.reportViewer1.Size = new System.Drawing.Size(1000, 421);
             this.reportViewer1.TabIndex = 0;
             // 
             // TKe_HoaDon
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 561);
+            this.ClientSize = new System.Drawing.Size(1000, 561);
             this.Controls.Add(this.panelReport);
             this.Controls.Add(this.panelFooter);
             this.Controls.Add(this.panelFilter);

@@ -12,7 +12,7 @@ namespace TrangChu
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(new TKe_HoaDon());  
+            Application.Run(new DichVu());  
         }
     }
 }

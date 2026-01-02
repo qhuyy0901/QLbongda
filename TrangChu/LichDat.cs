@@ -33,7 +33,10 @@ namespace TrangChu
         {
             try
             {
-                InitializeSearchTimer(); // ✅ Khởi tạo Timer tìm kiếm
+                // Quan trọng: dùng cột designer, không tự sinh
+                dgvDatSan.AutoGenerateColumns = false;
+
+                InitializeSearchTimer();
 
                 dgvDatSan.CellClick += dgvDatSan_CellClick;
                 dgvDatSan.CellContentClick += dgvDatSan_CellContentClick;
@@ -360,18 +363,23 @@ namespace TrangChu
 
         private void ReapplyColumnBindings()
         {
-            // Gán DataPropertyName để DataGridView biết cột nào hiển thị dữ liệu nào
-            dgvDatSan.Columns["clMaLich"].DataPropertyName = "MaLich";
-            dgvDatSan.Columns["clMaSan"].DataPropertyName = "MaSan";
-            dgvDatSan.Columns["clSDT_KH"].DataPropertyName = "SDT_KH";
-            dgvDatSan.Columns["clTenKH"].DataPropertyName = "TenKH";
-            dgvDatSan.Columns["clNgayDat"].DataPropertyName = "NgayDat";
-            dgvDatSan.Columns["clGioBatDau"].DataPropertyName = "GioBD";
-            dgvDatSan.Columns["clGioKetThuc"].DataPropertyName = "GioKT";
-            dgvDatSan.Columns["clTrangThai"].DataPropertyName = "TrangThai";
-            dgvDatSan.Columns["clDonGiaThucTe"].DataPropertyName = "DonGiaThucTe";
-        }
+            void Bind(string colName, string propName)
+            {
+                var col = dgvDatSan.Columns[colName];
+                if (col != null)
+                    col.DataPropertyName = propName;
+            }
 
+            Bind("clMaLich", "MaLich");
+            Bind("clMaSan", "MaSan");
+            Bind("clSDT_KH", "SDT_KH");
+            Bind("clTenKH", "TenKH");
+            Bind("clNgayDat", "NgayDat");
+            Bind("clGioBatDau", "GioBD");
+            Bind("clGioKetThuc", "GioKT");
+            Bind("clTrangThai", "TrangThai");
+            Bind("clDonGiaThucTe", "DonGiaThucTe");
+        }
         private bool IsValidPhoneNumber(string phoneNumber)
         {
             if (string.IsNullOrWhiteSpace(phoneNumber))
@@ -523,7 +531,22 @@ namespace TrangChu
                 MessageBox.Show("Vui lòng chọn lịch để hủy!");
                 return;
             }
+
+            var trangThai = dgvDatSan.CurrentRow.Cells["clTrangThai"].Value?.ToString().Trim() ?? "";
+            if (trangThai.Equals("Đã thanh toán", StringComparison.OrdinalIgnoreCase) ||
+                trangThai.Equals("Đã hoàn thành", StringComparison.OrdinalIgnoreCase) ||
+                trangThai.Equals("Hoàn thành", StringComparison.OrdinalIgnoreCase))
+            {
+                MessageBox.Show("⛔ Lịch đã thanh toán/hoàn thành, không được phép hủy!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             string maLich = dgvDatSan.CurrentRow.Cells["clMaLich"].Value?.ToString();
+            if (string.IsNullOrWhiteSpace(maLich))
+            {
+                MessageBox.Show("Không xác định được mã lịch!");
+                return;
+            }
 
             if (MessageBox.Show($"Bạn có chắc muốn hủy lịch [{maLich}]?", "Xác nhận", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {

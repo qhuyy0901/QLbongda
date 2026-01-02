@@ -133,6 +133,7 @@ namespace TrangChu
             {
                 cbxLichDat.SelectedIndexChanged += CbxLichDat_SelectedIndexChanged;
                 dgvDichVu.CellClick += dgvDichVu_CellClick;
+                txtTimKiemDVu.TextChanged += TxtTimKiemDVu_TextChanged; // 🔍 real-time search
             }
             catch (Exception ex)
             {
@@ -788,6 +789,33 @@ namespace TrangChu
             {
                 MessageBox.Show("❌ Lỗi thiết lập sự kiện:\n" + ex.Message);
             }
+        }
+
+        private void TxtTimKiemDVu_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                ApplyDichVuFilter(txtTimKiemDVu.Text.Trim());
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("Lỗi tìm kiếm DV: " + ex.Message);
+            }
+        }
+
+        private void ApplyDichVuFilter(string keyword)
+        {
+            if (dtDichVu == null) return;
+
+            if (string.IsNullOrWhiteSpace(keyword))
+            {
+                dtDichVu.DefaultView.RowFilter = string.Empty;
+                return;
+            }
+
+            // Escape single quotes for RowFilter
+            string safe = keyword.Replace("'", "''");
+            dtDichVu.DefaultView.RowFilter = $"MaDV LIKE '%{safe}%' OR TenDV LIKE '%{safe}%'";
         }
     }
 }

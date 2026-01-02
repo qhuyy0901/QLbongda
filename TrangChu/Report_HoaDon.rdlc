@@ -2,73 +2,66 @@
 <Report xmlns="http://schemas.microsoft.com/sqlserver/reporting/2008/01/reportdefinition" xmlns:rd="http://schemas.microsoft.com/SQLServer/reporting/reportdesigner">
   <Body>
     <ReportItems>
-      <Textbox Name="ReportTitle">
-        <CanGrow>false</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>DANH SÁCH HÓA ĐƠN</Value>
-                <Style>
-                  <FontSize>16pt</FontSize>
-                  <FontWeight>Bold</FontWeight>
-                  <Color>#000000</Color>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style>
-              <TextAlign>Center</TextAlign>
-            </Style>
-          </Paragraph>
-        </Paragraphs>
-        <Top>0.5in</Top>
-        <Height>0.5in</Height>
-        <Width>6in</Width>
-      </Textbox>
       <Tablix Name="Tablix1">
         <TablixBody>
           <TablixColumns>
-            <TablixColumn><Width>1.2in</Width></TablixColumn>
-            <TablixColumn><Width>1.2in</Width></TablixColumn>
-            <TablixColumn><Width>1in</Width></TablixColumn>
-            <TablixColumn><Width>1.2in</Width></TablixColumn>
-            <TablixColumn><Width>1.2in</Width></TablixColumn>
+            <TablixColumn>
+              <Width>1.92917in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.92917in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.92917in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.92917in</Width>
+            </TablixColumn>
+            <TablixColumn>
+              <Width>1.92917in</Width>
+            </TablixColumn>
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>0.3in</Height>
+              <Height>0.59375in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="Textbox2">
                       <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Mã HĐ</Value>
+                              <Value>Ma HD</Value>
                               <Style>
                                 <FontSize>11pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
-                                <Color>White</Color>
+                                <Color>#666666</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox2</rd:DefaultName>
                       <Style>
-                        <BackgroundColor>#4472C4</BackgroundColor>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <BottomBorder>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </BottomBorder>
+                        <BackgroundColor>White</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>4pt</PaddingTop>
-                        <PaddingBottom>4pt</PaddingBottom>
-                        <Border>
-                          <Style>Solid</Style>
-                          <Color>Black</Color>
-                          <Width>1pt</Width>
-                        </Border>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
                   </CellContents>
@@ -77,32 +70,80 @@
                   <CellContents>
                     <Textbox Name="Textbox3">
                       <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Mã Lịch</Value>
+                              <Value>Ma Lich</Value>
                               <Style>
                                 <FontSize>11pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
-                                <Color>White</Color>
+                                <Color>#666666</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox3</rd:DefaultName>
                       <Style>
-                        <BackgroundColor>#4472C4</BackgroundColor>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <BottomBorder>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </BottomBorder>
+                        <BackgroundColor>White</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>4pt</PaddingTop>
-                        <PaddingBottom>4pt</PaddingBottom>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
+                      </Style>
+                    </Textbox>
+                  </CellContents>
+                </TablixCell>
+                <TablixCell>
+                  <CellContents>
+                    <Textbox Name="Textbox5">
+                      <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
+                      <Paragraphs>
+                        <Paragraph>
+                          <TextRuns>
+                            <TextRun>
+                              <Value>Hinh Thuc TT</Value>
+                              <Style>
+                                <FontSize>11pt</FontSize>
+                                <FontWeight>Bold</FontWeight>
+                                <Color>#666666</Color>
+                              </Style>
+                            </TextRun>
+                          </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
+                        </Paragraph>
+                      </Paragraphs>
+                      <rd:DefaultName>Textbox5</rd:DefaultName>
+                      <Style>
                         <Border>
-                          <Style>Solid</Style>
-                          <Color>Black</Color>
-                          <Width>1pt</Width>
+                          <Style>None</Style>
                         </Border>
+                        <BottomBorder>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </BottomBorder>
+                        <BackgroundColor>White</BackgroundColor>
+                        <PaddingLeft>2pt</PaddingLeft>
+                        <PaddingRight>2pt</PaddingRight>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
                   </CellContents>
@@ -111,32 +152,39 @@
                   <CellContents>
                     <Textbox Name="Textbox7">
                       <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Hình Thức TT</Value>
+                              <Value>Thoi Gian Thanh Toan</Value>
                               <Style>
                                 <FontSize>11pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
-                                <Color>White</Color>
+                                <Color>#666666</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox7</rd:DefaultName>
                       <Style>
-                        <BackgroundColor>#4472C4</BackgroundColor>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <BottomBorder>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </BottomBorder>
+                        <BackgroundColor>White</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>4pt</PaddingTop>
-                        <PaddingBottom>4pt</PaddingBottom>
-                        <Border>
-                          <Style>Solid</Style>
-                          <Color>Black</Color>
-                          <Width>1pt</Width>
-                        </Border>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
                   </CellContents>
@@ -145,66 +193,39 @@
                   <CellContents>
                     <Textbox Name="Textbox9">
                       <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Thời Gian TT</Value>
+                              <Value>Tong Tien</Value>
                               <Style>
                                 <FontSize>11pt</FontSize>
                                 <FontWeight>Bold</FontWeight>
-                                <Color>White</Color>
+                                <Color>#666666</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox9</rd:DefaultName>
                       <Style>
-                        <BackgroundColor>#4472C4</BackgroundColor>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
+                        <BottomBorder>
+                          <Color>LightGrey</Color>
+                          <Style>Solid</Style>
+                          <Width>1pt</Width>
+                        </BottomBorder>
+                        <BackgroundColor>White</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>4pt</PaddingTop>
-                        <PaddingBottom>4pt</PaddingBottom>
-                        <Border>
-                          <Style>Solid</Style>
-                          <Color>Black</Color>
-                          <Width>1pt</Width>
-                        </Border>
-                      </Style>
-                    </Textbox>
-                  </CellContents>
-                </TablixCell>
-                <TablixCell>
-                  <CellContents>
-                    <Textbox Name="Textbox11">
-                      <CanGrow>true</CanGrow>
-                      <Paragraphs>
-                        <Paragraph>
-                          <TextRuns>
-                            <TextRun>
-                              <Value>Tổng Tiền</Value>
-                              <Style>
-                                <FontSize>11pt</FontSize>
-                                <FontWeight>Bold</FontWeight>
-                                <Color>White</Color>
-                              </Style>
-                            </TextRun>
-                          </TextRuns>
-                        </Paragraph>
-                      </Paragraphs>
-                      <rd:DefaultName>Textbox11</rd:DefaultName>
-                      <Style>
-                        <BackgroundColor>#4472C4</BackgroundColor>
-                        <PaddingLeft>2pt</PaddingLeft>
-                        <PaddingRight>2pt</PaddingRight>
-                        <PaddingTop>4pt</PaddingTop>
-                        <PaddingBottom>4pt</PaddingBottom>
-                        <Border>
-                          <Style>Solid</Style>
-                          <Color>Black</Color>
-                          <Width>1pt</Width>
-                        </Border>
+                        <PaddingTop>2pt</PaddingTop>
+                        <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
                   </CellContents>
@@ -212,12 +233,13 @@
               </TablixCells>
             </TablixRow>
             <TablixRow>
-              <Height>0.25in</Height>
+              <Height>0.59375in</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
                     <Textbox Name="MaHD">
                       <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
@@ -229,20 +251,21 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>MaHD</rd:DefaultName>
                       <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
                         <BackgroundColor>White</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
-                        <Border>
-                          <Style>Solid</Style>
-                          <Color>LightGrey</Color>
-                          <Width>1pt</Width>
-                        </Border>
                       </Style>
                     </Textbox>
                   </CellContents>
@@ -251,6 +274,7 @@
                   <CellContents>
                     <Textbox Name="MaLich">
                       <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
@@ -262,20 +286,21 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>MaLich</rd:DefaultName>
                       <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
                         <BackgroundColor>White</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
-                        <Border>
-                          <Style>Solid</Style>
-                          <Color>LightGrey</Color>
-                          <Width>1pt</Width>
-                        </Border>
                       </Style>
                     </Textbox>
                   </CellContents>
@@ -284,6 +309,7 @@
                   <CellContents>
                     <Textbox Name="HinhThucTT">
                       <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
@@ -295,20 +321,21 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>HinhThucTT</rd:DefaultName>
                       <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
                         <BackgroundColor>White</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
-                        <Border>
-                          <Style>Solid</Style>
-                          <Color>LightGrey</Color>
-                          <Width>1pt</Width>
-                        </Border>
                       </Style>
                     </Textbox>
                   </CellContents>
@@ -317,31 +344,33 @@
                   <CellContents>
                     <Textbox Name="ThoiGianThanhToan">
                       <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!ThoiGianThanhToan.Value:dd/MM/yyyy HH:mm</Value>
+                              <Value>=Fields!ThoiGianThanhToan.Value</Value>
                               <Style>
                                 <FontWeight>Normal</FontWeight>
                                 <Color>#333333</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>ThoiGianThanhToan</rd:DefaultName>
                       <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
                         <BackgroundColor>White</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
-                        <Border>
-                          <Style>Solid</Style>
-                          <Color>LightGrey</Color>
-                          <Width>1pt</Width>
-                        </Border>
                       </Style>
                     </Textbox>
                   </CellContents>
@@ -350,31 +379,33 @@
                   <CellContents>
                     <Textbox Name="TongTien">
                       <CanGrow>true</CanGrow>
+                      <KeepTogether>true</KeepTogether>
                       <Paragraphs>
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!TongTien.Value:N0</Value>
+                              <Value>=Fields!TongTien.Value</Value>
                               <Style>
                                 <FontWeight>Normal</FontWeight>
                                 <Color>#333333</Color>
                               </Style>
                             </TextRun>
                           </TextRuns>
+                          <Style>
+                            <TextAlign>Center</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>TongTien</rd:DefaultName>
                       <Style>
+                        <Border>
+                          <Style>None</Style>
+                        </Border>
                         <BackgroundColor>White</BackgroundColor>
                         <PaddingLeft>2pt</PaddingLeft>
                         <PaddingRight>2pt</PaddingRight>
                         <PaddingTop>2pt</PaddingTop>
                         <PaddingBottom>2pt</PaddingBottom>
-                        <Border>
-                          <Style>Solid</Style>
-                          <Color>LightGrey</Color>
-                          <Width>1pt</Width>
-                        </Border>
                       </Style>
                     </Textbox>
                   </CellContents>
@@ -403,47 +434,57 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSet1</DataSetName>
-        <Top>1.2in</Top>
-        <Height>0.5in</Height>
-        <Width>5.8in</Width>
+        <Height>1.1875in</Height>
+        <Width>9.64583in</Width>
+        <Style>
+          <Border>
+            <Style>None</Style>
+          </Border>
+        </Style>
       </Tablix>
     </ReportItems>
-    <Height>8in</Height>
+    <Height>2in</Height>
+    <Style />
   </Body>
-  <Width>6in</Width>
+  <Width>9.64583in</Width>
   <Page>
-    <LeftMargin>0.5in</LeftMargin>
-    <RightMargin>0.5in</RightMargin>
-    <TopMargin>0.5in</TopMargin>
-    <BottomMargin>0.5in</BottomMargin>
+    <LeftMargin>1in</LeftMargin>
+    <RightMargin>1in</RightMargin>
+    <TopMargin>1in</TopMargin>
+    <BottomMargin>1in</BottomMargin>
+    <Style />
   </Page>
   <AutoRefresh>0</AutoRefresh>
   <DataSources>
-    <DataSource Name="DataSet1">
+    <DataSource Name="DAL">
       <ConnectionProperties>
         <DataProvider>System.Data.DataSet</DataProvider>
         <ConnectString>/* Local Connection */</ConnectString>
       </ConnectionProperties>
-      <rd:DataSourceID>b2fc3eb3-7b3f-429f-91a8-a6bbd7c94921</rd:DataSourceID>
+      <rd:DataSourceID>fdfbbf44-ccde-4564-8d2b-0e638c87c5ef</rd:DataSourceID>
     </DataSource>
   </DataSources>
   <DataSets>
     <DataSet Name="DataSet1">
       <Query>
-        <DataSourceName>DataSet1</DataSourceName>
+        <DataSourceName>DAL</DataSourceName>
         <CommandText>/* Local Query */</CommandText>
       </Query>
       <Fields>
+        <Field Name="HinhThucTT">
+          <DataField>HinhThucTT</DataField>
+          <rd:TypeName>System.String</rd:TypeName>
+        </Field>
+        <Field Name="LichDat">
+          <DataField>LichDat</DataField>
+          <rd:TypeName>DAL.LichDat</rd:TypeName>
+        </Field>
         <Field Name="MaHD">
           <DataField>MaHD</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="MaLich">
           <DataField>MaLich</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="HinhThucTT">
-          <DataField>HinhThucTT</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="ThoiGianThanhToan">
@@ -455,8 +496,13 @@
           <rd:TypeName>System.Nullable`1[[System.Decimal, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]</rd:TypeName>
         </Field>
       </Fields>
+      <rd:DataSetInfo>
+        <rd:DataSetName>DAL</rd:DataSetName>
+        <rd:TableName>HoaDon</rd:TableName>
+        <rd:ObjectDataSourceType>DAL.HoaDon, DAL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</rd:ObjectDataSourceType>
+      </rd:DataSetInfo>
     </DataSet>
   </DataSets>
   <rd:ReportUnitType>Inch</rd:ReportUnitType>
-  <rd:ReportID>5f36d76b-996d-4276-9d8c-2f557cb55065</rd:ReportID>
+  <rd:ReportID>602e140c-f77a-4978-8e07-dd828b8ba4ed</rd:ReportID>
 </Report>
