@@ -37,13 +37,11 @@ namespace TrangChu
             {
                 if (btnDoanhThu != null) btnDoanhThu.Visible = true;
                 if (btnQuanLyTK != null) btnQuanLyTK.Visible = true;
-                if (btnHelp != null) btnHelp.Visible = false;
             }
             else // Nhân viên -> Ẩn nút quản lý
             {
                 if (btnDoanhThu != null) btnDoanhThu.Visible = false;
                 if (btnQuanLyTK != null) btnQuanLyTK.Visible = false;
-                if (btnHelp != null) btnHelp.Visible = true;
             }
         }
 
@@ -119,6 +117,14 @@ namespace TrangChu
         {
             this.Hide();
             TKe_HoaDon frm = new TKe_HoaDon();
+            frm.ShowDialog();
+            this.Show();
+        }
+
+        private void helpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            HDSD frm = new HDSD();
             frm.ShowDialog();
             this.Show();
         }

@@ -507,7 +507,6 @@ namespace TrangChu
             txtTimKiem.Clear();
             ResetForm();
             RefreshData();
-            MessageBox.Show("Đã tải lại dữ liệu!", "Thông báo");
         }
 
         private void btnQuayLai_Click(object sender, EventArgs e)

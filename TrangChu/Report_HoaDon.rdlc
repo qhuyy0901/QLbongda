@@ -434,8 +434,9 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>DataSet1</DataSetName>
+        <Top>0.14583in</Top>
         <Height>1.1875in</Height>
-        <Width>9.64583in</Width>
+        <Width>9.64585in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -446,7 +447,7 @@
     <Height>2in</Height>
     <Style />
   </Body>
-  <Width>9.64583in</Width>
+  <Width>9.64585in</Width>
   <Page>
     <LeftMargin>1in</LeftMargin>
     <RightMargin>1in</RightMargin>

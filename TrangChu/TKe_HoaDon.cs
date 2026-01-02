@@ -182,21 +182,11 @@ namespace TrangChu
             catch { return default(T); }
         }
 
-        // ==========================================================
-        // 🟢 5. CÁC SỰ KIỆN BUTTON
-        // ==========================================================
+   
         private void btnLoc_Click(object sender, EventArgs e) => LoadDataAndRefreshReport();
-
-        private void btnTaiLai_Click(object sender, EventArgs e)
-        {
-            cboNam.SelectedIndex = 0;
-            cboThang.SelectedIndex = DateTime.Now.Month;
-            LoadDataAndRefreshReport();
-        }
 
         private void btnTroVe_Click(object sender, EventArgs e) => this.Close();
 
-        private void btnXuatPDF_Click(object sender, EventArgs e) => ExportFile("PDF");
 
         private void btnXuatExcel_Click(object sender, EventArgs e) => ExportFile("Excel");
 
@@ -237,6 +227,65 @@ namespace TrangChu
                 }
                 else MessageBox.Show("Không tìm thấy chi tiết!");
             }
+        }
+
+        private void ApplySearchFilter()
+        {
+            try
+            {
+                var keyword = txtTimKiemHoaDon.Text.Trim();
+                IEnumerable<ReportDataStruct> query = listReportData;
+
+                if (!string.IsNullOrEmpty(keyword))
+                {
+                    var kw = keyword.ToLower();
+                    query = query.Where(x =>
+                        (!string.IsNullOrEmpty(x.MaHD) && x.MaHD.ToLower().Contains(kw)) ||
+                        (!string.IsNullOrEmpty(x.MaLich) && x.MaLich.ToLower().Contains(kw)) ||
+                        (!string.IsNullOrEmpty(x.HinhThucTT) && x.HinhThucTT.ToLower().Contains(kw)));
+                }
+
+                var filtered = query.ToList();
+
+                // Cập nhật ReportViewer với dữ liệu đã lọc
+                reportViewer1.LocalReport.DataSources.Clear();
+                reportViewer1.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", filtered));
+                reportViewer1.RefreshReport();
+
+                // Cập nhật tổng doanh thu theo kết quả lọc
+                lblTongDoanhThu.Text = filtered.Sum(x => x.TongTien).ToString("N0") + " VNĐ";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tìm kiếm: " + ex.Message);
+            }
+        }
+
+        private void txtTimKiemHoaDon_TextChanged(object sender, EventArgs e)
+        {
+            ApplySearchFilter();
+        }
+
+        private void btnTaiLai_Click_1(object sender, EventArgs e)
+        {
+            if (cboNam.Items.Count > 0)
+                cboNam.SelectedIndex = 0;
+
+            if (cboThang.Items.Count > DateTime.Now.Month)
+                cboThang.SelectedIndex = DateTime.Now.Month;
+            else if (cboThang.Items.Count > 0)
+                cboThang.SelectedIndex = 0;
+            txtTimKiemHoaDon.Text = string.Empty;
+
+            LoadDataAndRefreshReport();
+        }
+
+        private void btnLoc_Click_1(object sender, EventArgs e)
+        {
+            // Lọc theo thống kê tháng năm và theo tìm kiếm
+            LoadDataAndRefreshReport();
+            ApplySearchFilter();
+
         }
     }
 }

@@ -817,5 +817,22 @@ namespace TrangChu
             string safe = keyword.Replace("'", "''");
             dtDichVu.DefaultView.RowFilter = $"MaDV LIKE '%{safe}%' OR TenDV LIKE '%{safe}%'";
         }
+
+        private void btnTaiLaiDVu_Click(object sender, EventArgs e)
+        {
+            
+            
+                LoadDichVu();
+
+                txtTimKiemDVu.Clear();
+                if (dtDichVu?.DefaultView != null)
+                    dtDichVu.DefaultView.RowFilter = string.Empty;
+
+                ResetDichVuForm();
+                dgvDichVu.ClearSelection();
+          
+            
+            
+        }
     }
 }

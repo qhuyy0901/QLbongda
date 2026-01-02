@@ -548,5 +548,34 @@ namespace TrangChu
             // ===== CHỨC NĂNG KHÓA TÀI KHOẢN (TƯƠNG TỰ XÓA NHƯNG KHÔNG XOÁ) =====
 
         }
+
+        private void btnTaiLaiTK_Click(object sender, EventArgs e)
+        {
+            // tải lại tài khoản
+            LoadDataFromDatabase();
+            ResetForm();
+
+        }
+
+        private void txtTimKiem_TextChanged(object sender, EventArgs e)
+        {
+            var keyword = txtTimKiem.Text.Trim();
+            dgvThongTinTK.Rows.Clear();
+
+            if (string.IsNullOrEmpty(keyword))
+            {
+                LoadDataFromDatabase();
+                return;
+            }
+
+            var results = busUser.Search(keyword)
+                                 .Where(u => VALID_ROLES.Contains(u.Role));
+
+            foreach (var user in results)
+            {
+                dgvThongTinTK.Rows.Add(user.ID, user.Role, user.TenNguoiDung);
+            }
+
+        }
     }
 }
