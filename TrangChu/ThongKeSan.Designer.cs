@@ -18,18 +18,15 @@
             System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Title title1 = new System.Windows.Forms.DataVisualization.Charting.Title();
-
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Title title2 = new System.Windows.Forms.DataVisualization.Charting.Title();
-
             System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
             System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Title title3 = new System.Windows.Forms.DataVisualization.Charting.Title();
-
             this.panelFilter = new System.Windows.Forms.Panel();
             this.groupBoxFilter = new System.Windows.Forms.GroupBox();
             this.btnThongKe = new System.Windows.Forms.Button();
@@ -43,7 +40,6 @@
             this.chartGioHoatDong = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartDoanhThu = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.chartTrangThai = new System.Windows.Forms.DataVisualization.Charting.Chart();
-
             this.panelFilter.SuspendLayout();
             this.groupBoxFilter.SuspendLayout();
             this.layoutCharts.SuspendLayout();
@@ -51,16 +47,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.chartDoanhThu)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTrangThai)).BeginInit();
             this.SuspendLayout();
-
+            // 
             // panelFilter
+            // 
             this.panelFilter.Controls.Add(this.groupBoxFilter);
             this.panelFilter.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelFilter.Location = new System.Drawing.Point(0, 0);
             this.panelFilter.Name = "panelFilter";
             this.panelFilter.Size = new System.Drawing.Size(1100, 80);
             this.panelFilter.TabIndex = 0;
-
+            // 
             // groupBoxFilter
+            // 
             this.groupBoxFilter.Controls.Add(this.btnThongKe);
             this.groupBoxFilter.Controls.Add(this.cbxSan);
             this.groupBoxFilter.Controls.Add(this.label3);
@@ -76,45 +74,9 @@
             this.groupBoxFilter.TabIndex = 0;
             this.groupBoxFilter.TabStop = false;
             this.groupBoxFilter.Text = "Bộ Lọc Thống Kê Sân";
-
-            // label1
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(30, 35);
-            this.label1.Name = "label1";
-            this.label1.Text = "Từ ngày:";
-
-            // dtpTuNgay
-            this.dtpTuNgay.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpTuNgay.Location = new System.Drawing.Point(100, 32);
-            this.dtpTuNgay.Name = "dtpTuNgay";
-            this.dtpTuNgay.Size = new System.Drawing.Size(120, 25);
-
-            // label2
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(240, 35);
-            this.label2.Name = "label2";
-            this.label2.Text = "Đến ngày:";
-
-            // dtpDenNgay
-            this.dtpDenNgay.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpDenNgay.Location = new System.Drawing.Point(320, 32);
-            this.dtpDenNgay.Name = "dtpDenNgay";
-            this.dtpDenNgay.Size = new System.Drawing.Size(120, 25);
-
-            // label3
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(470, 35);
-            this.label3.Name = "label3";
-            this.label3.Text = "Chọn sân:";
-
-            // cbxSan
-            this.cbxSan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbxSan.FormattingEnabled = true;
-            this.cbxSan.Location = new System.Drawing.Point(550, 32);
-            this.cbxSan.Name = "cbxSan";
-            this.cbxSan.Size = new System.Drawing.Size(150, 25);
-
+            // 
             // btnThongKe
+            // 
             this.btnThongKe.BackColor = System.Drawing.Color.ForestGreen;
             this.btnThongKe.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnThongKe.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -123,11 +85,65 @@
             this.btnThongKe.Location = new System.Drawing.Point(730, 28);
             this.btnThongKe.Name = "btnThongKe";
             this.btnThongKe.Size = new System.Drawing.Size(120, 32);
-            this.btnThongKe.Text = "Thống Kê";
+            this.btnThongKe.TabIndex = 0;
+            this.btnThongKe.Text = "📊Thống Kê";
             this.btnThongKe.UseVisualStyleBackColor = false;
             this.btnThongKe.Click += new System.EventHandler(this.btnThongKe_Click);
-
+            // 
+            // cbxSan
+            // 
+            this.cbxSan.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxSan.FormattingEnabled = true;
+            this.cbxSan.Location = new System.Drawing.Point(550, 32);
+            this.cbxSan.Name = "cbxSan";
+            this.cbxSan.Size = new System.Drawing.Size(150, 25);
+            this.cbxSan.TabIndex = 1;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(470, 35);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(70, 19);
+            this.label3.TabIndex = 2;
+            this.label3.Text = "Chọn sân:";
+            // 
+            // dtpDenNgay
+            // 
+            this.dtpDenNgay.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpDenNgay.Location = new System.Drawing.Point(320, 32);
+            this.dtpDenNgay.Name = "dtpDenNgay";
+            this.dtpDenNgay.Size = new System.Drawing.Size(120, 25);
+            this.dtpDenNgay.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(240, 35);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(71, 19);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "Đến ngày:";
+            // 
+            // dtpTuNgay
+            // 
+            this.dtpTuNgay.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpTuNgay.Location = new System.Drawing.Point(100, 32);
+            this.dtpTuNgay.Name = "dtpTuNgay";
+            this.dtpTuNgay.Size = new System.Drawing.Size(120, 25);
+            this.dtpTuNgay.TabIndex = 5;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(30, 35);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(61, 19);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Từ ngày:";
+            // 
             // layoutCharts
+            // 
             this.layoutCharts.ColumnCount = 2;
             this.layoutCharts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.layoutCharts.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
@@ -142,71 +158,84 @@
             this.layoutCharts.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.layoutCharts.Size = new System.Drawing.Size(1100, 620);
             this.layoutCharts.TabIndex = 1;
-
-            // Chart 1: Giờ Hoạt Động
+            // 
+            // chartGioHoatDong
+            // 
             chartArea1.Name = "ChartArea1";
             this.chartGioHoatDong.ChartAreas.Add(chartArea1);
             this.chartGioHoatDong.Dock = System.Windows.Forms.DockStyle.Fill;
             legend1.Name = "Legend1";
             this.chartGioHoatDong.Legends.Add(legend1);
+            this.chartGioHoatDong.Location = new System.Drawing.Point(3, 3);
             this.chartGioHoatDong.Name = "chartGioHoatDong";
             series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Số Giờ";
             series1.Color = System.Drawing.Color.DodgerBlue;
             series1.IsValueShownAsLabel = true;
             series1.LabelFormat = "N1";
+            series1.Legend = "Legend1";
+            series1.Name = "Số Giờ";
             this.chartGioHoatDong.Series.Add(series1);
+            this.chartGioHoatDong.Size = new System.Drawing.Size(544, 304);
+            this.chartGioHoatDong.TabIndex = 0;
             title1.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            title1.Name = "Title1";
             title1.Text = "TỔNG GIỜ HOẠT ĐỘNG";
             this.chartGioHoatDong.Titles.Add(title1);
-
-            // Chart 2: Doanh Thu
+            // 
+            // chartDoanhThu
+            // 
             chartArea2.Name = "ChartArea1";
             this.chartDoanhThu.ChartAreas.Add(chartArea2);
             this.chartDoanhThu.Dock = System.Windows.Forms.DockStyle.Fill;
             legend2.Name = "Legend1";
             this.chartDoanhThu.Legends.Add(legend2);
+            this.chartDoanhThu.Location = new System.Drawing.Point(553, 3);
             this.chartDoanhThu.Name = "chartDoanhThu";
             series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Doanh Thu (VNĐ)";
             series2.Color = System.Drawing.Color.OrangeRed;
             series2.IsValueShownAsLabel = true;
             series2.LabelFormat = "N0";
+            series2.Legend = "Legend1";
+            series2.Name = "Doanh Thu (VNĐ)";
             this.chartDoanhThu.Series.Add(series2);
+            this.chartDoanhThu.Size = new System.Drawing.Size(544, 304);
+            this.chartDoanhThu.TabIndex = 1;
             title2.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            title2.Name = "Title1";
             title2.Text = "DOANH THU SÂN";
             this.chartDoanhThu.Titles.Add(title2);
-
-            // Chart 3: Trạng Thái
+            // 
+            // chartTrangThai
+            // 
             chartArea3.Name = "ChartArea1";
             this.chartTrangThai.ChartAreas.Add(chartArea3);
             this.layoutCharts.SetColumnSpan(this.chartTrangThai, 2);
             this.chartTrangThai.Dock = System.Windows.Forms.DockStyle.Fill;
             legend3.Name = "Legend1";
             this.chartTrangThai.Legends.Add(legend3);
+            this.chartTrangThai.Location = new System.Drawing.Point(3, 313);
             this.chartTrangThai.Name = "chartTrangThai";
-
             series3.ChartArea = "ChartArea1";
-            series3.Legend = "Legend1";
-            series3.Name = "Đã Thanh Toán";
             series3.Color = System.Drawing.Color.ForestGreen;
             series3.IsValueShownAsLabel = true;
-
+            series3.Legend = "Legend1";
+            series3.Name = "Đã Thanh Toán";
             series4.ChartArea = "ChartArea1";
-            series4.Legend = "Legend1";
-            series4.Name = "Đã Hủy";
             series4.Color = System.Drawing.Color.Gray;
             series4.IsValueShownAsLabel = true;
-
+            series4.Legend = "Legend1";
+            series4.Name = "Đã Hủy";
             this.chartTrangThai.Series.Add(series3);
             this.chartTrangThai.Series.Add(series4);
+            this.chartTrangThai.Size = new System.Drawing.Size(1094, 304);
+            this.chartTrangThai.TabIndex = 2;
             title3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
+            title3.Name = "Title1";
             title3.Text = "TỶ LỆ THANH TOÁN / HỦY";
             this.chartTrangThai.Titles.Add(title3);
-
-            // Form Main
+            // 
+            // ThongKeSan
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
@@ -217,7 +246,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "BÁO CÁO THỐNG KÊ HOẠT ĐỘNG SÂN";
             this.Load += new System.EventHandler(this.ThongKeSan_Load);
-
             this.panelFilter.ResumeLayout(false);
             this.groupBoxFilter.ResumeLayout(false);
             this.groupBoxFilter.PerformLayout();
@@ -226,6 +254,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.chartDoanhThu)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.chartTrangThai)).EndInit();
             this.ResumeLayout(false);
+
         }
 
         #endregion

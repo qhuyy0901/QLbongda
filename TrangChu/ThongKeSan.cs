@@ -50,6 +50,10 @@ namespace TrangChu
                 cbxSan.Items.Add("Tất cả");
                 cbxSan.Items.Add("San1");
                 cbxSan.Items.Add("San2");
+                cbxSan.Items.Add("San3");
+                cbxSan.Items.Add("San4");
+                cbxSan.Items.Add("San5");
+                cbxSan.Items.Add("San6");
                 cbxSan.SelectedIndex = 0;
             }
         }
@@ -58,18 +62,13 @@ namespace TrangChu
         {
             try
             {
-                // 1. Lấy tham số
                 DateTime fromDate = dtpTuNgay.Value.Date;
                 DateTime toDate = dtpDenNgay.Value.Date.AddDays(1).AddSeconds(-1);
                 string selectedSan = cbxSan.SelectedItem?.ToString() ?? "Tất cả";
 
-                // 2. Lấy dữ liệu
                 var allLichDat = busLichDat.GetAll();
 
-                // 3. Lọc dữ liệu
-                var filteredQuery = allLichDat.Where(x => x.NgayDat.HasValue &&
-                                                          x.NgayDat.Value >= fromDate &&
-                                                          x.NgayDat.Value <= toDate);
+                var filteredQuery = allLichDat.Where(x => x.NgayDat.HasValue && x.NgayDat.Value >= fromDate && x.NgayDat.Value <= toDate);
 
                 if (selectedSan != "Tất cả")
                 {
@@ -78,14 +77,9 @@ namespace TrangChu
 
                 var dataToList = filteredQuery.ToList();
 
-                if (dataToList.Count == 0)
-                {
-                    MessageBox.Show("Không tìm thấy dữ liệu nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    ClearCharts();
-                    return;
-                }
+                if (dataToList.Count == 0) {}
 
-                // 4. Vẽ biểu đồ
+                // Vẽ biểu đồ
                 DrawChartGioHoatDong(dataToList);
                 DrawChartDoanhThu(dataToList);
                 DrawChartTrangThai(dataToList);
@@ -117,10 +111,7 @@ namespace TrangChu
                     chartGioHoatDong.Series["Số Giờ"].Points.AddXY(item.San, item.TongGio);
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi vẽ biểu đồ giờ hoạt động: " + ex.Message);
-            }
+            catch (Exception ex){}
         }
 
         private void DrawChartDoanhThu(List<DAL.LichDat> data)
@@ -144,10 +135,7 @@ namespace TrangChu
                     chartDoanhThu.Series["Doanh Thu (VNĐ)"].Points.AddXY(item.San, item.DoanhThu);
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi vẽ biểu đồ doanh thu: " + ex.Message);
-            }
+            catch (Exception ex) {}
         }
 
         private void DrawChartTrangThai(List<DAL.LichDat> data)
@@ -174,10 +162,7 @@ namespace TrangChu
                     chartTrangThai.Series["Đã Hủy"].Points.AddXY(item.San, item.DaHuy);
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi vẽ biểu đồ trạng thái: " + ex.Message);
-            }
+            catch (Exception ex) { }
         }
 
         private void ClearCharts()

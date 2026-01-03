@@ -30,7 +30,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.thToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.thốngKêSânToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.thongkesanToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label4 = new System.Windows.Forms.Label();
             this.txtTimKiemHoaDon = new System.Windows.Forms.TextBox();
             this.panelFooter.SuspendLayout();
@@ -71,7 +71,7 @@
             this.lblTongDoanhThu.AutoSize = true;
             this.lblTongDoanhThu.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.lblTongDoanhThu.ForeColor = System.Drawing.Color.Red;
-            this.lblTongDoanhThu.Location = new System.Drawing.Point(341, 15);
+            this.lblTongDoanhThu.Location = new System.Drawing.Point(353, 18);
             this.lblTongDoanhThu.Name = "lblTongDoanhThu";
             this.lblTongDoanhThu.Size = new System.Drawing.Size(70, 25);
             this.lblTongDoanhThu.TabIndex = 1;
@@ -83,9 +83,9 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.label3.Location = new System.Drawing.Point(161, 18);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(160, 21);
+            this.label3.Size = new System.Drawing.Size(187, 21);
             this.label3.TabIndex = 0;
-            this.label3.Text = "TỔNG DOANH THU:";
+            this.label3.Text = "💰 TỔNG DOANH THU:";
             // 
             // btnXemChiTiet
             // 
@@ -114,7 +114,7 @@
             this.btnXuatExcel.Name = "btnXuatExcel";
             this.btnXuatExcel.Size = new System.Drawing.Size(100, 32);
             this.btnXuatExcel.TabIndex = 3;
-            this.btnXuatExcel.Text = "📊 Xuất Excel";
+            this.btnXuatExcel.Text = "📁  Xuất Excel";
             this.btnXuatExcel.UseVisualStyleBackColor = false;
             this.btnXuatExcel.Click += new System.EventHandler(this.btnXuatExcel_Click);
             // 
@@ -209,7 +209,7 @@
             this.menuStrip1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.thToolStripMenuItem,
-            this.thốngKêSânToolStripMenuItem});
+            this.thongkesanToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1000, 24);
@@ -220,16 +220,17 @@
             // 
             this.thToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.thToolStripMenuItem.Name = "thToolStripMenuItem";
-            this.thToolStripMenuItem.Size = new System.Drawing.Size(135, 20);
-            this.thToolStripMenuItem.Text = "Thống Kê Doanh Thu";
+            this.thToolStripMenuItem.Size = new System.Drawing.Size(151, 20);
+            this.thToolStripMenuItem.Text = "📈 Thống Kê Doanh Thu";
             this.thToolStripMenuItem.Click += new System.EventHandler(this.thToolStripMenuItem_Click);
             // 
-            // thốngKêSânToolStripMenuItem
+            // thongkesanToolStripMenuItem
             // 
-            this.thốngKêSânToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.thốngKêSânToolStripMenuItem.Name = "thốngKêSânToolStripMenuItem";
-            this.thốngKêSânToolStripMenuItem.Size = new System.Drawing.Size(95, 20);
-            this.thốngKêSânToolStripMenuItem.Text = "Thống Kê Sân";
+            this.thongkesanToolStripMenuItem.ForeColor = System.Drawing.Color.White;
+            this.thongkesanToolStripMenuItem.Name = "thongkesanToolStripMenuItem";
+            this.thongkesanToolStripMenuItem.Size = new System.Drawing.Size(111, 20);
+            this.thongkesanToolStripMenuItem.Text = "📅 Thống Kê Sân";
+            this.thongkesanToolStripMenuItem.Click += new System.EventHandler(this.thongkesanToolStripMenuItem_Click);
             // 
             // label4
             // 
@@ -300,7 +301,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem thToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem thốngKêSânToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem thongkesanToolStripMenuItem;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox txtTimKiemHoaDon;
     }

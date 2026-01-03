@@ -192,6 +192,9 @@
     <EmbeddedResource Include="ThongKeDoanhThu.resx">
       <DependentUpon>ThongKeDoanhThu.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="ThongKeSan.resx">
+      <DependentUpon>ThongKeSan.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TKe_HoaDon.resx">
       <DependentUpon>TKe_HoaDon.cs</DependentUpon>
     </EmbeddedResource>

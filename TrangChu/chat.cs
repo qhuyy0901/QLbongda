@@ -14,8 +14,8 @@ namespace TrangChu
 {
     public enum UserRole
     {
-        admin,      // Quản lý
-        nhanvien    // Nhân viên
+        admin,   
+        nhanvien    
     }
 
     public partial class chat : Form
@@ -45,7 +45,6 @@ namespace TrangChu
             CurrentRole = role;
             SetupUIByRole();
 
-            // Cấu hình RichTextBox
             txtChat.BackColor = Color.White;
             txtChat.ReadOnly = true;
             txtChat.Font = new Font("Segoe UI", 10);
@@ -67,23 +66,12 @@ namespace TrangChu
             string greeting = "Chat Hi: Xin chào 👋 Tôi là trợ lý ảo của sân bóng. Tôi có thể giúp gì cho bạn?";
             AppendChatLog(greeting, isUser: false);
         }
-
-        // Logic xử lý nút XÓA
-        private void button1_Click(object sender, EventArgs e)
-        {
-            txtChat.Clear(); // Xóa sạch nội dung chat
-            string greeting = "Gemini: Đã xóa lịch sử chat. Tôi có thể giúp gì tiếp theo?";
-            AppendChatLog(greeting, isUser: false);
-        }
-
-        // Logic xử lý nút THOÁT
+       
         private void button2_Click(object sender, EventArgs e)
         {
-            this.Close(); // Đóng form chat
+            this.Close(); 
         }
 
-        // ... (CÁC HÀM IsAllowedQuestion, NeedDatabase, GetRealTimeData, BuildFullPrompt GIỮ NGUYÊN) ...
-        // ... (Bạn copy lại từ code trước đó để tránh dài dòng nhé) ...
 
         private bool IsAllowedQuestion(string question)
         {
@@ -248,6 +236,19 @@ Câu hỏi: {userMessage}";
             }
 
             txtChat.ScrollToCaret();
+        }
+
+        private void guna2Button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void guna2Button2_Click(object sender, EventArgs e)
+        {
+            txtChat.Clear(); 
+            string greeting = "Gemini: Đã xóa lịch sử chat. Tôi có thể giúp gì tiếp theo?";
+            AppendChatLog(greeting, isUser: false); txtChat.Clear();
+
         }
     }
 }

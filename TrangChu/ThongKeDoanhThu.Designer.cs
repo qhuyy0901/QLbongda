@@ -99,7 +99,7 @@
             this.btnThongKe.Name = "btnThongKe";
             this.btnThongKe.Size = new System.Drawing.Size(100, 32);
             this.btnThongKe.TabIndex = 0;
-            this.btnThongKe.Text = "Xem";
+            this.btnThongKe.Text = "📊 Xem";
             this.btnThongKe.UseVisualStyleBackColor = false;
             this.btnThongKe.Click += new System.EventHandler(this.btnThongKe_Click);
             // 

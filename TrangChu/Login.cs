@@ -36,11 +36,9 @@ namespace TrangChu
                     MessageBox.Show("Đăng nhập thành công!", "Thông báo");
                     this.Hide();
 
-                    // Mở trang chủ
                     TrangChu frmMain = new TrangChu(u);
                     frmMain.ShowDialog();
 
-                    // Khi đăng xuất quay lại đây
                     this.Show();
                     txtPass.Text = "";
                     txtUser.Focus();
@@ -52,7 +50,6 @@ namespace TrangChu
             }
             catch (Exception ex)
             {
-                // QUAN TRỌNG: Hiển thị lỗi kết nối nếu có
                 MessageBox.Show("Lỗi kết nối CSDL: " + ex.Message + "\n" + ex.InnerException?.Message, "Lỗi Hệ Thống");
             }
         }
@@ -69,7 +66,6 @@ namespace TrangChu
 
             try
             {
-                // Test kết nối database
                 var testUser = userBUS.GetAll();
                 if (testUser == null)
                 {
@@ -85,7 +81,6 @@ namespace TrangChu
 
         private void chkShowPassword_CheckedChanged(object sender, EventArgs e)
         {
-            // Checked => hiện rõ; Unchecked => che bằng '*'
             txtPass.UseSystemPasswordChar = !chkShowPassword.Checked;
             txtPass.PasswordChar = txtPass.UseSystemPasswordChar ? '*' : '\0';
         }

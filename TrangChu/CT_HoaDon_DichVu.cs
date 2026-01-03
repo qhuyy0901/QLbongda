@@ -54,160 +54,91 @@ namespace TrangChu
 
         private void CT_HoaDon_DichVu_Load(object sender, EventArgs e)
         {
-            try
-            {
-                cbxHinhThucTT.Items.Clear();
-                cbxHinhThucTT.Items.Add("Tiền mặt");
-                cbxHinhThucTT.Items.Add("Chuyển khoản");
-                cbxHinhThucTT.SelectedIndex = 0;
 
-                dgvCTDichVu.ReadOnly = true;
-                dgvCTDichVu.AllowUserToAddRows = false;
-                dgvCTDichVu.AllowUserToDeleteRows = false;
-                dgvCTDichVu.AllowUserToResizeRows = false;
-                dgvCTDichVu.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
-                // ===== LOAD DANH SÁCH LỊCH ĐẶT VÀO COMBOBOX =====
                 LoadDanhSachLichDat();
-
                 HienThiThongTinKhachHang();
-
                 if (!string.IsNullOrWhiteSpace(maLich))
                 {
                     grpTienSan.Visible = true;
                     LoadThongTinLichDat();
-                }
-                else
-                {
+                }else{
                     grpTienSan.Visible = false;
                     tienSan = 0;
                 }
-
                 LoadChiTietDichVu();
-
                 CapNhatTongTien();
-
-                KhoaTatCaControl();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("❌ Lỗi khởi tạo form:\n" + ex.Message,
-                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
 
-        // ===== LOAD DANH SÁCH LỊCH ĐẶT TỪngày hiện tại trở đi =====
         private void LoadDanhSachLichDat()
         {
             try
             {
-                // ===== HỦY SỰ KIỆN CŨ NẾU ĐÃ CÓ =====
                 cbxMaLich.SelectedIndexChanged -= CbxMaLich_SelectedIndexChanged;
 
                 DateTime homNay = DateTime.Now.Date;
 
-                // ===== LẤY TẤT CẢ LỊCH ĐẶT =====
                 var allLichs = busLichDat.GetAll();
 
-                // ===== LỌC LỊCH ĐẶT CÓ TRẠNG THÁI "ĐÃ ĐẶT" VÀ NGÀY >= HÔM NAY =====
-                var filteredLichs = allLichs
-   ?.Where(l => l.TrangThai == "Đã đặt" && l.NgayDat.HasValue && l.NgayDat.Value.Date >= homNay)
-   .OrderBy(l => l.NgayDat)
-.ThenBy(l => l.GioBD)
-     .ToList() ?? new List<DAL.LichDat>();
+                var filteredLichs = allLichs?.Where(l => l.TrangThai == "Đã đặt" && l.NgayDat.HasValue && l.NgayDat.Value.Date >= homNay).OrderBy(l => l.NgayDat).ThenBy(l => l.GioBD).ToList() ?? new List<DAL.LichDat>();
 
-        // ===== NẾU KHÔNG CÓ LỊCH NÀO THÌ HIỂN THỊ THÔNG BÁO =====
-          if (filteredLichs.Count == 0)
-      {
-         MessageBox.Show("⚠️ Không có lịch đặt nào từ hôm nay trở đi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-          cbxMaLich.DataSource = null;
- return;
-       }
+                if (filteredLichs.Count == 0)
+                {
+                    MessageBox.Show("⚠️ Không có lịch đặt nào từ hôm nay trở đi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    cbxMaLich.DataSource = null; return;
+                }
 
-         // ===== TẠO DANH SÁCH HIỂN THỊ =====
-       var displayList = filteredLichs.Select(l => new
-  {
-       MaLich = l.MaLich,
-          Display = $"{l.MaLich} - {l.MaSan} ({l.NgayDat:dd/MM/yyyy}) {l.GioBD}:00-{l.GioKT}:00 ({l.TenKH})"
-            }).ToList();
+                var displayList = filteredLichs.Select(l => new
+                {
+                    MaLich = l.MaLich,
+                    Display = $"{l.MaLich} - {l.MaSan} ({l.NgayDat:dd/MM/yyyy}) {l.GioBD}:00-{l.GioKT}:00 ({l.TenKH})"
+                }).ToList();
+                cbxMaLich.DataSource = displayList;
+                cbxMaLich.DisplayMember = "Display";
+                cbxMaLich.ValueMember = "MaLich";
 
-   cbxMaLich.DataSource = displayList;
-cbxMaLich.DisplayMember = "Display";
-         cbxMaLich.ValueMember = "MaLich";
-
-       // ===== NẾU ĐÃ CÓ MALÍCH ĐƯỢC SET SẴN THÌ CHỌN LẠI =====
-     if (!string.IsNullOrWhiteSpace(maLich))
-            {
-          // Tìm xem MaLich có tồn tại trong danh sách không
-            var existingLich = displayList.FirstOrDefault(l => l.MaLich == maLich);
-      if (existingLich != null)
-         {
-  cbxMaLich.SelectedValue = maLich;
-            }
-      else
-   {
-      // Nếu không tìm thấy thì chọn lịch đầu tiên
-       cbxMaLich.SelectedIndex = 0;
- }
-           }
-   else if (cbxMaLich.Items.Count > 0)
-     {
-     cbxMaLich.SelectedIndex = 0;
-         }
-
-     // ===== THÊM SỰ KIỆN CHANGE LẦN DUY NHẤT =====
+                // ===== NẾU ĐÃ CÓ MALÍCH ĐƯỢC SET SẴN THÌ CHỌN LẠI =====
+                if (!string.IsNullOrWhiteSpace(maLich))
+                {
+                    // Tìm xem MaLich có tồn tại trong danh sách không
+                    var existingLich = displayList.FirstOrDefault(l => l.MaLich == maLich);
+                    if (existingLich != null)
+                    {
+                        cbxMaLich.SelectedValue = maLich;
+                    }
+                    else
+                    {
+                        cbxMaLich.SelectedIndex = 0;
+                    }
+                }
+                else if (cbxMaLich.Items.Count > 0)
+                {
+                    cbxMaLich.SelectedIndex = 0;
+                }
                 cbxMaLich.SelectedIndexChanged += CbxMaLich_SelectedIndexChanged;
-     }
-  catch (Exception ex)
-   {
-   MessageBox.Show("❌ Lỗi load danh sách lịch đặt:\n" + ex.Message,
-            "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-       }
-    }
+            }
+            catch (Exception ex){ }
+        }
 
         // ===== SỰ KIỆN KHI CHỌN LỊCH TRONG COMBOBOX =====
         private void CbxMaLich_SelectedIndexChanged(object sender, EventArgs e)
         {
-            try
-            {
                 if (cbxMaLich.SelectedValue == null || string.IsNullOrWhiteSpace(cbxMaLich.SelectedValue.ToString()))
                     return;
-
                 string selectedMaLich = cbxMaLich.SelectedValue.ToString();
-
-                // ===== CẬP NHẬT MALÍCH =====
                 maLich = selectedMaLich;
-
-                // ===== LOAD THÔNG TIN LỊCH =====
                 LoadThongTinLichDat();
-
-                // ===== CẬP NHẬT TỔNG TIỀN =====
-                CapNhatTongTien();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("❌ Lỗi khi chọn lịch:\n" + ex.Message,
-                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                CapNhatTongTien();          
         }
 
         private void HienThiThongTinKhachHang()
         {
-            try
-            {
                 txtTenKH.Text = tenKH;
                 txtSDT.Text = sdtKH;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("❌ Lỗi hiển thị khách hàng:\n" + ex.Message);
-            }
         }
 
         private void LoadThongTinLichDat()
         {
-            try
-            {
+
                 if (string.IsNullOrWhiteSpace(maLich))
                 {
                     return;
@@ -226,17 +157,12 @@ cbxMaLich.DisplayMember = "Display";
 
                     lblTongTienSan_Value.Text = tienSan.ToString("N0") + " VNĐ";
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("❌ Lỗi load thông tin lịch:\n" + ex.Message);
-            }
+
         }
 
         private void LoadChiTietDichVu()
         {
-            try
-            {
+
                 DataTable dt = new DataTable();
                 dt.Columns.Add("MaDV", typeof(string));
                 dt.Columns.Add("TenDV", typeof(string));
@@ -258,36 +184,26 @@ cbxMaLich.DisplayMember = "Display";
                         dt.Rows.Add(ct.MaDV, tenDV, soLuong, donGia, thanhTien);
                     }
                 }
-
                 dgvCTDichVu.DataSource = dt;
-
                 FormatDichVuColumn();
-
                 lblTongTienDV_Value.Text = tongTienDichVu.ToString("N0") + " VNĐ";
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("❌ Lỗi load dịch vụ:\n" + ex.Message);
-            }
+
         }
 
         private void FormatDichVuColumn()
         {
-            try
-            {
+
                 if (dgvCTDichVu.Columns["DonGia"] != null)
                 {
                     dgvCTDichVu.Columns["DonGia"].DefaultCellStyle.Format = "N0";
                     dgvCTDichVu.Columns["DonGia"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 }
-
                 if (dgvCTDichVu.Columns["ThanhTien"] != null)
                 {
                     dgvCTDichVu.Columns["ThanhTien"].DefaultCellStyle.Format = "N0";
                     dgvCTDichVu.Columns["ThanhTien"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 }
-            }
-            catch { }
+
         }
 
         private void CapNhatTongTien()
@@ -300,23 +216,7 @@ cbxMaLich.DisplayMember = "Display";
             catch { }
         }
 
-        private void KhoaTatCaControl()
-        {
-            try
-            {
-                txtTenKH.ReadOnly = true;
-                txtSDT.ReadOnly = true;
-                txtTenSan.ReadOnly = true;
-                txtKhungGio.ReadOnly = true;
-                txtTienSan.ReadOnly = true;
-                // ===== KHÔNG KHÓA COMBOBOX LỊCH ĐẶT - CHO PHÉP CHỌN =====
-                cbxMaLich.Enabled = true;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("❌ Lỗi khóa control:\n" + ex.Message);
-            }
-        }
+       
 
        
 
@@ -359,14 +259,10 @@ cbxMaLich.DisplayMember = "Display";
                     return;
                 }
 
-                // ✅ KIỂM TRA TRẠNG THÁI LỊCH TRƯỚC KHI GỌI THANH TOÁN
                 string trangThaiHienTai = busHoaDon.GetTrangThaiLichDat(maLich);
                 if (trangThaiHienTai != "Đã đặt")
                 {
-                    MessageBox.Show($"❌ Không thể thanh toán!\n\n" +
-                        $"Lịch đặt [{maLich}] có trạng thái: '{trangThaiHienTai}'\n\n" +
-                        $"💡 Chỉ có thể thanh toán lịch ở trạng thái 'Đã đặt'.",
-                        "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"❌ Không thể thanh toán!\n\n" +$"💡 Chỉ có thể thanh toán lịch ở trạng thái 'Đã đặt'.","Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -375,14 +271,9 @@ cbxMaLich.DisplayMember = "Display";
 
                 string hinhThucTT = cbxHinhThucTT.SelectedItem?.ToString() ?? "Tiền mặt";
 
-                string message = $"✔ XÁC NHẬN THANH TOÁN\n\n" +
-                    $"Mã lịch: {maLich}\n" +
-                    $"Hình thức TT: {hinhThucTT}\n" +
-                    $"Tổng tiền: {tongTien:N0} VNĐ\n\n" +
-                    $"Bạn có muốn xác nhận?";
+                string message = $"✔ XÁC NHẬN THANH TOÁN\n\n" + $"Mã lịch: {maLich}\n" +$"Hình thức TT: {hinhThucTT}\n" + $"Tổng tiền: {tongTien:N0} VNĐ\n\n" + $"Bạn có muốn xác nhận?";
 
-                DialogResult result = MessageBox.Show(message, "Xác Nhận Thanh Toán",
-                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult result = MessageBox.Show(message, "Xác Nhận Thanh Toán",MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {
@@ -411,9 +302,7 @@ cbxMaLich.DisplayMember = "Display";
 
                     if (success)
                     {
-                        MessageBox.Show("✔ THANH TOÁN THÀNH CÔNG!\n\n💰 Hóa đơn đã được lưu vào hệ thống.",
-                            "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                       
                         // ===== GỬI EMAIL NẾU CÓ =====
                         string emailKH = txtEmaill.Text.Trim();
                         if (!string.IsNullOrWhiteSpace(emailKH))
@@ -474,12 +363,7 @@ cbxMaLich.DisplayMember = "Display";
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("❌ Lỗi thanh toán:\n" + ex.Message + 
-                    "\n\n📍 Chi tiết:\n" + ex.StackTrace,
-                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            catch (Exception ex){}
         }
 
         private void BtnHuy_Click(object sender, EventArgs e)
@@ -503,12 +387,10 @@ cbxMaLich.DisplayMember = "Display";
 
                 if (hinhThuc == "Chuyển khoản")
                 {
-                    // Generate and show QR Code
                     HienThiQRCode();
                 }
                 else
                 {
-                    // Hide QR Code for cash payments
                     picQRCode.Visible = false;
                     lblQRCode.Visible = false;
                 }
@@ -520,6 +402,6 @@ cbxMaLich.DisplayMember = "Display";
         }
 
         private System.Windows.Forms.Label lblEmail;
-private System.Windows.Forms.TextBox txtEmail;
+        private System.Windows.Forms.TextBox txtEmail;
     }
 }

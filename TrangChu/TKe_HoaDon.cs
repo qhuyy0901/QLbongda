@@ -4,9 +4,9 @@ using Microsoft.Reporting.WinForms;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.IO; // Thư viện để tìm file
+using System.IO; 
 using System.Linq;
-using System.Reflection; // Thư viện xử lý dữ liệu
+using System.Reflection; 
 using System.Windows.Forms;
 
 namespace TrangChu
@@ -15,8 +15,8 @@ namespace TrangChu
     {
         private HoaDonBUS busHoaDon = new HoaDonBUS();
 
-        // 🟢 1. CLASS DTO ĐỂ HỨNG DỮ LIỆU (QUAN TRỌNG NHẤT)
-        // Khắc phục lỗi "Object does not contain definition"
+        // CLASS DTO ĐỂ HỨNG DỮ LIỆU (QUAN TRỌNG NHẤT)
+        
         public class ReportDataStruct
         {
             public string MaHD { get; set; }
@@ -38,14 +38,12 @@ namespace TrangChu
         {
             try
             {
-                // Load Combobox Năm
                 int currentYear = DateTime.Now.Year;
                 cboNam.Items.Clear();
                 cboNam.Items.Add("Tất cả");
                 for (int i = currentYear; i >= currentYear - 2; i--) cboNam.Items.Add(i);
-                cboNam.SelectedIndex = 1; // chọn năm hiện tại
+                cboNam.SelectedIndex = 1;
 
-                // Load Combobox Tháng
                 cboThang.Items.Clear();
                 cboThang.Items.Add("Tất cả");
                 for (int i = 1; i <= 12; i++) cboThang.Items.Add(i);
@@ -59,9 +57,9 @@ namespace TrangChu
             }
         }
 
-        // ==========================================================
-        // 🟢 2. HÀM TẢI DỮ LIỆU & LỌC
-        // ==========================================================
+
+
+        // HÀM TẢI DỮ LIỆU & LỌC
         private void LoadDataAndRefreshReport()
         {
             try
@@ -70,21 +68,19 @@ namespace TrangChu
                 bool allYears = selectedYear == "Tất cả";
                 int nam = allYears ? DateTime.Now.Year : int.Parse(selectedYear);
 
-                int thang = cboThang.SelectedIndex; // 0 = Tất cả
+                int thang = cboThang.SelectedIndex; 
 
                 // Lấy dữ liệu thô từ BUS
                 var rawData = busHoaDon.GetHoaDonWithCustomerInfo();
 
-                listReportData.Clear(); // Xóa dữ liệu cũ
+                listReportData.Clear(); 
 
                 if (rawData != null)
                 {
-                    // Chuyển đổi dữ liệu thô sang DTO chuẩn
                     foreach (var item in rawData)
                     {
                         DateTime? ngayTT = GetPropValue<DateTime?>(item, "ThoiGianThanhToan");
 
-                        // Lọc theo năm và tháng (cho phép "Tất cả")
                         if (ngayTT.HasValue && (allYears || ngayTT.Value.Year == nam))
                         {
                             if (thang == 0 || ngayTT.Value.Month == thang)
@@ -102,7 +98,6 @@ namespace TrangChu
                     }
                 }
 
-                // Hiển thị lên ReportViewer
                 DisplayReport();
 
                 // Tính tổng tiền
@@ -114,22 +109,18 @@ namespace TrangChu
                     MessageBox.Show($"⚠️ Không có hóa đơn nào trong tháng {thang}/{(allYears ? "Tất cả" : nam.ToString())}!", "Thông báo");
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi xử lý dữ liệu: " + ex.Message);
-            }
+            catch (Exception ex) {}
         }
 
-        // ==========================================================
-        // 🟢 3. HÀM HIỂN THỊ REPORT (FIX LỖI MẤT FILE)
-        // ==========================================================
+
+
+        //  HÀM HIỂN THỊ REPORT 
         private void DisplayReport()
         {
             try
             {
                 reportViewer1.LocalReport.DataSources.Clear();
 
-                // 🔹 Tìm file report ở nhiều nơi (Fix lỗi Could not find file)
                 string exeFolder = Path.GetDirectoryName(Application.ExecutablePath);
                 string reportPath = Path.Combine(exeFolder, "Report_HoaDon.rdlc");
 
@@ -139,11 +130,7 @@ namespace TrangChu
                     string devPath = Path.GetFullPath(Path.Combine(exeFolder, @"..\..\Report_HoaDon.rdlc"));
                     if (File.Exists(devPath))
                         reportPath = devPath;
-                    else
-                    {
-                        MessageBox.Show($"❌ KHÔNG TÌM THẤY FILE BÁO CÁO!\nĐường dẫn: {reportPath}\n\n👉 Hãy làm Bước 1 (Copy to Output Directory)!");
-                        return;
-                    }
+
                 }
 
                 reportViewer1.LocalReport.ReportPath = reportPath;
@@ -154,15 +141,13 @@ namespace TrangChu
 
                 reportViewer1.RefreshReport();
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi hiển thị Report: " + ex.Message);
-            }
+            catch (Exception ex) {}
         }
 
-        // ==========================================================
-        // 🟢 4. HÀM HỖ TRỢ (REFLECTION)
-        // ==========================================================
+
+
+        //  HÀM HỖ TRỢ REFLECTION
+ 
         private T GetPropValue<T>(object src, string propName)
         {
             try
@@ -283,7 +268,6 @@ namespace TrangChu
 
         private void btnLoc_Click_1(object sender, EventArgs e)
         {
-            // Lọc theo thống kê tháng năm và theo tìm kiếm
             LoadDataAndRefreshReport();
             ApplySearchFilter();
 
@@ -294,6 +278,16 @@ namespace TrangChu
             this.Hide();
 
             ThongKeDoanhThu frmDichVu = new ThongKeDoanhThu();
+            frmDichVu.ShowDialog();
+
+            this.Show();
+        }
+
+        private void thongkesanToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+
+            ThongKeSan frmDichVu = new ThongKeSan();
             frmDichVu.ShowDialog();
 
             this.Show();

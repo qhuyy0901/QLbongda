@@ -30,11 +30,11 @@ namespace TrangChu
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DichVu));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DichVu));
             this.grpThongTinHoaDon = new System.Windows.Forms.GroupBox();
             this.txtDonGiaDVu = new System.Windows.Forms.TextBox();
             this.txtTenDVu = new System.Windows.Forms.TextBox();
@@ -52,6 +52,7 @@ namespace TrangChu
             this.txtSDT = new System.Windows.Forms.TextBox();
             this.btnThanhToan = new System.Windows.Forms.Button();
             this.grpDichVu = new System.Windows.Forms.GroupBox();
+            this.btnTaiLaiDVu = new System.Windows.Forms.Button();
             this.dgvDichVu = new System.Windows.Forms.DataGridView();
             this.grpGioDichVu = new System.Windows.Forms.GroupBox();
             this.dgvGioHang = new System.Windows.Forms.DataGridView();
@@ -61,7 +62,6 @@ namespace TrangChu
             this.btnSuaDVu = new System.Windows.Forms.Button();
             this.btnXoaDVu = new System.Windows.Forms.Button();
             this.btnQuayLai = new System.Windows.Forms.Button();
-            this.btnTaiLaiDVu = new System.Windows.Forms.Button();
             this.grpThongTinHoaDon.SuspendLayout();
             this.grpDichVu.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDichVu)).BeginInit();
@@ -252,6 +252,25 @@ namespace TrangChu
             this.grpDichVu.TabStop = false;
             this.grpDichVu.Text = "DANH SÁCH DỊCH VỤ";
             // 
+            // btnTaiLaiDVu
+            // 
+            this.btnTaiLaiDVu.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnTaiLaiDVu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.btnTaiLaiDVu.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnTaiLaiDVu.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btnTaiLaiDVu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnTaiLaiDVu.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnTaiLaiDVu.Image = ((System.Drawing.Image)(resources.GetObject("btnTaiLaiDVu.Image")));
+            this.btnTaiLaiDVu.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnTaiLaiDVu.Location = new System.Drawing.Point(244, -2);
+            this.btnTaiLaiDVu.Name = "btnTaiLaiDVu";
+            this.btnTaiLaiDVu.Size = new System.Drawing.Size(83, 24);
+            this.btnTaiLaiDVu.TabIndex = 39;
+            this.btnTaiLaiDVu.Text = "Tải Lại";
+            this.btnTaiLaiDVu.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnTaiLaiDVu.UseVisualStyleBackColor = false;
+            this.btnTaiLaiDVu.Click += new System.EventHandler(this.btnTaiLaiDVu_Click);
+            // 
             // dgvDichVu
             // 
             this.dgvDichVu.AllowUserToAddRows = false;
@@ -413,28 +432,9 @@ namespace TrangChu
             this.btnQuayLai.Name = "btnQuayLai";
             this.btnQuayLai.Size = new System.Drawing.Size(133, 35);
             this.btnQuayLai.TabIndex = 7;
-            this.btnQuayLai.Text = "Quay Lại";
+            this.btnQuayLai.Text = "Thoát";
             this.btnQuayLai.UseVisualStyleBackColor = false;
             this.btnQuayLai.Click += new System.EventHandler(this.btnQuayLai_Click);
-            // 
-            // btnTaiLaiDVu
-            // 
-            this.btnTaiLaiDVu.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnTaiLaiDVu.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.btnTaiLaiDVu.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnTaiLaiDVu.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.btnTaiLaiDVu.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnTaiLaiDVu.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTaiLaiDVu.Image = ((System.Drawing.Image)(resources.GetObject("btnTaiLaiDVu.Image")));
-            this.btnTaiLaiDVu.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTaiLaiDVu.Location = new System.Drawing.Point(244, -2);
-            this.btnTaiLaiDVu.Name = "btnTaiLaiDVu";
-            this.btnTaiLaiDVu.Size = new System.Drawing.Size(83, 24);
-            this.btnTaiLaiDVu.TabIndex = 39;
-            this.btnTaiLaiDVu.Text = "Tải Lại";
-            this.btnTaiLaiDVu.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnTaiLaiDVu.UseVisualStyleBackColor = false;
-            this.btnTaiLaiDVu.Click += new System.EventHandler(this.btnTaiLaiDVu_Click);
             // 
             // DichVu
             // 

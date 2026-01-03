@@ -36,7 +36,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnThanhToan = new System.Windows.Forms.Button();
             this.btnThemDivhVu = new System.Windows.Forms.Button();
-            this.btnQuayLai = new System.Windows.Forms.Button();
             this.txtDonGia = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.dgvDatSan = new System.Windows.Forms.DataGridView();
@@ -55,18 +54,19 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.btnSan1 = new System.Windows.Forms.Button();
-            this.btnSan2 = new System.Windows.Forms.Button();
-            this.btnSan3 = new System.Windows.Forms.Button();
-            this.btnSan4 = new System.Windows.Forms.Button();
-            this.btnSan5 = new System.Windows.Forms.Button();
-            this.btnSan6 = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.txtTimKiem = new System.Windows.Forms.TextBox();
             this.btnTaiLai = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.label13 = new System.Windows.Forms.Label();
+            this.btnSan6 = new System.Windows.Forms.Button();
+            this.btnSan5 = new System.Windows.Forms.Button();
+            this.btnSan4 = new System.Windows.Forms.Button();
+            this.btnSan3 = new System.Windows.Forms.Button();
+            this.btnSan2 = new System.Windows.Forms.Button();
+            this.btnSan1 = new System.Windows.Forms.Button();
+            this.btnQuayLai = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDatSan)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -175,7 +175,7 @@
             this.btnDatSAn.Name = "btnDatSAn";
             this.btnDatSAn.Size = new System.Drawing.Size(110, 35);
             this.btnDatSAn.TabIndex = 9;
-            this.btnDatSAn.Text = "ĐẶT SÂN";
+            this.btnDatSAn.Text = "📝 ĐẶT SÂN";
             this.btnDatSAn.UseVisualStyleBackColor = false;
             this.btnDatSAn.Click += new System.EventHandler(this.btnDatSAn_Click);
             // 
@@ -190,7 +190,7 @@
             this.btnHuySan.Name = "btnHuySan";
             this.btnHuySan.Size = new System.Drawing.Size(110, 35);
             this.btnHuySan.TabIndex = 10;
-            this.btnHuySan.Text = "HỦY SÂN";
+            this.btnHuySan.Text = "❌ HỦY SÂN";
             this.btnHuySan.UseVisualStyleBackColor = false;
             this.btnHuySan.Click += new System.EventHandler(this.btnHuySan_Click);
             // 
@@ -205,7 +205,7 @@
             this.btnXoa.Name = "btnXoa";
             this.btnXoa.Size = new System.Drawing.Size(110, 35);
             this.btnXoa.TabIndex = 12;
-            this.btnXoa.Text = "XÓA";
+            this.btnXoa.Text = "🗑️ XÓA";
             this.btnXoa.UseVisualStyleBackColor = false;
             this.btnXoa.Click += new System.EventHandler(this.btnXoa_Click);
             // 
@@ -220,7 +220,7 @@
             this.btnSua.Name = "btnSua";
             this.btnSua.Size = new System.Drawing.Size(110, 35);
             this.btnSua.TabIndex = 11;
-            this.btnSua.Text = "SỬA";
+            this.btnSua.Text = "✏️ SỬA";
             this.btnSua.UseVisualStyleBackColor = false;
             this.btnSua.Click += new System.EventHandler(this.btnSua_Click);
             // 
@@ -299,7 +299,7 @@
             this.btnThanhToan.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
             this.btnThanhToan.Size = new System.Drawing.Size(240, 35);
             this.btnThanhToan.TabIndex = 39;
-            this.btnThanhToan.Text = "Thanh Toán";
+            this.btnThanhToan.Text = "💳 Thanh Toán";
             this.btnThanhToan.UseVisualStyleBackColor = false;
             this.btnThanhToan.Click += new System.EventHandler(this.btnThanhToan_Click);
             // 
@@ -314,28 +314,9 @@
             this.btnThemDivhVu.Name = "btnThemDivhVu";
             this.btnThemDivhVu.Size = new System.Drawing.Size(240, 35);
             this.btnThemDivhVu.TabIndex = 35;
-            this.btnThemDivhVu.Text = "Thêm Dịch Vụ";
+            this.btnThemDivhVu.Text = "➕ Thêm Dịch Vụ";
             this.btnThemDivhVu.UseVisualStyleBackColor = false;
             this.btnThemDivhVu.Click += new System.EventHandler(this.btnThemDivhVu_Click);
-            // 
-            // btnQuayLai
-            // 
-            this.btnQuayLai.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnQuayLai.BackColor = System.Drawing.Color.White;
-            this.btnQuayLai.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnQuayLai.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.btnQuayLai.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnQuayLai.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnQuayLai.Image = global::TrangChu.Properties.Resources.Screenshot_2025_12_14_150219_removebg_preview;
-            this.btnQuayLai.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnQuayLai.Location = new System.Drawing.Point(0, 581);
-            this.btnQuayLai.Name = "btnQuayLai";
-            this.btnQuayLai.Size = new System.Drawing.Size(100, 30);
-            this.btnQuayLai.TabIndex = 26;
-            this.btnQuayLai.Text = "Quay Lại";
-            this.btnQuayLai.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnQuayLai.UseVisualStyleBackColor = false;
-            this.btnQuayLai.Click += new System.EventHandler(this.btnQuayLai_Click);
             // 
             // txtDonGia
             // 
@@ -514,103 +495,36 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(445, 175);
+            this.label6.Location = new System.Drawing.Point(422, 186);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(45, 19);
             this.label6.TabIndex = 12;
             this.label6.Text = "Sân 5";
-            // 
-            // btnSan1
-            // 
-            this.btnSan1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSan1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSan1.Image = ((System.Drawing.Image)(resources.GetObject("btnSan1.Image")));
-            this.btnSan1.Location = new System.Drawing.Point(40, 25);
-            this.btnSan1.Name = "btnSan1";
-            this.btnSan1.Size = new System.Drawing.Size(100, 55);
-            this.btnSan1.TabIndex = 14;
-            this.btnSan1.UseVisualStyleBackColor = true;
-            // 
-            // btnSan2
-            // 
-            this.btnSan2.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSan2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSan2.Image = ((System.Drawing.Image)(resources.GetObject("btnSan2.Image")));
-            this.btnSan2.Location = new System.Drawing.Point(233, 24);
-            this.btnSan2.Name = "btnSan2";
-            this.btnSan2.Size = new System.Drawing.Size(100, 55);
-            this.btnSan2.TabIndex = 15;
-            this.btnSan2.UseVisualStyleBackColor = true;
-            // 
-            // btnSan3
-            // 
-            this.btnSan3.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSan3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSan3.Image = ((System.Drawing.Image)(resources.GetObject("btnSan3.Image")));
-            this.btnSan3.Location = new System.Drawing.Point(40, 116);
-            this.btnSan3.Name = "btnSan3";
-            this.btnSan3.Size = new System.Drawing.Size(100, 55);
-            this.btnSan3.TabIndex = 16;
-            this.btnSan3.UseVisualStyleBackColor = true;
-            // 
-            // btnSan4
-            // 
-            this.btnSan4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSan4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSan4.Image = ((System.Drawing.Image)(resources.GetObject("btnSan4.Image")));
-            this.btnSan4.Location = new System.Drawing.Point(233, 115);
-            this.btnSan4.Name = "btnSan4";
-            this.btnSan4.Size = new System.Drawing.Size(100, 55);
-            this.btnSan4.TabIndex = 17;
-            this.btnSan4.UseVisualStyleBackColor = true;
-            // 
-            // btnSan5
-            // 
-            this.btnSan5.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSan5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSan5.Image = ((System.Drawing.Image)(resources.GetObject("btnSan5.Image")));
-            this.btnSan5.Location = new System.Drawing.Point(414, 23);
-            this.btnSan5.Name = "btnSan5";
-            this.btnSan5.Size = new System.Drawing.Size(100, 147);
-            this.btnSan5.TabIndex = 18;
-            this.btnSan5.UseVisualStyleBackColor = true;
-            // 
-            // btnSan6
-            // 
-            this.btnSan6.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSan6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSan6.Image = ((System.Drawing.Image)(resources.GetObject("btnSan6.Image")));
-            this.btnSan6.Location = new System.Drawing.Point(596, 24);
-            this.btnSan6.Name = "btnSan6";
-            this.btnSan6.Size = new System.Drawing.Size(100, 146);
-            this.btnSan6.TabIndex = 19;
-            this.btnSan6.UseVisualStyleBackColor = true;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.label12.ForeColor = System.Drawing.Color.DarkGreen;
-            this.label12.Location = new System.Drawing.Point(148, 87);
+            this.label12.Location = new System.Drawing.Point(141, 87);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(70, 20);
+            this.label12.Size = new System.Drawing.Size(92, 20);
             this.label12.TabIndex = 35;
-            this.label12.Text = "SÂN 5v5";
+            this.label12.Text = "⚽SÂN 5v5";
             // 
             // label16
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.label16.ForeColor = System.Drawing.Color.Green;
-            this.label16.Location = new System.Drawing.Point(520, 94);
+            this.label16.Location = new System.Drawing.Point(498, 99);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(70, 20);
+            this.label16.Size = new System.Drawing.Size(92, 20);
             this.label16.TabIndex = 36;
-            this.label16.Text = "SÂN 7v7";
+            this.label16.Text = "⚽SÂN 7v7";
             // 
             // txtTimKiem
             // 
-            this.txtTimKiem.TextChanged += new System.EventHandler(this.TxtTimKiem_TextChanged);
             this.txtTimKiem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTimKiem.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtTimKiem.Font = new System.Drawing.Font("Segoe UI", 10F);
@@ -629,14 +543,12 @@
             this.btnTaiLai.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
             this.btnTaiLai.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTaiLai.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnTaiLai.Image = ((System.Drawing.Image)(resources.GetObject("btnTaiLai.Image")));
             this.btnTaiLai.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTaiLai.Location = new System.Drawing.Point(633, 207);
+            this.btnTaiLai.Location = new System.Drawing.Point(633, 212);
             this.btnTaiLai.Name = "btnTaiLai";
-            this.btnTaiLai.Size = new System.Drawing.Size(90, 30);
+            this.btnTaiLai.Size = new System.Drawing.Size(90, 25);
             this.btnTaiLai.TabIndex = 38;
-            this.btnTaiLai.Text = "Tải Lại";
-            this.btnTaiLai.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnTaiLai.Text = "🔄 Tải Lại";
             this.btnTaiLai.UseVisualStyleBackColor = false;
             this.btnTaiLai.Click += new System.EventHandler(this.btnTaiLai_Click);
             // 
@@ -672,11 +584,96 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(360, 219);
+            this.label13.Location = new System.Drawing.Point(340, 218);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(76, 19);
+            this.label13.Size = new System.Drawing.Size(96, 19);
             this.label13.TabIndex = 40;
-            this.label13.Text = "Tìm Kiếm:";
+            this.label13.Text = "🔍Tìm Kiếm:";
+            // 
+            // btnSan6
+            // 
+            this.btnSan6.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSan6.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSan6.Image = ((System.Drawing.Image)(resources.GetObject("btnSan6.Image")));
+            this.btnSan6.Location = new System.Drawing.Point(596, 24);
+            this.btnSan6.Name = "btnSan6";
+            this.btnSan6.Size = new System.Drawing.Size(100, 146);
+            this.btnSan6.TabIndex = 19;
+            this.btnSan6.UseVisualStyleBackColor = true;
+            // 
+            // btnSan5
+            // 
+            this.btnSan5.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSan5.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSan5.Image = ((System.Drawing.Image)(resources.GetObject("btnSan5.Image")));
+            this.btnSan5.Location = new System.Drawing.Point(391, 34);
+            this.btnSan5.Name = "btnSan5";
+            this.btnSan5.Size = new System.Drawing.Size(100, 147);
+            this.btnSan5.TabIndex = 18;
+            this.btnSan5.UseVisualStyleBackColor = true;
+            // 
+            // btnSan4
+            // 
+            this.btnSan4.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSan4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSan4.Image = ((System.Drawing.Image)(resources.GetObject("btnSan4.Image")));
+            this.btnSan4.Location = new System.Drawing.Point(233, 115);
+            this.btnSan4.Name = "btnSan4";
+            this.btnSan4.Size = new System.Drawing.Size(100, 55);
+            this.btnSan4.TabIndex = 17;
+            this.btnSan4.UseVisualStyleBackColor = true;
+            // 
+            // btnSan3
+            // 
+            this.btnSan3.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSan3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSan3.Image = ((System.Drawing.Image)(resources.GetObject("btnSan3.Image")));
+            this.btnSan3.Location = new System.Drawing.Point(40, 116);
+            this.btnSan3.Name = "btnSan3";
+            this.btnSan3.Size = new System.Drawing.Size(100, 55);
+            this.btnSan3.TabIndex = 16;
+            this.btnSan3.UseVisualStyleBackColor = true;
+            // 
+            // btnSan2
+            // 
+            this.btnSan2.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSan2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSan2.Image = ((System.Drawing.Image)(resources.GetObject("btnSan2.Image")));
+            this.btnSan2.Location = new System.Drawing.Point(233, 24);
+            this.btnSan2.Name = "btnSan2";
+            this.btnSan2.Size = new System.Drawing.Size(100, 55);
+            this.btnSan2.TabIndex = 15;
+            this.btnSan2.UseVisualStyleBackColor = true;
+            // 
+            // btnSan1
+            // 
+            this.btnSan1.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnSan1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSan1.Image = ((System.Drawing.Image)(resources.GetObject("btnSan1.Image")));
+            this.btnSan1.Location = new System.Drawing.Point(40, 25);
+            this.btnSan1.Name = "btnSan1";
+            this.btnSan1.Size = new System.Drawing.Size(100, 55);
+            this.btnSan1.TabIndex = 14;
+            this.btnSan1.UseVisualStyleBackColor = true;
+            // 
+            // btnQuayLai
+            // 
+            this.btnQuayLai.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnQuayLai.BackColor = System.Drawing.Color.White;
+            this.btnQuayLai.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnQuayLai.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btnQuayLai.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnQuayLai.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnQuayLai.Image = global::TrangChu.Properties.Resources.Screenshot_2025_12_14_150219_removebg_preview;
+            this.btnQuayLai.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnQuayLai.Location = new System.Drawing.Point(0, 581);
+            this.btnQuayLai.Name = "btnQuayLai";
+            this.btnQuayLai.Size = new System.Drawing.Size(100, 30);
+            this.btnQuayLai.TabIndex = 26;
+            this.btnQuayLai.Text = "Quay Lại";
+            this.btnQuayLai.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnQuayLai.UseVisualStyleBackColor = false;
+            this.btnQuayLai.Click += new System.EventHandler(this.btnQuayLai_Click);
             // 
             // LichDat
             // 
