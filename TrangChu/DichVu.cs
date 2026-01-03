@@ -282,7 +282,7 @@ namespace TrangChu
             {
                 if (dtGioHang.Rows.Count == 0)
                 {
-                    MessageBox.Show("❌ Giỏ hàng trống! Vui lòng thêm dịch vụ trước khi thanh toán.",
+                    MessageBox.Show("❌ Giỏ hàng trống!!!",
                         "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
@@ -301,7 +301,7 @@ namespace TrangChu
                 }
                 if (string.IsNullOrWhiteSpace(maLich))
                 {
-                    MessageBox.Show("❌ Vui lòng chọn lịch đặt sân! (Lịch đặt là bắt buộc)",
+                    MessageBox.Show("❌ Vui lòng chọn lịch đặt sân!!!",
                         "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     cbxLichDat.Focus();
                     return;
@@ -312,8 +312,7 @@ namespace TrangChu
                 
                 if (lichDatVerify == null)
                 {
-                    MessageBox.Show("❌ Lịch đặt không tồn tại trong hệ thống!",
-                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("❌ Lịch đặt không tồn tại trong hệ thống!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
                 // ✅ KIỂM TRA TRẠNG THÁI: PHẢI LÀ "ĐÃ ĐẶT"
@@ -438,12 +437,8 @@ namespace TrangChu
                     }else{
                         MessageBox.Show("❌ Lỗi thêm dịch vụ vào database!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
-                }catch (Exception exBus){
-                    MessageBox.Show($"❌ Lỗi từ BUS: {exBus.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }catch (Exception ex){
-                MessageBox.Show("❌ Lỗi thêm dịch vụ:\n" + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                }catch (Exception exBus){}
+            }catch (Exception ex){}
         }
 
         private void btnSuaDVu_Click(object sender, EventArgs e)
@@ -525,9 +520,7 @@ namespace TrangChu
                     return;
                 }
 
-                DialogResult result = MessageBox.Show(
-                    $"Bạn có chắc chắn muốn xóa dịch vụ [{maDV}] - {tenDV}?\n\nHành động này không thể hoàn tác!",
-                    "Xác Nhận Xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult result = MessageBox.Show($"Bạn có chắc chắn muốn xóa dịch vụ [{maDV}] - {tenDV}?\n\nHành động này không thể hoàn tác!","Xác Nhận Xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {

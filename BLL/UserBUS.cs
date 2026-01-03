@@ -9,25 +9,24 @@ namespace BUS
     {
         private Model1 db = new Model1();
 
-        // ===== LOGIN =====
+        // LOGIN 
         public User Login(string username, string password)
         {
             try
             {
-                // ===== LẤY USER TỪ DATABASE =====
+                //  LẤY USER TỪ DATABASE 
                 var user = db.Users.FirstOrDefault(u => u.ID == username);
                 
                 if (user == null)
                     return null;
 
-                // ===== CỐ GẮNG GIẢI MÃ PASSWORD =====
+                //CỐ GẮNG GIẢI MÃ PASSWORD 
                 string decryptedPassword = AES.DecryptPassword(user.Password);
 
-                // ===== SO SÁNH VỚI PASSWORD NHẬP VÀO =====
+                // SO SÁNH VỚI PASSWORD NHẬP VÀO 
                 if (decryptedPassword == password)
                     return user;
 
-                // ===== NẾU GIẢI MÃ THẤT BẠI (PASSWORD CŨ PLAINTEXT), SO SÁNH TRỰC TIẾP =====
                 if (user.Password == password)
                     return user;
 
@@ -39,7 +38,6 @@ namespace BUS
             }
         }
 
-        // ===== GET ALL USERS =====
         public List<User> GetAll()
         {
             try
@@ -52,7 +50,6 @@ namespace BUS
             }
         }
 
-        // ===== GET USER BY ID =====
         public User GetByID(string id)
         {
             try
@@ -65,7 +62,6 @@ namespace BUS
             }
         }
 
-        // ===== ADD USER =====
         public bool Insert(User newUser)
         {
             try
@@ -94,7 +90,6 @@ namespace BUS
             }
         }
 
-        // ===== UPDATE USER =====
         public bool Update(User user)
         {
             try
@@ -109,7 +104,6 @@ namespace BUS
                 if (item == null)
                     throw new Exception($"Không tìm thấy tài khoản '{user.ID}'");
 
-                // Cập nhật thông tin
                 item.Password = user.Password;
                 item.Role = user.Role;
                 item.TenNguoiDung = user.TenNguoiDung;
@@ -123,7 +117,6 @@ namespace BUS
             }
         }
 
-        // ===== DELETE USER =====
         public bool Delete(string id)
         {
             try
@@ -145,7 +138,6 @@ namespace BUS
             }
         }
 
-        // ===== SEARCH USER =====
         public List<User> Search(string keyword)
         {
             try

@@ -14,7 +14,6 @@ namespace BUS
             return db.DichVus.ToList();
         }
 
-        // Alias GetAllDichVu để tương thích
         public List<DichVu> GetAllDichVu()
         {
             return GetAll();
@@ -36,7 +35,6 @@ namespace BUS
                 if (dv == null)
                     return false;
 
-                // ===== KIỂM TRA XEM DỊCH VỤ CÓ ĐƯỢC SỬ DỤNG TRONG HÓA ĐƠN KHÔNG =====
                 var isUsed = db.CT_HoaDon_DichVu.Any(x => x.MaDV == maDV);
                 if (isUsed)
                 {
@@ -61,7 +59,6 @@ namespace BUS
 
             existingDV.TenDV = dichVu.TenDV;
             existingDV.DonGia = dichVu.DonGia;
-            // If you have DonVi or other fields, update them here as needed
 
             db.SaveChanges();
             return true;
@@ -89,18 +86,15 @@ namespace BUS
                 if (listChiTiet == null || listChiTiet.Count == 0)
                     return listChiTiet;
 
-                // ===== LẤY DANH SÁCH MÃ DỊCH VỤ =====
                 var maDichVuList = listChiTiet.Select(x => x.MaDV).Distinct().ToList();
 
                 if (maDichVuList.Count == 0)
                     return listChiTiet;
 
-                // ===== LOAD TỪ DATABASE =====
                 var dichVuFromDb = db.DichVus
                     .Where(x => maDichVuList.Contains(x.MaDV))
                     .ToList();
 
-                // ===== CẬP NHẬT NAVIGATION PROPERTY =====
                 foreach (var ct in listChiTiet)
                 {
                     var dv = dichVuFromDb.FirstOrDefault(x => x.MaDV == ct.MaDV);

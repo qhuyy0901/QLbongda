@@ -226,7 +226,7 @@ namespace TrangChu
                 else if (columnName == "clGioKetThuc") propName = "GioKT";
                 else if (columnName == "clDonGiaThucTe") propName = "DonGiaThucTe";
                 else if (columnName == "clTrangThai") propName = "TrangThai";
-                else return; // Không tìm thấy cột tương ứng
+                else return; 
 
                 if (sortOrder == SortOrder.Ascending)
                     currentData = currentData.OrderBy(x => GetPropertyValue(x, propName)).ToList();

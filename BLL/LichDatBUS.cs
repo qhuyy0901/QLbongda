@@ -12,7 +12,6 @@ namespace BUS
     {
         private Model1 db = new Model1();
 
-        // ===== TỰ ĐỘNG SINH MÃ LỊCH =====
         private string GenerateMaLich()
         {
             try
@@ -34,7 +33,7 @@ namespace BUS
             }
         }
 
-        // ===== VALIDATE TÊN KHÁCH HÀNG =====
+        //VALIDATE TÊN KHÁCH HÀNG
         private bool IsValidCustomerName(string tenKH)
         {
             if (string.IsNullOrWhiteSpace(tenKH))
@@ -44,12 +43,12 @@ namespace BUS
 
             if (!Regex.IsMatch(cleanName, @"^[a-zA-ZÀ-ỹ\s]+$"))
             {
-                throw new Exception("❌ Tên khách hàng chỉ được phép chứa chữ cái và khoảng trắng!\n\n💡 Không được dùng số hoặc ký tự đặc biệt.");
+                throw new Exception("❌ 💡 Không được dùng số hoặc ký tự đặc biệt va số nha!!!.");
             }
 
             if (cleanName.Length < 2 || cleanName.Length > 50)
             {
-                throw new Exception("❌ Tên khách hàng phải từ 2 đến 50 ký tự");
+                throw new Exception("❌ Tên khách hàng phải từ 1 đến 50 ký tự");
             }
 
             return true;
@@ -75,7 +74,7 @@ namespace BUS
 
             if (!cleanPhone.StartsWith("0"))
             {
-                throw new Exception("❌ Số điện thoại phải bắt đầu bằng số 0!\n\n💡 Ví dụ: 0912345678");
+                throw new Exception("❌ Số điện thoại phải bắt đầu bằng số 0 mới đúng nha!!!\n");
             }
 
             return true;
@@ -93,7 +92,7 @@ namespace BUS
 
 
 
-        // ===== VALIDATE MÃ SÂN (CHỈ CHẤP NHẬN SAN1-SAN6) =====
+        // vALIDATE MÃ SÂN CHỈ CHẤP NHẬN SAN1-SAN6
         private bool IsValidSanCode(string maSan)
         {
             if (string.IsNullOrWhiteSpace(maSan))
@@ -101,17 +100,13 @@ namespace BUS
 
             string cleanMaSan = maSan.Trim();
 
-            // ===== DANH SÁCH SÂN HỢP LỆ (CÓ THỂ VIẾT THƯỜNG HOẶC HOA) =====
             string[] validSans = { "San1", "San2", "San3", "San4", "San5", "San6" };
 
-            // ===== KIỂM TRA CÓ TRONG DANH SÁCH KHÔNG (SO SÁNH CASE-INSENSITIVE) =====
             bool isValidSan = validSans.Any(s => s.Equals(cleanMaSan, StringComparison.OrdinalIgnoreCase));
             
             if (!isValidSan)
             {
-                throw new Exception(
-                    $"❌ Mã sân '{maSan}' không hợp lệ!\n\n" +
-                    $"💡 Sân hợp lệ: {string.Join(", ", validSans)}"
+                throw new Exception( $"❌ Mã sân '{maSan}' không hợp lệ!\n\n" +  $"💡 Sân hợp lệ: {string.Join(", ", validSans)}"
                 );
             }
 
@@ -124,16 +119,12 @@ namespace BUS
             
             if (sanBong == null)
             {
-                throw new Exception(
-                    $"❌ Sân '{cleanMaSan}' không tồn tại hoặc không hoạt động!\n\n" +
-                    $"💡 Sân hợp lệ: {string.Join(", ", validSans)}"
+                throw new Exception(  $"❌ Sân '{cleanMaSan}' không tồn tại hoặc không hoạt động!\n\n" + $"💡 Sân hợp lệ: {string.Join(", ", validSans)}"
                 );
             }
 
             return true;
         }
-
-        // ===== VALIDATE ĐƠN GIÁ =====
         private bool IsValidPrice(decimal? price)
         {
             if (!price.HasValue)
@@ -148,7 +139,7 @@ namespace BUS
                 throw new Exception("❌ Đơn giá phải lớn hơn 0!");
 
             if (priceValue > 999999999)
-                throw new Exception("❌ Đơn giá quá lớn (tối đa 999,999,999)!");
+                throw new Exception("❌ Đơn giá quá lớn phải bé hơn 999999999!");
 
             return true;
         }
@@ -160,14 +151,12 @@ namespace BUS
             {
                 DateTime ngay = ngayDat.Date;
 
-                // ===== CHỈ KIỂM TRA TRÙNG: CÙNG SÂN + CÙNG NGÀY + CÙNG KHUNG GIỜ =====
-                // KHÔNG kiểm tra SĐT - cho phép cùng 1 SĐT đặt nhiều sân khác nhau
                 var query = db.LichDats.Where(x =>
-                    x.MaSan == maSan &&                                    // ✅ CÙNG SÂN
+                    x.MaSan == maSan &&                                    
                     x.NgayDat.HasValue &&
-                    x.NgayDat.Value == ngay &&                             // ✅ CÙNG NGÀY
+                    x.NgayDat.Value == ngay &&                       
                     gioBD < x.GioKT &&
-                    gioKT > x.GioBD &&                                     // ✅ TRÙNG KHUNG GIỜ
+                    gioKT > x.GioBD &&                               
                     x.TrangThai != "Đã hủy" &&
                     x.TrangThai != "Đã xóa"
                 );
@@ -178,9 +167,7 @@ namespace BUS
                 }
 
                 return query.Any();
-            }
-            catch
-            {
+           }catch {
                 return false;
             }
         }
@@ -205,16 +192,7 @@ namespace BUS
 
                 var result = db.LichDats
                     .Where(x => x.TrangThai != "Đã xóa")
-                    .Where(x =>
-                        x.MaLich.ToLower().Contains(searchTerm) ||
-                        x.MaSan.ToLower().Contains(searchTerm) ||
-                        x.SDT_KH.ToLower().Contains(searchTerm) ||
-                        x.TenKH.ToLower().Contains(searchTerm) ||
-                        x.TrangThai.ToLower().Contains(searchTerm)
-                    )
-                    .OrderByDescending(x => x.NgayDat)
-                    .ThenByDescending(x => x.GioBD)
-                    .ToList();
+                    .Where(x => x.MaLich.ToLower().Contains(searchTerm) || x.MaSan.ToLower().Contains(searchTerm) ||x.SDT_KH.ToLower().Contains(searchTerm) ||x.TenKH.ToLower().Contains(searchTerm) || x.TrangThai.ToLower().Contains(searchTerm)).OrderByDescending(x => x.NgayDat).ThenByDescending(x => x.GioBD).ToList();
 
                 return result;
             }
@@ -223,9 +201,6 @@ namespace BUS
                 return GetAll();
             }
         }
-
-        // ===== XÓA HOẶC BỎ DÙNG METHOD CŨ =====
-        // Giữ lại nhưng đổi tên để tránh nhầm lẫn
         [Obsolete("Không còn sử dụng - sử dụng IsTimeSlotConflict thay thế")]
         public bool IsPhoneNumberAlreadyBooked(string sdt, DateTime ngayDat)
         {
@@ -233,17 +208,8 @@ namespace BUS
             {
                 if (string.IsNullOrWhiteSpace(sdt))
                     return false;
-
                 DateTime ngay = ngayDat.Date;
-
-                bool exists = db.LichDats.Any(x =>
-                    x.SDT_KH == sdt &&
-                    x.NgayDat.HasValue &&
-                    x.NgayDat.Value == ngay &&
-                    x.TrangThai != "Đã hủy" &&
-                    x.TrangThai != "Đã xóa"
-                );
-
+                bool exists = db.LichDats.Any(x =>x.SDT_KH == sdt &&x.NgayDat.HasValue &&x.NgayDat.Value == ngay &&x.TrangThai != "Đã hủy" &&x.TrangThai != "Đã xóa");
                 return exists;
             }
             catch
@@ -256,7 +222,6 @@ namespace BUS
         {
             try
             {
-                // ===== VALIDATE THỜI GIAN =====
                 if (!lich.NgayDat.HasValue)
                     throw new Exception("❌ Chưa chọn ngày đặt");
 
@@ -268,25 +233,19 @@ namespace BUS
 
                 DateTime ngay = lich.NgayDat.Value.Date;
 
-                // ===== VALIDATE TÊN KHÁCH HÀNG =====
                 IsValidCustomerName(lich.TenKH);
 
-                // ===== VALIDATE SỐ ĐIỆN THOẠI =====
                 IsValidPhoneNumberFormat(lich.SDT_KH);
 
-                // ===== VALIDATE MÃ SÂN =====
                 IsValidSanCode(lich.MaSan);
 
-                // ===== VALIDATE ĐƠN GIÁ =====
                 IsValidPrice(lich.DonGiaThucTe);
 
-                // ===== KIỂM TRA TRÙNG SÂN VÀ KHUNG GIỜ =====
                 if (IsTimeSlotConflict(lich.MaSan, lich.NgayDat.Value, lich.GioBD.Value, lich.GioKT.Value))
                 {
                     throw new Exception($"❌ Sân {lich.MaSan} vào khung giờ {lich.GioBD}h - {lich.GioKT}h ngày {ngay:dd/MM/yyyy} đã được đặt rồi!\n\n💡 Vui lòng chọn khung giờ khác hoặc sân khác.");
                 }
 
-                // ===== CHECK / TẠO KHÁCH HÀNG =====
                 if (!string.IsNullOrWhiteSpace(lich.SDT_KH))
                 {
                     var kh = db.KhachHangs.FirstOrDefault(x => x.SDT_KH == lich.SDT_KH);
@@ -307,7 +266,6 @@ namespace BUS
                 if (string.IsNullOrWhiteSpace(lich.TrangThai))
                     lich.TrangThai = "Đã đặt";
 
-                // ===== SINH MÃ LỊCH TỰ ĐỘNG =====
                 lich.MaLich = GenerateMaLich();
 
                 db.LichDats.Add(lich);
@@ -329,23 +287,17 @@ namespace BUS
                 if (item == null) 
                     throw new Exception("❌ Không tìm thấy mã lịch này");
 
-                // ===== VALIDATE THỜI GIAN =====
                 if (lich.GioBD >= lich.GioKT)
                     throw new Exception("❌ Giờ bắt đầu phải nhỏ hơn giờ kết thúc");
 
-                // ===== VALIDATE TÊN KHÁCH HÀNG =====
                 IsValidCustomerName(lich.TenKH);
 
-                // ===== VALIDATE SỐ ĐIỆN THOẠI =====
                 IsValidPhoneNumberFormat(lich.SDT_KH);
 
-                // ===== VALIDATE MÃ SÂN =====
                 IsValidSanCode(lich.MaSan);
 
-                // ===== VALIDATE ĐƠN GIÁ =====
                 IsValidPrice(lich.DonGiaThucTe);
 
-                // ===== KIỂM TRA TRÙNG LẠP NẾU THAY ĐỔI SÂN HOẶC THỜI GIAN =====
                 if (lich.MaSan != item.MaSan || 
                     lich.NgayDat != item.NgayDat || 
                     lich.GioBD != item.GioBD || 
@@ -414,7 +366,7 @@ namespace BUS
             }
         }
 
-        // ===== LẤY DANH SÁCH LỊCH THEO TRẠNG THÁI =====
+        // LẤY DANH SÁCH LỊCH THEO TRẠNG THÁI
         public List<DAL.LichDat> GetByStatus(string trangThai)
         {
             try
@@ -423,11 +375,7 @@ namespace BUS
                     return GetAll();
 
                 var result = db.LichDats
-                    .Where(x => x.TrangThai == trangThai && x.TrangThai != "Đã xóa")
-                    .OrderByDescending(x => x.NgayDat)
-                    .ThenByDescending(x => x.GioBD)
-                    .ToList();
-
+                    .Where(x => x.TrangThai == trangThai && x.TrangThai != "Đã xóa").OrderByDescending(x => x.NgayDat).ThenByDescending(x => x.GioBD) .ToList();
                 return result;
             }
             catch

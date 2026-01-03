@@ -31,7 +31,6 @@ namespace TrangChu
         {
             InitializeComponent();
             this.Load += CT_HoaDon_DichVu_Load;
-            btnThanhToan.Click += BtnThanhToan_Click;
             btnHuy.Click += BtnHuy_Click;
         }
 
@@ -247,22 +246,50 @@ namespace TrangChu
             }
         }
 
-        private void BtnThanhToan_Click(object sender, EventArgs e)
+
+
+        private void BtnHuy_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Bạn có muốn hủy thanh toán?","Xác Nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                IsThanhToanThanhCong = false;
+                this.Close();
+            }
+        }
+
+
+        private void cbxHinhThucTT_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+      string hinhThuc = cbxHinhThucTT.SelectedItem?.ToString() ?? "";
+
+                if (hinhThuc == "Chuyển khoản")
+                {
+                    HienThiQRCode();
+                } else {
+                    picQRCode.Visible = false;
+                    lblQRCode.Visible = false;
+                }
+        }
+
+        private System.Windows.Forms.Label lblEmail;
+        private System.Windows.Forms.TextBox txtEmail;
+
+        private void btnThanhToan_Click_1(object sender, EventArgs e)
         {
             try
             {
-                // ===== KIỂM TRA LỊCH ĐẶT TRƯỚC KHI THANH TOÁN =====
                 if (string.IsNullOrWhiteSpace(maLich))
                 {
-                    MessageBox.Show("❌ Vui lòng chọn lịch đặt trước khi thanh toán!",
-                        "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("❌ Vui lòng chọn lịch đặt trước khi thanh toán!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
                 string trangThaiHienTai = busHoaDon.GetTrangThaiLichDat(maLich);
                 if (trangThaiHienTai != "Đã đặt")
                 {
-                    MessageBox.Show($"❌ Không thể thanh toán!\n\n" +$"💡 Chỉ có thể thanh toán lịch ở trạng thái 'Đã đặt'.","Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"❌ Không thể thanh toán!\n\n" + $"💡 Chỉ có thể thanh toán lịch ở trạng thái 'Đã đặt'.", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
@@ -271,9 +298,9 @@ namespace TrangChu
 
                 string hinhThucTT = cbxHinhThucTT.SelectedItem?.ToString() ?? "Tiền mặt";
 
-                string message = $"✔ XÁC NHẬN THANH TOÁN\n\n" + $"Mã lịch: {maLich}\n" +$"Hình thức TT: {hinhThucTT}\n" + $"Tổng tiền: {tongTien:N0} VNĐ\n\n" + $"Bạn có muốn xác nhận?";
+                string message = $"✔ XÁC NHẬN THANH TOÁN\n\n" + $"Mã lịch: {maLich}\n" + $"Hình thức TT: {hinhThucTT}\n" + $"Tổng tiền: {tongTien:N0} VNĐ\n\n" + $"Bạn có muốn xác nhận?";
 
-                DialogResult result = MessageBox.Show(message, "Xác Nhận Thanh Toán",MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                DialogResult result = MessageBox.Show(message, "Xác Nhận Thanh Toán", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
                 if (result == DialogResult.Yes)
                 {
@@ -302,7 +329,7 @@ namespace TrangChu
 
                     if (success)
                     {
-                       
+
                         // ===== GỬI EMAIL NẾU CÓ =====
                         string emailKH = txtEmaill.Text.Trim();
                         if (!string.IsNullOrWhiteSpace(emailKH))
@@ -324,20 +351,14 @@ namespace TrangChu
 
                                 if (emailSent)
                                 {
-                                    MessageBox.Show($"📧 Email xác nhận đã được gửi đến:\n{emailKH}",
-                                        "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    MessageBox.Show($"📧 Email xác nhận đã được gửi đến:\n{emailKH}","Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                                 }
                                 else
                                 {
-                                    MessageBox.Show($"⚠️ Lỗi gửi email đến {emailKH}.\n\n💡 Có thể do email không hợp lệ hoặc lỗi kết nối mạng.",
-                                        "Cảnh Báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    MessageBox.Show($"⚠️ Lỗi gửi email đến {emailKH}.\n\n💡 Có thể do email không hợp lệ hoặc lỗi kết nối mạng.","Cảnh Báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                                 }
                             }
-                            catch (Exception emailEx)
-                            {
-                                MessageBox.Show($"⚠️ Lỗi gửi email: {emailEx.Message}",
-                                    "Cảnh Báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                            }
+                            catch (Exception emailEx) { }
                         }
 
                         IsThanhToanThanhCong = true;
@@ -347,7 +368,7 @@ namespace TrangChu
                     {
                         // ✅ KIỂM TRA LẠI TRẠNG THÁI ĐỂ XÁC ĐỊNH NGUYÊN NHÂN
                         string trangThaiSau = busHoaDon.GetTrangThaiLichDat(maLich);
-                        
+
                         string errorDetail = "";
                         if (trangThaiSau == "Đã thanh toán" || trangThaiSau == "Hoàn Thành")
                         {
@@ -357,51 +378,13 @@ namespace TrangChu
                         {
                             errorDetail = $"\n\n💡 Lịch đặt này đã bị hủy!";
                         }
-                        
+
                         MessageBox.Show($"❌ Lỗi lưu hóa đơn vào database!{errorDetail}\n\nVui lòng kiểm tra lại và thử lại.",
                             "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
-            catch (Exception ex){}
+            catch (Exception ex) { }
         }
-
-        private void BtnHuy_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show("Bạn có muốn hủy thanh toán?",
-                "Xác Nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
-            if (result == DialogResult.Yes)
-            {
-                IsThanhToanThanhCong = false;
-                this.Close();
-            }
-        }
-
-
-        private void cbxHinhThucTT_SelectedIndexChanged_1(object sender, EventArgs e)
-        {
-            try
-            {
-                string hinhThuc = cbxHinhThucTT.SelectedItem?.ToString() ?? "";
-
-                if (hinhThuc == "Chuyển khoản")
-                {
-                    HienThiQRCode();
-                }
-                else
-                {
-                    picQRCode.Visible = false;
-                    lblQRCode.Visible = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("❌ Lỗi khi chọn hình thức thanh toán:\n" + ex.Message);
-            }
-        }
-
-        private System.Windows.Forms.Label lblEmail;
-        private System.Windows.Forms.TextBox txtEmail;
     }
 }

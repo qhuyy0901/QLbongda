@@ -9,7 +9,6 @@ namespace BUS
     {
         private Model1 db = new Model1();
 
-        // ===== TỰ ĐỘNG SINH MÃ HÓA ĐƠN =====
         private string GenerateMaHoaDon()
         {
             try
@@ -31,40 +30,37 @@ namespace BUS
             }
         }
 
-        // ===== HÀM THANH TOÁN (TRANSACTION) =====
+        // HÀM THANH TOÁN 
         public bool ThanhToan(HoaDon hd, List<CT_HoaDon_DichVu> listChiTiet)
         {
             using (var transaction = db.Database.BeginTransaction())
             {
                 try
                 {
-                    // ===== VALIDATE DỮ LIỆU =====
                     if (hd == null)
                     {
                         System.Diagnostics.Debug.WriteLine("❌ HoaDon không được null");
                         return false;
                     }
 
-                    // ✅ KIỂM TRA: MaLich bắt buộc phải tồn tại
                     if (string.IsNullOrEmpty(hd.MaLich))
                     {
                         System.Diagnostics.Debug.WriteLine("❌ MaLich không được rỗng - yêu cầu phải có lịch đặt");
                         return false;
                     }
 
-                    // ===== SINH MÃ HÓA ĐƠN TỰ ĐỘNG =====
+                    // SINH MÃ HÓA ĐƠN TỰ ĐỘNG
                     if (string.IsNullOrEmpty(hd.MaHD))
                     {
                         hd.MaHD = GenerateMaHoaDon();
                     }
 
-                    // ===== ĐẢM BẢO CÓ NGÀY GIỜ THANH TOÁN =====
+                    // ĐẢM BẢO CÓ NGÀY GIỜ THANH TOÁN
                     if (!hd.ThoiGianThanhToan.HasValue)
                     {
                         hd.ThoiGianThanhToan = DateTime.Now;
                     }
 
-                    // ✅ KIỂM TRA: MaLich phải tồn tại trong bảng LichDat
                     var lichDat = db.LichDats.FirstOrDefault(x => x.MaLich == hd.MaLich);
                     if (lichDat == null)
                     {
@@ -72,25 +68,21 @@ namespace BUS
                         return false;
                     }
 
-                    // ✅ KIỂM TRA: Lịch đặt phải ở trạng thái "Đã đặt"
                     if (lichDat.TrangThai != "Đã đặt")
                     {
                         System.Diagnostics.Debug.WriteLine($"⚠️ Lịch đặt {hd.MaLich} không ở trạng thái 'Đã đặt'. Trạng thái hiện tại: {lichDat.TrangThai}");
                         return false;
                     }
 
-                    // 1️⃣ LƯU HÓA ĐƠN TRƯỚC
                     db.HoaDons.Add(hd);
                     db.SaveChanges();
                     System.Diagnostics.Debug.WriteLine($"✅ Lưu hóa đơn thành công: {hd.MaHD}");
 
-                    // 2️⃣ LƯU CHI TIẾT HÓA ĐƠN (NẾU CÓ)
                     if (listChiTiet != null && listChiTiet.Count > 0)
                     {
                         int stt = 1;
                         foreach (var item in listChiTiet)
                         {
-                            // ===== SINH MÃ CHI TIẾT =====
                             if (string.IsNullOrEmpty(item.MaCT))
                             {
                                 item.MaCT = $"CT{hd.MaHD.Substring(2)}{stt:D2}";
@@ -99,7 +91,6 @@ namespace BUS
 
                             item.MaHD = hd.MaHD;
 
-                            // ===== ĐẢM BẢO CÓ THÀNH TIỀN =====
                             if (!item.ThanhTien.HasValue || item.ThanhTien == 0)
                             {
                                 if (!string.IsNullOrEmpty(item.MaDV))
@@ -120,7 +111,7 @@ namespace BUS
                                 }
                             }
 
-                            // ===== DETACH ENTITY TRƯỚC KHI ADD ĐỂ TRÁNH CONFLICT =====
+                            // ===== DETACH ENTITY TRƯỚC KHI ADD ĐỂ TRÁNH CONFLICT 
                             var existingItem = db.CT_HoaDon_DichVu.Local.FirstOrDefault(x => x.MaCT == item.MaCT);
                             if (existingItem != null)
                             {
@@ -133,10 +124,9 @@ namespace BUS
                         System.Diagnostics.Debug.WriteLine($"✅ Lưu {listChiTiet.Count} chi tiết dịch vụ thành công");
                     }
 
-                    // 3️⃣ CẬP NHẬT TRẠNG THÁI LỊCH ĐẶT: "Đã đặt" → "Đã thanh toán"
+                    // CẬP NHẬT TRẠNG THÁI "Đã đặt" → "Đã thanh toán"
                     if (!string.IsNullOrEmpty(hd.MaLich))
                     {
-                        // ✅ Re-fetch để đảm bảo không bị lỗi state
                         var lichDatUpdate = db.LichDats.FirstOrDefault(x => x.MaLich == hd.MaLich);
                         if (lichDatUpdate != null)
                         {
@@ -190,7 +180,6 @@ namespace BUS
             }
         }
 
-        // ===== PHƯƠNG THỨC DISPOSE =====
         public void Dispose()
         {
             db?.Dispose();
@@ -205,13 +194,10 @@ namespace BUS
                             where hd.ThoiGianThanhToan.HasValue
                             select new { ct.ThanhTien, hd.ThoiGianThanhToan };
 
-                // ✅ SỬA LẠI ĐOẠN NÀY: Chỉ lọc năm nếu nam > 0
                 if (nam > 0)
                 {
                     query = query.Where(x => x.ThoiGianThanhToan.Value.Year == nam);
                 }
-
-                // Lọc tháng nếu có chọn tháng
                 if (thang > 0)
                 {
                     query = query.Where(x => x.ThoiGianThanhToan.Value.Month == thang);
@@ -228,7 +214,7 @@ namespace BUS
 
 
 
-        // ===== LẤY DANH SÁCH HÓA ĐƠN VỚI THÔNG TIN KHÁCH HÀNG VÀ LỊCH ĐẶT =====
+        // LẤY DANH SÁCH HÓA ĐƠN VỚI THÔNG TIN KHÁCH HÀNG VÀ LỊCH ĐẶT
         public List<dynamic> GetHoaDonWithCustomerInfo()
         {
             try
@@ -263,7 +249,7 @@ namespace BUS
             }
         }
 
-        // ===== LẤY DANH SÁCH HÓA ĐƠN THEO SỐ ĐIỆN THOẠI =====
+        // LẤY DANH SÁCH HÓA ĐƠN THEO SỐ ĐIỆN THOẠI
         public List<dynamic> GetHoaDonBySdt(string sdt)
         {
             try
@@ -302,7 +288,6 @@ namespace BUS
             }
         }
 
-        // ===== LẤY CHI TIẾT HÓA ĐƠN THEO MÃ HÓA ĐƠN =====
         public List<CT_HoaDon_DichVu> GetChiTietHoaDon(string maHD)
         {
             try
@@ -323,7 +308,6 @@ namespace BUS
             }
         }
 
-        // ===== LẤY TRẠNG THÁI LỊCH ĐẶT =====
         public string GetTrangThaiLichDat(string maLich)
         {
             try

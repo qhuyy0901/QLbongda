@@ -106,6 +106,7 @@ namespace TrangChu
             // 
             this.txtSDT.Location = new System.Drawing.Point(100, 101);
             this.txtSDT.Name = "txtSDT";
+            this.txtSDT.ReadOnly = true;
             this.txtSDT.Size = new System.Drawing.Size(145, 20);
             this.txtSDT.TabIndex = 7;
             // 
@@ -122,6 +123,7 @@ namespace TrangChu
             // 
             this.txtTenKH.Location = new System.Drawing.Point(100, 66);
             this.txtTenKH.Name = "txtTenKH";
+            this.txtTenKH.ReadOnly = true;
             this.txtTenKH.Size = new System.Drawing.Size(145, 20);
             this.txtTenKH.TabIndex = 5;
             // 
@@ -133,33 +135,9 @@ namespace TrangChu
             this.lblTenKH.Size = new System.Drawing.Size(47, 13);
             this.lblTenKH.TabIndex = 4;
             this.lblTenKH.Text = "Tên KH:";
-
-
-
-            txtTenKH.ReadOnly = true;
-            txtSDT.ReadOnly = true;
-            txtTenSan.ReadOnly = true;
-            txtKhungGio.ReadOnly = true;
-            txtTienSan.ReadOnly = true;
-            cbxMaLich.Enabled = true;
             // 
             // cbxMaLich
             // 
-
-
-
-            cbxHinhThucTT.Items.Clear();
-            cbxHinhThucTT.Items.Add("Tiền mặt");
-            cbxHinhThucTT.Items.Add("Chuyển khoản");
-            cbxHinhThucTT.SelectedIndex = 0;
-
-            dgvCTDichVu.ReadOnly = true;
-            dgvCTDichVu.AllowUserToAddRows = false;
-            dgvCTDichVu.AllowUserToDeleteRows = false;
-            dgvCTDichVu.AllowUserToResizeRows = false;
-            dgvCTDichVu.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-
-
             this.cbxMaLich.Enabled = false;
             this.cbxMaLich.Location = new System.Drawing.Point(100, 31);
             this.cbxMaLich.Name = "cbxMaLich";
@@ -255,11 +233,15 @@ namespace TrangChu
             // 
             // dgvCTDichVu
             // 
+            this.dgvCTDichVu.AllowUserToAddRows = false;
+            this.dgvCTDichVu.AllowUserToDeleteRows = false;
+            this.dgvCTDichVu.AllowUserToResizeRows = false;
             this.dgvCTDichVu.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCTDichVu.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvCTDichVu.Location = new System.Drawing.Point(3, 16);
             this.dgvCTDichVu.Name = "dgvCTDichVu";
             this.dgvCTDichVu.ReadOnly = true;
+            this.dgvCTDichVu.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvCTDichVu.Size = new System.Drawing.Size(490, 309);
             this.dgvCTDichVu.TabIndex = 0;
             // 
@@ -331,10 +313,14 @@ namespace TrangChu
             this.btnThanhToan.TabIndex = 8;
             this.btnThanhToan.Text = "💵 THANH TOÁN";
             this.btnThanhToan.UseVisualStyleBackColor = false;
+            this.btnThanhToan.Click += new System.EventHandler(this.btnThanhToan_Click_1);
             // 
             // cbxHinhThucTT
             // 
             this.cbxHinhThucTT.FormattingEnabled = true;
+            this.cbxHinhThucTT.Items.AddRange(new object[] {
+            "Tiền mặt",
+            "Chuyển khoản"});
             this.cbxHinhThucTT.Location = new System.Drawing.Point(426, 31);
             this.cbxHinhThucTT.Name = "cbxHinhThucTT";
             this.cbxHinhThucTT.Size = new System.Drawing.Size(124, 21);

@@ -9,7 +9,6 @@ namespace BUS
     {
         private Model1 db = new Model1();
 
-        // ===== LẤY DANH SÁCH NĂM CÓ DỮ LIỆU =====
         public List<int> GetListYears()
         {
             try
@@ -35,19 +34,16 @@ namespace BUS
             }
         }
 
-        // ===== THỐNG KÊ THEO THÁNG (TRONG 1 NĂM) =====
         public Dictionary<int, decimal> GetRevenueByMonth(int year)
         {
             try
             {
-                // Khởi tạo dict với 12 tháng, giá trị mặc định = 0
                 Dictionary<int, decimal> result = new Dictionary<int, decimal>();
                 for (int month = 1; month <= 12; month++)
                 {
                     result[month] = 0;
                 }
 
-                // Lấy dữ liệu từ database
                 var data = db.HoaDons
                     .Where(x => x.ThoiGianThanhToan.HasValue &&
                                 x.ThoiGianThanhToan.Value.Year == year &&
@@ -60,7 +56,6 @@ namespace BUS
                     })
                     .ToList();
 
-                // Gán giá trị từ database vào dict
                 foreach (var item in data)
                 {
                     if (result.ContainsKey(item.Month))
@@ -83,19 +78,16 @@ namespace BUS
             }
         }
 
-        // ===== THỐNG KÊ THEO NĂM =====
         public Dictionary<int, decimal> GetRevenueByYear(int startYear = 2022, int endYear = 2025)
         {
             try
             {
-                // Khởi tạo dict với các năm
                 Dictionary<int, decimal> result = new Dictionary<int, decimal>();
                 for (int year = startYear; year <= endYear; year++)
                 {
                     result[year] = 0;
                 }
 
-                // Lấy dữ liệu từ database
                 var data = db.HoaDons
                     .Where(x => x.ThoiGianThanhToan.HasValue &&
                                 x.TongTien.HasValue)
@@ -107,7 +99,6 @@ namespace BUS
                     })
                     .ToList();
 
-                // Gán giá trị từ database vào dict
                 foreach (var item in data)
                 {
                     if (result.ContainsKey(item.Year))
@@ -131,7 +122,7 @@ namespace BUS
             }
         }
 
-        // ===== LẤY TỔNG DOANH THU THEO NĂM =====
+        // LẤY TỔNG DOANH THU THEO NĂM 
         public decimal GetTotalRevenueByYear(int year)
         {
             try
@@ -148,7 +139,7 @@ namespace BUS
             }
         }
 
-        // ===== LẤY TỔNG DOANH THU THEO THÁNG =====
+        // LẤY TỔNG DOANH THU THEO THÁNG
         public decimal GetTotalRevenueByMonth(int year, int month)
         {
             try
@@ -166,7 +157,7 @@ namespace BUS
             }
         }
 
-        // ===== TÍNH DOANH THU LỊCH ĐẶT THEO THÁNG =====
+        //  TÍNH DOANH THU LỊCH ĐẶT THEO THÁNG 
         public Dictionary<int, decimal> GetRevenueByMonthFromLichDat(int year)
         {
             try
@@ -178,11 +169,10 @@ namespace BUS
                     result[month] = 0;
                 }
 
-                // ===== LỊCH ĐẶT: Doanh thu từ LichDat (DonGiaThucTe) =====
                 var lichData = db.HoaDons
                     .Where(x => x.ThoiGianThanhToan.HasValue &&
                                 x.ThoiGianThanhToan.Value.Year == year &&
-                                !string.IsNullOrEmpty(x.MaLich))  // Có MaLich = từ lịch đặt
+                                !string.IsNullOrEmpty(x.MaLich))  
                     .GroupBy(x => x.ThoiGianThanhToan.Value.Month)
                     .Select(g => new
                     {
@@ -191,7 +181,6 @@ namespace BUS
                     })
                     .ToList();
 
-                // Gán giá trị từ database vào dict
                 foreach (var item in lichData)
                 {
                     if (result.ContainsKey(item.Month))
@@ -213,19 +202,17 @@ namespace BUS
             }
         }
 
-        // ===== TÍNH DOANH THU DỊCH VỤ THEO THÁNG =====
+        // TÍNH DOANH THU DỊCH VỤ THEO THÁNG
         public Dictionary<int, decimal> GetRevenueByMonthFromDichVu(int year)
         {
             try
             {
-                // Khởi tạo dict với 12 tháng, giá trị mặc định = 0
                 Dictionary<int, decimal> result = new Dictionary<int, decimal>();
                 for (int month = 1; month <= 12; month++)
                 {
                     result[month] = 0;
                 }
 
-                // ===== DỊCH VỤ: Doanh thu từ CT_HoaDon_DichVu =====
                 var dichVuData = db.HoaDons
                     .Where(x => x.ThoiGianThanhToan.HasValue &&
                                 x.ThoiGianThanhToan.Value.Year == year)
@@ -238,7 +225,6 @@ namespace BUS
                     })
                     .ToList();
 
-                // Gán giá trị từ database vào dict
                 foreach (var item in dichVuData)
                 {
                     if (result.ContainsKey(item.Month))
@@ -260,7 +246,7 @@ namespace BUS
             }
         }
 
-        // ===== TÍNH DOANH THU LỊCH ĐẶT THEO NĂM =====
+        // TÍNH DOANH THU LỊCH ĐẶT THEO NĂM 
         public Dictionary<int, decimal> GetRevenueByYearFromLichDat(int startYear = 2022, int endYear = 2025)
         {
             try
@@ -273,7 +259,7 @@ namespace BUS
 
                 var lichData = db.HoaDons
                     .Where(x => x.ThoiGianThanhToan.HasValue &&
-                                !string.IsNullOrEmpty(x.MaLich))  // Có MaLich
+                                !string.IsNullOrEmpty(x.MaLich))  
                     .GroupBy(x => x.ThoiGianThanhToan.Value.Year)
                     .Select(g => new
                     {
@@ -304,7 +290,7 @@ namespace BUS
             }
         }
 
-        // ===== TÍNH DOANH THU DỊCH VỤ THEO NĂM =====
+        // TÍNH DOANH THU DỊCH VỤ THEO NĂM
         public Dictionary<int, decimal> GetRevenueByYearFromDichVu(int startYear = 2022, int endYear = 2025)
         {
             try
@@ -348,7 +334,7 @@ namespace BUS
             }
         }
 
-        // ===== LẤY DOANH THU THEO SÂN (TỔNG) =====
+        // LẤY DOANH THU THEO SÂN TỔNG
         public List<dynamic> GetRevenueBySan()
         {
             try
@@ -387,7 +373,7 @@ namespace BUS
             }
         }
 
-        // ===== LẤY DOANH THU THEO SÂN THEO THÁNG =====
+        // LẤY DOANH THU THEO SÂN THEO THÁNG
         public Dictionary<string, Dictionary<int, decimal>> GetRevenueBySanByMonth(int year)
         {
             try

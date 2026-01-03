@@ -9,11 +9,10 @@ namespace BUS
     /// </summary>
     public static class EmailBUS
     {
-        // ===== CẤU HÌNH EMAIL =====
         private const string SMTP_HOST = "smtp.gmail.com";
         private const int SMTP_PORT = 587;
         private const string SENDER_EMAIL = "qhuyy0901@gmail.com";
-        private const string SENDER_PASSWORD = "mkui tshw tnzy ikux"; // App Password
+        private const string SENDER_PASSWORD = "mkui tshw tnzy ikux";
         private const string SENDER_NAME = "Hệ Thống Quản Lý Sân Bóng";
 
         /// <summary>
@@ -33,18 +32,18 @@ namespace BUS
         {
             try
             {
-                // ===== KIỂM TRA EMAIL HỢP LỆ =====
+                //  KIỂM TRA EMAIL HỢP LỆ 
                 if (string.IsNullOrWhiteSpace(toEmail) || !IsValidEmail(toEmail))
                 {
                     System.Diagnostics.Debug.WriteLine($"❌ Email không hợp lệ: {toEmail}");
                     return false;
                 }
 
-                // ===== TẠO NỘI DUNG EMAIL =====
+                // TẠO NỘI DUNG EMAIL 
                 string subject = $"🎉 Xác Nhận Thanh Toán - {SENDER_NAME}";
                 string body = BuildEmailBody(tenKH, maLich, maSan, khungGio, tienSan, tienDichVu, tongTien, hinhThucTT, thoiGianTT);
 
-                // ===== CẤU HÌNH SMTP CLIENT =====
+                //CẤU HÌNH SMTP CLIENT
                 using (SmtpClient smtpClient = new SmtpClient(SMTP_HOST, SMTP_PORT))
                 {
                     smtpClient.EnableSsl = true;
@@ -52,7 +51,6 @@ namespace BUS
                     smtpClient.Credentials = new NetworkCredential(SENDER_EMAIL, SENDER_PASSWORD);
                     smtpClient.Timeout = 20000; // 20 giây
 
-                    // ===== TẠO EMAIL MESSAGE =====
                     using (MailMessage mailMessage = new MailMessage())
                     {
                         mailMessage.From = new MailAddress(SENDER_EMAIL, SENDER_NAME);
@@ -62,7 +60,6 @@ namespace BUS
                         mailMessage.IsBodyHtml = true;
                         mailMessage.Priority = MailPriority.Normal;
 
-                        // ===== GỬI EMAIL =====
                         smtpClient.Send(mailMessage);
                         System.Diagnostics.Debug.WriteLine($"✅ Đã gửi email thành công đến: {toEmail}");
                         return true;
@@ -173,7 +170,6 @@ namespace BUS
         }
 
         /// <summary>
-        /// Kiểm tra email hợp lệ
         /// </summary>
         private static bool IsValidEmail(string email)
         {

@@ -129,7 +129,6 @@
             this.rtbContent.Size = new System.Drawing.Size(422, 331);
             this.rtbContent.TabIndex = 0;
             this.rtbContent.Text = "";
-            this.rtbContent.TextChanged += new System.EventHandler(this.rtbContent_TextChanged_1);
             // 
             // guna2Button1
             // 
