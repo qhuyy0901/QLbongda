@@ -35,7 +35,6 @@ namespace DAL
         [StringLength(50)]
         public string TrangThai { get; set; }
 
-        // ===== PROPERTY ?? HI?N TH? THÔNG TIN L?CH TRONG COMBOBOX =====
         [NotMapped]
         public string ThongTinLich
         {

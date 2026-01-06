@@ -9,27 +9,24 @@ namespace BUS
     {
         private Model1 db = new Model1();
 
-        // LOGIN 
         public User Login(string username, string password)
         {
             try
             {
-                //  LẤY USER TỪ DATABASE 
+                //  LẤY USER TỪ DATABASE theo ID
                 var user = db.Users.FirstOrDefault(u => u.ID == username);
                 
                 if (user == null)
                     return null;
 
-                //CỐ GẮNG GIẢI MÃ PASSWORD 
+                //CỐ GẮNG GIẢI MÃ PASSWORD + aes
                 string decryptedPassword = AES.DecryptPassword(user.Password);
 
-                // SO SÁNH VỚI PASSWORD NHẬP VÀO 
                 if (decryptedPassword == password)
                     return user;
 
                 if (user.Password == password)
                     return user;
-
                 return null;
             }
             catch
@@ -147,10 +144,7 @@ namespace BUS
 
                 keyword = keyword.ToLower().Trim();
 
-                return db.Users.Where(u =>
-                    u.ID.ToLower().Contains(keyword) ||
-                    u.Role.ToLower().Contains(keyword) ||
-                    u.TenNguoiDung.ToLower().Contains(keyword)
+                return db.Users.Where(u =>u.ID.ToLower().Contains(keyword) ||u.Role.ToLower().Contains(keyword) || u.TenNguoiDung.ToLower().Contains(keyword)
                 ).ToList();
             }
             catch

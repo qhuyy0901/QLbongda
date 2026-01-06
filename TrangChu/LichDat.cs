@@ -13,7 +13,7 @@ namespace TrangChu
     {
         private BUS.LichDatBUS busLichDat = new BUS.LichDatBUS();
         private SanBongBUS busSanBong = new SanBongBUS();
-        private bool isEditing = false;
+        private bool isEditing = false;                     // xát định đang sửa hay thêm
 
         // BIẾN LƯU TRỮ TRẠNG THÁI SẮP XẾP 
         private string sortedColumn = "";
@@ -35,12 +35,12 @@ namespace TrangChu
             {
                 dgvDatSan.AutoGenerateColumns = false;
 
-                InitializeSearchTimer();
+                InitializeSearchTimer(); // + Khởi tạo Time tìm kiếm real-time
 
                 dgvDatSan.CellClick += dgvDatSan_CellClick;
                 dgvDatSan.CellContentClick += dgvDatSan_CellContentClick;
 
-                SetupFieldButtonEvents();
+                SetupFieldButtonEvents(); // + gắn sự kiện cho nút
                 LoadComboBoxSan();
                 RefreshData();
             }
@@ -57,8 +57,8 @@ namespace TrangChu
         {
             if (searchTimer == null)
             {
-                searchTimer = new System.Timers.Timer(300);
-                searchTimer.Elapsed += SearchTimer_Elapsed;
+                searchTimer = new System.Timers.Timer(300); //Delay 300ms
+                searchTimer.Elapsed += SearchTimer_Elapsed;//+
                 searchTimer.AutoReset = false; 
             }
         }
@@ -87,11 +87,11 @@ namespace TrangChu
             
                 if (string.IsNullOrWhiteSpace(keyword))
                 {
-                    RefreshData();
+                    RefreshData();//+
                     return;
                 }
 
-                var results = busLichDat.Search(keyword);
+                var results = busLichDat.Search(keyword);//+
 
                 dgvDatSan.DataSource = null; 
 
@@ -121,7 +121,6 @@ namespace TrangChu
         private void dgvDatSan_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex < 0) return;
-
             try
             {
                 DataGridViewRow row = dgvDatSan.Rows[e.RowIndex];
@@ -287,23 +286,22 @@ namespace TrangChu
 
         private void FormatDonGiaColumn()
         {
-            try
+            if (dgvDatSan.Columns["clDonGiaThucTe"] != null)
             {
-                if (dgvDatSan.Columns["clDonGiaThucTe"] != null)
-                {
                     dgvDatSan.Columns["clDonGiaThucTe"].DefaultCellStyle.Format = "N0";
                     dgvDatSan.Columns["clDonGiaThucTe"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                }
             }
-            catch { }
+        
         }
 
+
+       // Gán lại DataPropertyName cho từng cột DataGridView
         private void ReapplyColumnBindings()
         {
             void Bind(string colName, string propName)
             {
                 var col = dgvDatSan.Columns[colName];
-                if (col != null)
+                if (col != null)                         // Nếu cột tồn tại → map với property trong LichDat
                     col.DataPropertyName = propName;
             }
             Bind("clMaLich", "MaLich");
@@ -316,7 +314,9 @@ namespace TrangChu
             Bind("clTrangThai", "TrangThai");
             Bind("clDonGiaThucTe", "DonGiaThucTe");
         }
-        private bool IsValidPhoneNumber(string phoneNumber)
+
+
+        private bool IsValidPhoneNumber(string phoneNumber) //kiểm tra số điện thoại
         {
             if (string.IsNullOrWhiteSpace(phoneNumber))
             {
@@ -333,7 +333,7 @@ namespace TrangChu
             }
             if (cleanPhone.Length < 9 || cleanPhone.Length > 11) 
             {
-                MessageBox.Show($"❌ Số điện thoại không hợp lệ (9-11 số)!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"❌ Số điện thoại không hợp lệ!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtSDT.Focus();
                 return false;
             }
@@ -363,6 +363,8 @@ namespace TrangChu
                 return false;
             }            return true;
         }
+
+
 
         private void btnDatSAn_Click(object sender, EventArgs e)
         {
@@ -569,11 +571,13 @@ namespace TrangChu
                 DateTime today = DateTime.Now.Date;
                 var sanInfo = busSanBong.GetListSanBong()?.FirstOrDefault(s => s.MaSan == maSan);
                 string tenSan = sanInfo?.TenSan ?? maSan;
-
+               
+                //Lấy tất cả lịch đặt của sân trong ngày hôm nay
                 var todayBookings = busLichDat.GetAll()
                     ?.Where(l => l.MaSan == maSan && l.NgayDat == today && l.TrangThai == "Đã đặt")
                     .OrderBy(l => l.GioBD).ToList();
-
+                
+                // Chuỗi hiển thị tổng quát
                 string info = $"SÂN {maSan} - {tenSan}\nNgày: {today:dd/MM/yyyy}\nLượt đặt: {todayBookings?.Count ?? 0}\n";
                 if (todayBookings != null)
                 {
@@ -628,6 +632,7 @@ namespace TrangChu
             if (sender is Button btn)
             {
                 string maSan = GetMaSanFromButton(btn);
+                // Click → xem chi tiết rõ ràng
                 MessageBox.Show(GetFieldInfoForToday(maSan), "Thông tin sân");
             }
         }

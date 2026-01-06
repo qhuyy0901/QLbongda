@@ -36,6 +36,7 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btnThanhToan = new System.Windows.Forms.Button();
             this.btnThemDivhVu = new System.Windows.Forms.Button();
+            this.btnQuayLai = new System.Windows.Forms.Button();
             this.txtDonGia = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.dgvDatSan = new System.Windows.Forms.DataGridView();
@@ -66,7 +67,6 @@
             this.btnSan3 = new System.Windows.Forms.Button();
             this.btnSan2 = new System.Windows.Forms.Button();
             this.btnSan1 = new System.Windows.Forms.Button();
-            this.btnQuayLai = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDatSan)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -318,6 +318,25 @@
             this.btnThemDivhVu.UseVisualStyleBackColor = false;
             this.btnThemDivhVu.Click += new System.EventHandler(this.btnThemDivhVu_Click);
             // 
+            // btnQuayLai
+            // 
+            this.btnQuayLai.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnQuayLai.BackColor = System.Drawing.Color.White;
+            this.btnQuayLai.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnQuayLai.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
+            this.btnQuayLai.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnQuayLai.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnQuayLai.Image = global::TrangChu.Properties.Resources.Screenshot_2025_12_14_150219_removebg_preview;
+            this.btnQuayLai.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnQuayLai.Location = new System.Drawing.Point(0, 581);
+            this.btnQuayLai.Name = "btnQuayLai";
+            this.btnQuayLai.Size = new System.Drawing.Size(100, 30);
+            this.btnQuayLai.TabIndex = 26;
+            this.btnQuayLai.Text = "Quay Lại";
+            this.btnQuayLai.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnQuayLai.UseVisualStyleBackColor = false;
+            this.btnQuayLai.Click += new System.EventHandler(this.btnQuayLai_Click);
+            // 
             // txtDonGia
             // 
             this.txtDonGia.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
@@ -380,7 +399,7 @@
             this.dgvDatSan.RowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvDatSan.RowTemplate.Height = 30;
             this.dgvDatSan.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDatSan.Size = new System.Drawing.Size(723, 371);
+            this.dgvDatSan.Size = new System.Drawing.Size(816, 371);
             this.dgvDatSan.TabIndex = 13;
             this.dgvDatSan.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDatSan_CellContentClick);
             // 
@@ -528,7 +547,7 @@
             this.txtTimKiem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTimKiem.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtTimKiem.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtTimKiem.Location = new System.Drawing.Point(442, 217);
+            this.txtTimKiem.Location = new System.Drawing.Point(535, 217);
             this.txtTimKiem.Multiline = true;
             this.txtTimKiem.Name = "txtTimKiem";
             this.txtTimKiem.Size = new System.Drawing.Size(140, 23);
@@ -544,7 +563,7 @@
             this.btnTaiLai.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnTaiLai.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnTaiLai.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnTaiLai.Location = new System.Drawing.Point(633, 212);
+            this.btnTaiLai.Location = new System.Drawing.Point(726, 212);
             this.btnTaiLai.Name = "btnTaiLai";
             this.btnTaiLai.Size = new System.Drawing.Size(90, 25);
             this.btnTaiLai.TabIndex = 38;
@@ -576,7 +595,7 @@
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(306, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(723, 240);
+            this.groupBox2.Size = new System.Drawing.Size(816, 240);
             this.groupBox2.TabIndex = 27;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "SƠ ĐỒ SÂN BÓNG";
@@ -656,31 +675,12 @@
             this.btnSan1.TabIndex = 14;
             this.btnSan1.UseVisualStyleBackColor = true;
             // 
-            // btnQuayLai
-            // 
-            this.btnQuayLai.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnQuayLai.BackColor = System.Drawing.Color.White;
-            this.btnQuayLai.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnQuayLai.FlatAppearance.BorderColor = System.Drawing.Color.Silver;
-            this.btnQuayLai.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnQuayLai.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnQuayLai.Image = global::TrangChu.Properties.Resources.Screenshot_2025_12_14_150219_removebg_preview;
-            this.btnQuayLai.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnQuayLai.Location = new System.Drawing.Point(0, 581);
-            this.btnQuayLai.Name = "btnQuayLai";
-            this.btnQuayLai.Size = new System.Drawing.Size(100, 30);
-            this.btnQuayLai.TabIndex = 26;
-            this.btnQuayLai.Text = "Quay Lại";
-            this.btnQuayLai.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnQuayLai.UseVisualStyleBackColor = false;
-            this.btnQuayLai.Click += new System.EventHandler(this.btnQuayLai_Click);
-            // 
             // LichDat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.ClientSize = new System.Drawing.Size(1029, 611);
+            this.ClientSize = new System.Drawing.Size(1122, 611);
             this.Controls.Add(this.dgvDatSan);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);

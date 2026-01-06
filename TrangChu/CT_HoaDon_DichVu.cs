@@ -70,8 +70,7 @@ namespace TrangChu
 
         private void LoadDanhSachLichDat()
         {
-            try
-            {
+
                 cbxMaLich.SelectedIndexChanged -= CbxMaLich_SelectedIndexChanged;
 
                 DateTime homNay = DateTime.Now.Date;
@@ -114,8 +113,7 @@ namespace TrangChu
                     cbxMaLich.SelectedIndex = 0;
                 }
                 cbxMaLich.SelectedIndexChanged += CbxMaLich_SelectedIndexChanged;
-            }
-            catch (Exception ex){ }
+
         }
 
         // ===== SỰ KIỆN KHI CHỌN LỊCH TRONG COMBOBOX =====

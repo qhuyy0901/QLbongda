@@ -6,17 +6,19 @@ using System.Windows.Forms;
 namespace TrangChu
 {
     public partial class Login : Form
-    {
+    {   
         UserBUS userBUS = new UserBUS();
 
         public Login()
         {
+            // khởi tạo giao diện - sự kiện hiện ẩn pass 
             InitializeComponent();
             chkShowPassword.CheckedChanged += chkShowPassword_CheckedChanged;
         }
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
+            //lấy thông tin từ GUI ( kiểu giá trị trên các bảng text)
             string user = txtUser.Text.Trim();
             string pass = txtPass.Text.Trim();
 
@@ -28,7 +30,7 @@ namespace TrangChu
 
             try
             {
-                // Gọi BUS kiểm tra
+                // Gọi BUS kiểm tra + login
                 User u = userBUS.Login(user, pass);
 
                 if (u != null)
@@ -65,7 +67,7 @@ namespace TrangChu
             txtPass.PasswordChar = '*';
 
             try
-            {
+            {                        // +lấy toàn bộ user
                 var testUser = userBUS.GetAll();
                 if (testUser == null)
                 {
